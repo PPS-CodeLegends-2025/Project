@@ -1,1 +1,51 @@
 @import 'tailwindcss';
+
+body,
+html {
+	@apply font-sans;
+	@apply m-0 p-0;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	@apply h-full overflow-hidden;
+}
+
+@layer base {
+	.btn {
+		@apply cursor-pointer transition-colors duration-200;
+		@apply disabled:cursor-not-allowed;
+	}
+
+	.btn.primary {
+		@apply bg-indigo-600 text-white;
+		@apply rounded px-4 py-2;
+		@apply hover:bg-indigo-500 focus:outline-none;
+	}
+
+	.box {
+		@apply rounded bg-white;
+		@apply p-4;
+		@apply border border-gray-300;
+	}
+
+	.box.success {
+		@apply border-green-600 bg-green-50 text-green-600;
+	}
+
+	.box.error {
+		@apply border-red-600 bg-red-50 text-red-600;
+	}
+
+	.prism-code-editor {
+		@apply h-full;
+	}
+
+	.code {
+		@apply rounded-lg bg-gray-100 px-2 py-1 font-mono;
+	}
+}

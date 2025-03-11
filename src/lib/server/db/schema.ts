@@ -1,4 +1,6 @@
-import { mysqlTable, int, varchar, datetime } from 'drizzle-orm/mysql-core';
+import { sql } from 'drizzle-orm';
+import { mysqlTable, int, varchar, datetime, json } from 'drizzle-orm/mysql-core';
+import type { GeneratedTask } from '../icr/ai/taskgen';
 
 export const user = mysqlTable('user', {
 	id: varchar('id', { length: 255 }).primaryKey(),
@@ -13,6 +15,18 @@ export const session = mysqlTable('session', {
 		.notNull()
 		.references(() => user.id),
 	expiresAt: datetime('expires_at').notNull()
+});
+
+export const generatedTask = mysqlTable('generated_task', {
+	id: varchar('id', { length: 36 })
+		.primaryKey()
+		.default(sql`UUID()`),
+	name: varchar('name', { length: 255 }).notNull(),
+	description: varchar('description', { length: 512 }).notNull(),
+	inputs: json('inputs').notNull().$type<GeneratedTask['inputs']>(),
+	output: json('output').notNull().$type<GeneratedTask['output']>(),
+	exampleData: json('example_data').notNull(),
+	exampleCode: varchar('example_code', { length: 1024 }).notNull()
 });
 
 export type Session = typeof session.$inferSelect;

@@ -3,8 +3,4 @@
 	let { children } = $props();
 </script>
 
-<p>
-	Layout
-</p>
-
 {@render children()}

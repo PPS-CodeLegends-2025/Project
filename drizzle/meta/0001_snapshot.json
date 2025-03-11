@@ -1,9 +1,74 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "54d26681-c6d6-491a-bd67-950dde9369e2",
-	"prevId": "00000000-0000-0000-0000-000000000000",
+	"id": "26813c76-9222-4536-9020-193e4f1275cf",
+	"prevId": "54d26681-c6d6-491a-bd67-950dde9369e2",
 	"tables": {
+		"generated_task": {
+			"name": "generated_task",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "UUID()"
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"description": {
+					"name": "description",
+					"type": "varchar(512)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"inputs": {
+					"name": "inputs",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"output": {
+					"name": "output",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"example_data": {
+					"name": "example_data",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"example_code": {
+					"name": "example_code",
+					"type": "varchar(1024)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"generated_task_id": {
+					"name": "generated_task_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
 		"session": {
 			"name": "session",
 			"columns": {
