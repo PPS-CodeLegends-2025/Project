@@ -74,7 +74,7 @@
 				<p>Output: {runResults.output}</p>
 				<div class="h-0 w-full border border-b border-gray-300"></div>
 				<h1>Console:</h1>
-				{#each runResults.console as log}
+				{#each runResults.console as log (log.time)}
 					<p>
 						{new Date(log.time).toISOString()} [{log.level.toUpperCase()}]: {log.message}
 					</p>

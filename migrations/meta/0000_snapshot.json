@@ -1,8 +1,8 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "26813c76-9222-4536-9020-193e4f1275cf",
-	"prevId": "54d26681-c6d6-491a-bd67-950dde9369e2",
+	"id": "e78cbca2-43f7-432a-93fe-3a84e8282d3a",
+	"prevId": "00000000-0000-0000-0000-000000000000",
 	"tables": {
 		"generated_task": {
 			"name": "generated_task",
@@ -12,8 +12,7 @@
 					"type": "varchar(36)",
 					"primaryKey": false,
 					"notNull": true,
-					"autoincrement": false,
-					"default": "UUID()"
+					"autoincrement": false
 				},
 				"name": {
 					"name": "name",

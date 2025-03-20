@@ -1,29 +1,31 @@
 import type { Handle } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth.js';
+import auth from '$lib/server/services/auth';
+import { applyMigrations } from '$lib/server/db';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
-	event.locals.user = null;
-	event.locals.session = null;
-	
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
-	if (sessionToken) {
-		try {
-			const { session, user } = await auth.validateSessionToken(sessionToken);
-			
-			if (session) {
-				auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-				event.locals.user = user;
-				event.locals.session = session;
-			} else {
-				auth.deleteSessionTokenCookie(event);
-			}
-		} catch (error) {
-			console.error('Auth validation error:', error);
-			auth.deleteSessionTokenCookie(event);
-		}
+	if (!sessionToken) {
+		event.locals.user = null;
+		event.locals.session = null;
+		return resolve(event);
 	}
+
+	const { session, user } = await auth.validateSessionToken(sessionToken);
+
+	if (session) {
+		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+	} else {
+		auth.deleteSessionTokenCookie(event);
+	}
+
+	event.locals.user = user;
+	event.locals.session = session;
 
 	return resolve(event);
 };
 
 export const handle: Handle = handleAuth;
+
+applyMigrations().then(() => {
+	console.log('Migrations applied');
+});

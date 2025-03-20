@@ -1,6 +1,6 @@
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
-import { openaiClient } from '../client';
+import { openaiClient } from './oai';
 
 const DataTypes = z.enum(['number', 'string', 'boolean', 'array', 'object']);
 

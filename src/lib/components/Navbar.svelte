@@ -1,15 +1,23 @@
-<nav class="flex justify-between items-center border-b border-gray-300 p-4">
-  <div class="flex items-center">
-    <a href="/" class="text-xl font-bold">CodeLegends</a>
-  </div>
-  
-  <ul class="flex space-x-6">
-    <li><a href="/playground" class="hover:text-blue-500 transition">Playground</a></li>
-    <li><a href="/test" class="hover:text-blue-500 transition">Test (Demo)</a></li>
-    <li><a href="/" class="hover:text-blue-500 transition">Dashboard</a></li>
-    <li><a href="/module" class="hover:text-blue-500 transition">Modules</a></li>
-    <li><a href="/profile" class="hover:text-blue-500 transition">Profile</a></li>
-    <li><a href="/challenges" class="hover:text-blue-500 transition">Challenges</a></li>
-    <li><a href="/login" class="hover:text-blue-500 transition">Logout</a></li>
-  </ul>
+<nav class="flex items-center justify-between border-b border-gray-300 p-4">
+	<div class="flex items-center">
+		<a href="/" class="text-xl font-bold">CodeLegends</a>
+	</div>
+
+	<ul class="flex space-x-6">
+		<li><a href="/">Dashboard</a></li>
+		<li><a href="/playground">Playground</a></li>
+		<li><a href="/demo">Demo Task</a></li>
+		<li><a href="/module">Modules</a></li>
+		<li><a href="/profile">Profile</a></li>
+		<li><a href="/challenges">Challenges</a></li>
+		<li><a href="/logout" data-sveltekit-preload-data="off">Logout</a></li>
+	</ul>
 </nav>
+
+<style lang="postcss">
+	@import 'tailwindcss/theme';
+
+	a {
+		@apply transition-colors hover:text-blue-500;
+	}
+</style>

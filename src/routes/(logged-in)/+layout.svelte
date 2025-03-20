@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
+	import type { LayoutProps } from './$types';
 
-	let { children } = $props();
+	let { children }: LayoutProps = $props();
 </script>
 
 <div class="flex h-full flex-col">

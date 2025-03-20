@@ -35,7 +35,7 @@
 			<pre class="box flex-1 overflow-auto">{result}</pre>
 			<h1 class="-mb-4 text-xl">Console:</h1>
 			<div class="box flex flex-1 flex-col gap-2 overflow-auto">
-				{#each consoleOutput as { level, message, time }, i}
+				{#each consoleOutput as { level, message, time } (time)}
 					<div class="flex gap-2">
 						<span>{new Date(time).toISOString()}</span>
 						<span class="uppercase">[{level}]:</span>

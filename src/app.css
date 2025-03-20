@@ -18,13 +18,20 @@ body {
 @layer base {
 	.btn {
 		@apply cursor-pointer transition-colors duration-200;
-		@apply disabled:cursor-not-allowed;
+		@apply font-medium disabled:cursor-not-allowed;
 	}
 
 	.btn.primary {
 		@apply bg-indigo-600 text-white;
 		@apply rounded px-4 py-2;
 		@apply hover:bg-indigo-500 focus:outline-none;
+	}
+
+	.btn.secondary {
+		@apply bg-transparent text-indigo-600;
+		@apply border border-indigo-600;
+		@apply rounded px-4 py-2;
+		@apply hover:bg-indigo-100 focus:outline-none;
 	}
 
 	.box {
@@ -47,5 +54,13 @@ body {
 
 	.code {
 		@apply rounded-lg bg-gray-100 px-2 py-1 font-mono;
+	}
+
+	.input {
+		@apply rounded border border-gray-300 px-2 py-1;
+	}
+
+	.select {
+		@apply rounded border border-gray-300 px-2 py-1;
 	}
 }

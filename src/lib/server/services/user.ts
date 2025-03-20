@@ -1,0 +1,53 @@
+import { hash, verify } from '@node-rs/argon2';
+import { db } from '../db';
+import * as table from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+
+export const userService = {
+	async register(username: string, password: string) {
+		const passwordHash = await hash(password, {
+			memoryCost: 19456,
+			timeCost: 2,
+			outputLen: 32,
+			parallelism: 1
+		});
+
+		const [res] = await db
+			.insert(table.user)
+			.values({
+				username,
+				passwordHash
+			})
+			.$returningId();
+
+		const [newUser] = await db.select().from(table.user).where(eq(table.user.id, res.id));
+
+		return {
+			id: newUser.id,
+			username: newUser.username
+		};
+	},
+	async exists(username: string) {
+		const results = await db.select().from(table.user).where(eq(table.user.username, username));
+		return results.length > 0;
+	},
+	async login(username: string, password: string) {
+		const [user] = await db.select().from(table.user).where(eq(table.user.username, username));
+
+		if (!user) return null;
+
+		const validPassword = await verify(user.passwordHash, password, {
+			memoryCost: 19456,
+			timeCost: 2,
+			outputLen: 32,
+			parallelism: 1
+		});
+
+		if (!validPassword) return null;
+
+		return {
+			id: user.id,
+			username: user.username
+		};
+	}
+};
