@@ -4,6 +4,7 @@ import { applyMigrations } from '$lib/server/db';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
+
 	if (!sessionToken) {
 		event.locals.user = null;
 		event.locals.session = null;

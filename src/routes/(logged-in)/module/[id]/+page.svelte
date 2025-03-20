@@ -116,7 +116,7 @@
 	</button>
 
 	{#if module}
-		<div class="box">
+		<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 			<div class="flex flex-col gap-6 md:flex-row">
 				<div class="md:w-1/3">
 					<div class="flex h-48 items-center justify-center rounded-lg bg-slate-100 p-4">
@@ -125,44 +125,55 @@
 
 					<div class="mt-4">
 						<div class="my-2 flex items-center justify-between">
-							<span class="text-sm">Level:</span>
-							<span class="badge {module.level.toLowerCase()}">{module.level}</span>
+							<span>Level:</span>
+							<span
+								class={`rounded-full px-2 py-0.5 text-xs font-semibold
+                                ${
+																	module.level.toLowerCase() === 'beginner'
+																		? 'bg-green-100 text-green-800'
+																		: module.level.toLowerCase() === 'intermediate'
+																			? 'bg-amber-100 text-amber-800'
+																			: 'bg-red-100 text-red-800'
+																}`}
+							>
+								{module.level}
+							</span>
 						</div>
 
 						<div class="my-2 flex items-center justify-between">
-							<span class="text-sm">Lessons:</span>
+							<span>Lessons:</span>
 							<span>{module.lessons}</span>
 						</div>
 
 						<div class="my-2 flex items-center justify-between">
-							<span class="text-sm">XP Reward:</span>
+							<span>XP Reward:</span>
 							<span>{module.xpReward} XP</span>
 						</div>
 
 						<div class="my-2 flex items-center justify-between">
-							<span class="text-sm">Category:</span>
+							<span>Category:</span>
 							<span>{module.category}</span>
 						</div>
 
 						{#if module.progress > 0}
-							<div class="mt-4">
-								<div class="mb-1 flex justify-between text-sm">
+							<div class="mt-2">
+								<div class="mb-1 flex justify-between">
 									<span>Progress:</span>
 									<span>{module.progress}%</span>
 								</div>
 								<div class="h-2.5 w-full rounded-full bg-gray-200">
 									<div
-										class="bg-primary h-2.5 rounded-full"
+										class="h-2.5 rounded-full bg-indigo-600"
 										style="width: {module.progress}%"
 									></div>
 								</div>
 							</div>
 						{:else}
-							<div class="mt-4 text-sm">Not started</div>
+							<div class="mt-2">Not started</div>
 						{/if}
 					</div>
 
-					<button class="btn primary mt-6 w-full" onclick={startModule}>Start Module</button>
+					<button class="btn primary mt-6 w-full" onclick={startModule}> Start Module </button>
 				</div>
 
 				<div class="md:w-2/3">
@@ -183,11 +194,13 @@
 						{#if module.sections && module.sections.length > 0}
 							<div class="mt-4 space-y-3">
 								{#each module.sections as section, index (section.id)}
-									<div class="box flex items-center justify-between rounded-lg border p-4">
+									<div
+										class="flex items-center justify-between rounded-lg border border-gray-300 p-4"
+									>
 										<div>
 											<div class="flex items-center gap-2">
 												<span
-													class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-sm text-gray-800"
+													class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-gray-800"
 												>
 													{index + 1}
 												</span>
@@ -200,7 +213,11 @@
 											{/if}
 										</div>
 										<button
-											class="btn btn-sm {section.isCompleted ? 'btn-success' : 'primary'}"
+											class={`btn primary w-24 px-3 transition-colors ${
+												section.isCompleted
+													? 'bg-green-100 text-green-800 hover:bg-green-200'
+													: 'bg-indigo-600 text-white hover:bg-indigo-700'
+											}`}
 											onclick={() => navigateToSection(section.id)}
 										>
 											{section.isCompleted ? 'Review' : 'Start'}
@@ -216,25 +233,10 @@
 			</div>
 		</div>
 	{:else}
-		<div class="box py-12 text-center">
+		<div class="rounded-lg border border-gray-200 bg-white py-12 text-center shadow-sm">
 			<h2 class="mb-4 text-2xl font-bold">Module Not Found</h2>
 			<p>The module you're looking for doesn't exist.</p>
-			<button class="btn primary mt-4" onclick={goBack}>Return to Modules</button>
+			<button class="btn primary mt-4" onclick={goBack}> Return to Modules </button>
 		</div>
 	{/if}
 </div>
-
-<style>
-	.badge.beginner {
-		background-color: #4ade80;
-		color: #052e16;
-	}
-	.badge.intermediate {
-		background-color: #facc15;
-		color: #422006;
-	}
-	.badge.advanced {
-		background-color: #f87171;
-		color: #450a0a;
-	}
-</style>

@@ -15,9 +15,9 @@
 </nav>
 
 <style lang="postcss">
-	@import 'tailwindcss/theme';
+	@reference 'tailwindcss';
 
 	a {
-		@apply transition-colors hover:text-blue-500;
+		@apply transition-colors hover:text-indigo-500;
 	}
 </style>

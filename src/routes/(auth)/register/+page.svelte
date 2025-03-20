@@ -2,8 +2,16 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 
-	export let form: ActionData;
+	interface Props {
+		form: ActionData;
+	}
+
+	let { form }: Props = $props();
 </script>
+
+<svelte:head>
+	<title>Register</title>
+</svelte:head>
 
 <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -12,7 +20,7 @@
 		</h2>
 		<p class="mt-2 text-center text-sm text-gray-600">
 			Or
-			<a href="/login" class="font-medium text-blue-600 hover:text-blue-500">
+			<a href="/login" class="font-medium text-indigo-600 hover:text-indigo-500">
 				sign in to your account
 			</a>
 		</p>
@@ -39,7 +47,7 @@
 							name="username"
 							type="text"
 							required
-							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm"
+							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>
 				</div>
@@ -52,7 +60,7 @@
 							name="password"
 							type="password"
 							required
-							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm"
+							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>
 				</div>
@@ -67,7 +75,7 @@
 							name="confirm_password"
 							type="password"
 							required
-							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm"
+							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>
 				</div>

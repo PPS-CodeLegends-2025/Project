@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import type { PageData as BasePageData } from '../$types';
+	import type { PageProps } from './$types';
 
 	interface Challenge {
 		id: string;
@@ -13,21 +13,16 @@
 		tags: string[];
 	}
 
-	interface PageData extends BasePageData {
-		challenge?: Challenge;
-		id: string;
-	}
+	let { data }: PageProps = $props();
 
-	export let data: PageData;
-
-	let challenge: Challenge = {} as Challenge;
-	let loading = true;
-	let error: string | null = null;
+	let challenge: Challenge | null = $state(null);
+	let loading = $state(true);
+	let error: string | null = $state(null);
 
 	onMount(async () => {
 		try {
 			// TODO: placeholder
-			challenge = data.challenge || {
+			challenge ??= {
 				id: data.id,
 				title: 'Example Challenge',
 				description: 'This is an example challenge description.',
@@ -45,138 +40,60 @@
 	});
 
 	function handleSubmitSolution() {
-		// todo
+		// TODO: implement solution submission
 		alert('Solution submitted!');
 	}
 </script>
 
 <svelte:head>
-	<title>{challenge.title || 'Challenge'} | Platform Name</title>
+	<title>{challenge?.title || 'Challenge'} | Platform Name</title>
 </svelte:head>
 
-<div class="challenge-container">
+<div class="mx-auto max-w-3xl p-5">
 	{#if loading}
-		<div class="loading">Loading challenge...</div>
+		<div class="py-10 text-center">Loading challenge...</div>
 	{:else if error}
-		<div class="error">{error}</div>
+		<div class="py-10 text-center text-red-600">{error}</div>
 	{:else}
-		<div class="challenge-header">
-			<h1>{challenge.title}</h1>
-			<div class="challenge-meta">
-				<span class="difficulty {challenge.difficulty?.toLowerCase()}">{challenge.difficulty}</span>
-				<span class="points">{challenge.points} points</span>
-				<span class="completed-by">{challenge.completedBy} completions</span>
+		<div class="mb-8">
+			<h1 class="text-2xl font-bold">{challenge?.title}</h1>
+			<div class="my-2.5 flex gap-4">
+				{#if challenge?.difficulty}
+					<span
+						class={`rounded px-2 py-0.5 font-bold
+                        ${
+													challenge.difficulty.toLowerCase() === 'easy'
+														? 'bg-green-100 text-green-800'
+														: challenge.difficulty.toLowerCase() === 'medium'
+															? 'bg-amber-100 text-amber-800'
+															: 'bg-red-100 text-red-800'
+												}`}
+					>
+						{challenge.difficulty}
+					</span>
+				{/if}
+				<span class="px-2">{challenge?.points} points</span>
+				<span class="px-2">{challenge?.completedBy} completions</span>
 			</div>
-			<div class="tags">
-				{#each challenge.tags || [] as tag (tag)}
-					<span class="tag">{tag}</span>
+			<div class="mt-2.5 flex flex-wrap gap-2">
+				{#each challenge?.tags || [] as tag (tag)}
+					<span class="rounded bg-gray-100 px-2 py-1 text-sm">{tag}</span>
 				{/each}
 			</div>
 		</div>
 
-		<div class="challenge-description">
-			<h2>Description</h2>
-			<div class="description-content">
-				{challenge.description}
+		<div class="mb-8">
+			<h2 class="mb-3 text-xl font-semibold">Description</h2>
+			<div class="prose">
+				{challenge?.description}
 			</div>
 		</div>
 
-		<div class="challenge-solution">
-			<h2>Your Solution</h2>
-			<textarea placeholder="Write your solution here..."></textarea>
-			<button class="submit-btn" onclick={handleSubmitSolution}>Submit Solution</button>
+		<div class="flex flex-col gap-4">
+			<h2 class="text-xl font-semibold">Your Solution</h2>
+			<textarea class="input min-h-[200px] w-full" placeholder="Write your solution here..."
+			></textarea>
+			<button class="btn primary" onclick={handleSubmitSolution}> Submit Solution </button>
 		</div>
 	{/if}
 </div>
-
-<style>
-	.challenge-container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 20px;
-	}
-
-	.loading,
-	.error {
-		text-align: center;
-		padding: 40px;
-	}
-
-	.error {
-		color: red;
-	}
-
-	.challenge-header {
-		margin-bottom: 30px;
-	}
-
-	.challenge-meta {
-		display: flex;
-		gap: 15px;
-		margin: 10px 0;
-	}
-
-	.difficulty {
-		padding: 3px 8px;
-		border-radius: 4px;
-		font-weight: bold;
-	}
-
-	.difficulty.easy {
-		background-color: #e7f5e7;
-		color: #2e7d32;
-	}
-
-	.difficulty.medium {
-		background-color: #fff8e1;
-		color: #ff8f00;
-	}
-
-	.difficulty.hard {
-		background-color: #ffebee;
-		color: #c62828;
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 10px;
-	}
-
-	.tag {
-		background-color: #f0f0f0;
-		padding: 4px 8px;
-		border-radius: 4px;
-		font-size: 0.9em;
-	}
-
-	.challenge-description,
-	.challenge-solution {
-		margin-bottom: 30px;
-	}
-
-	textarea {
-		width: 100%;
-		min-height: 200px;
-		padding: 10px;
-		margin-bottom: 15px;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-family: monospace;
-	}
-
-	.submit-btn {
-		background-color: #4a86e8;
-		color: white;
-		border: none;
-		padding: 10px 20px;
-		border-radius: 4px;
-		cursor: pointer;
-		font-weight: bold;
-	}
-
-	.submit-btn:hover {
-		background-color: #3b78e7;
-	}
-</style>

@@ -110,28 +110,24 @@
 				type="text"
 				placeholder="Search challenges..."
 				bind:value={searchQuery}
-				class="w-full rounded-md border border-gray-300 p-3 text-base"
+				class="input w-full"
 			/>
 		</div>
 
 		<div class="flex gap-4">
-			<select
-				bind:value={selectedCategory}
-				class="min-w-[150px] rounded-md border border-gray-300 bg-white p-3"
-			>
+			<select bind:value={selectedCategory} class="select min-w-[150px]">
 				{#each categories as category (category)}
-					<option value={category}>{category === 'all' ? 'All Categories' : category}</option>
+					<option value={category}>
+						{category === 'all' ? 'All Categories' : category}
+					</option>
 				{/each}
 			</select>
 
-			<select
-				bind:value={selectedDifficulty}
-				class="min-w-[150px] rounded-md border border-gray-300 bg-white p-3"
-			>
+			<select bind:value={selectedDifficulty} class="select min-w-[150px]">
 				{#each difficulties as difficulty (difficulty)}
-					<option value={difficulty}
-						>{difficulty === 'all' ? 'All Difficulties' : difficulty}</option
-					>
+					<option value={difficulty}>
+						{difficulty === 'all' ? 'All Difficulties' : difficulty}
+					</option>
 				{/each}
 			</select>
 		</div>
@@ -172,10 +168,7 @@
 							<span class="text-gray-500">{challenge.timeEstimate}</span>
 						</div>
 
-						<button
-							class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
-							onclick={() => startChallenge(challenge.id)}
-						>
+						<button class="btn primary rounded-md" onclick={() => startChallenge(challenge.id)}>
 							{challenge.completed ? 'Retry' : 'Start'}
 						</button>
 					</div>

@@ -57,10 +57,17 @@ body {
 	}
 
 	.input {
-		@apply rounded border border-gray-300 px-2 py-1;
+		@apply rounded-md border border-gray-300 px-3 py-2 text-base focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none;
+		@apply cursor-text;
 	}
 
 	.select {
-		@apply rounded border border-gray-300 px-2 py-1;
+		@apply rounded-md border border-gray-300 px-3 py-2 text-base focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none;
+		@apply cursor-pointer;
+		@apply appearance-none;
+		background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9l-7 7-7-7"></path></svg>');
+		background-repeat: no-repeat;
+		background-position: right 0.5rem center;
+		background-size: 1em 1em;
 	}
 }

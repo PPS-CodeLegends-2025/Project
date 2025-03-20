@@ -127,7 +127,7 @@
 							<div class="mt-4">
 								<div class="h-2.5 w-full rounded-full bg-gray-200">
 									<div
-										class="h-2.5 rounded-full bg-blue-500"
+										class="h-2.5 rounded-full bg-indigo-500"
 										style="width: {module.progress}%"
 									></div>
 								</div>

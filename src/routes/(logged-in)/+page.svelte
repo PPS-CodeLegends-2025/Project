@@ -21,7 +21,7 @@
 			<p>Current level: {count}</p>
 			<div class="progress-bar mt-2 rounded-full bg-gray-200">
 				<div
-					class="progress h-2 rounded-full bg-blue-500"
+					class="progress h-2 rounded-full bg-indigo-500"
 					style="width: {Math.min(count * 10, 100)}%"
 				></div>
 			</div>
@@ -55,7 +55,7 @@
 </div>
 
 <style lang="postcss">
-	@import 'tailwindcss/theme';
+	@reference 'tailwindcss';
 
 	.module-box {
 		@apply rounded border border-gray-300 p-4 transition-all hover:shadow-md;
