@@ -1,9 +1,10 @@
 import { hash, verify } from '@node-rs/argon2';
 import { db } from '../db';
 import * as table from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, like } from 'drizzle-orm';
 
 export const userService = {
+	
 	async register(username: string, password: string) {
 		const passwordHash = await hash(password, {
 			memoryCost: 19456,
@@ -16,7 +17,9 @@ export const userService = {
 			.insert(table.user)
 			.values({
 				username,
-				passwordHash
+				passwordHash,
+				level: 0,
+				xp: 0
 			})
 			.$returningId();
 
