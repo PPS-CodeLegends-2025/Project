@@ -18,16 +18,21 @@ export const userService = {
 			.insert(table.user)
 			.values({
 				username,
-				passwordHash
+				passwordHash,
+				level: 0,
+				xp: 0
 			})
 			.$returningId();
 
-		const [newUser] = await db.select().from(table.user).where(eq(table.user.id, res.id));
+		const [newUser] = await db
+			.select({
+				id: table.user.id,
+				username: table.user.username
+			})
+			.from(table.user)
+			.where(eq(table.user.id, res.id));
 
-		return {
-			id: newUser.id,
-			username: newUser.username
-		};
+		return newUser;
 	},
 	async exists(username: string) {
 		const results = await db.select().from(table.user).where(eq(table.user.username, username));
@@ -44,7 +49,8 @@ export const userService = {
 
 		return {
 			id: user.id,
-			username: user.username
+			username: user.username,
+			registrationDate: user.registrationDate
 		};
 	}
 };

@@ -31,8 +31,15 @@ export const authService = {
 		const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 		const [result] = await db
 			.select({
-				// TODO: Adjust user table here to tweak returned data
-				user: { id: table.user.id, username: table.user.username },
+				// Adjust user table here to tweak returned data
+				user: {
+					id: table.user.id,
+					username: table.user.username,
+					fullName: table.user.fullName,
+					level: table.user.level,
+					xp: table.user.xp,
+					registrationDate: table.user.registrationDate
+				},
 				session: table.session
 			})
 			.from(table.session)

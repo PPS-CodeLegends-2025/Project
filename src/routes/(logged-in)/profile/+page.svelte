@@ -7,13 +7,12 @@
 
 	let user = {
 		username: data.user.username,
-		fullName: 'John Doe',
-		bio: 'Frontend developer passionate about web technologies',
+		fullName: data.user.fullName || 'Anonymous',
 		avatar: '/images/avatar.png',
-		level: 5,
-		xp: 350,
-		nextLevelXp: 500,
-		joinDate: 'January 15, 2023',
+		level: data.user.level,
+		xp: data.user.xp,
+		nextLevelXp: 100,
+		joinDate: new Date(data.user.registrationDate).toDateString(),
 		stats: {
 			lessonsCompleted: 42,
 			challengesSolved: 18,
@@ -44,7 +43,6 @@
 		<div class="flex-1">
 			<h1 class="m-0 text-2xl font-bold">{user.username}</h1>
 			<h2 class="my-1 mb-4 text-xl font-normal text-gray-600">{user.fullName}</h2>
-			<p class="mb-4">{user.bio}</p>
 
 			<div class="mb-4">
 				<div class="mb-1 h-2 overflow-hidden rounded-lg bg-gray-100">
