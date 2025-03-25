@@ -1,69 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
-	const challenges = [
-		{
-			id: 1,
-			title: 'Hello World',
-			description: "Write your first JavaScript program that prints 'Hello World'.",
-			difficulty: 'beginner',
-			category: 'JavaScript',
-			xpReward: 50,
-			completed: true,
-			timeEstimate: '5 mins'
-		},
-		{
-			id: 2,
-			title: 'Variables and Data Types',
-			description:
-				'Learn how to declare variables and work with different data types in JavaScript.',
-			difficulty: 'beginner',
-			category: 'JavaScript',
-			xpReward: 75,
-			completed: true,
-			timeEstimate: '10 mins'
-		},
-		{
-			id: 3,
-			title: 'Conditional Statements',
-			description: 'Master if/else statements to create conditional logic in your programs.',
-			difficulty: 'beginner',
-			category: 'JavaScript',
-			xpReward: 100,
-			completed: false,
-			timeEstimate: '15 mins'
-		},
-		{
-			id: 4,
-			title: 'Loops and Iterations',
-			description: 'Learn how to use for loops and while loops for repeated operations.',
-			difficulty: 'intermediate',
-			category: 'JavaScript',
-			xpReward: 150,
-			completed: false,
-			timeEstimate: '20 mins'
-		},
-		{
-			id: 5,
-			title: 'Basic HTML Structure',
-			description: 'Create your first HTML document with proper structure and elements.',
-			difficulty: 'beginner',
-			category: 'HTML',
-			xpReward: 50,
-			completed: false,
-			timeEstimate: '10 mins'
-		},
-		{
-			id: 6,
-			title: 'CSS Styling Basics',
-			description: 'Learn how to apply styles to HTML elements using CSS.',
-			difficulty: 'beginner',
-			category: 'CSS',
-			xpReward: 75,
-			completed: false,
-			timeEstimate: '15 mins'
-		}
-	];
+	import { challenges } from './hardcoded';
 
 	let selectedCategory = $state('all');
 	let selectedDifficulty = $state('all');
@@ -95,10 +32,6 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl p-8">
-	<div class="mb-4 text-sm text-gray-600">
-		<a href="/" class="text-indigo-600 hover:underline">Home</a> / Challenges
-	</div>
-
 	<header class="mb-8 text-center">
 		<h1 class="mb-2 text-4xl">Coding Challenges</h1>
 		<p>Complete challenges to earn XP and level up your coding skills!</p>
@@ -115,17 +48,17 @@
 		</div>
 
 		<div class="flex gap-4">
-			<select bind:value={selectedCategory} class="select min-w-[150px]">
+			<select bind:value={selectedCategory} class="select min-w-[150px] capitalize">
 				{#each categories as category (category)}
-					<option value={category}>
+					<option value={category} class="capitalize">
 						{category === 'all' ? 'All Categories' : category}
 					</option>
 				{/each}
 			</select>
 
-			<select bind:value={selectedDifficulty} class="select min-w-[150px]">
+			<select bind:value={selectedDifficulty} class="select min-w-[150px] capitalize">
 				{#each difficulties as difficulty (difficulty)}
-					<option value={difficulty}>
+					<option value={difficulty} class="capitalize">
 						{difficulty === 'all' ? 'All Difficulties' : difficulty}
 					</option>
 				{/each}

@@ -3,14 +3,16 @@ import { db } from '../db';
 import * as table from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
+const hashOptions = {
+	memoryCost: 4096,
+	timeCost: 2,
+	outputLen: 32,
+	parallelism: 4
+} as const;
+
 export const userService = {
 	async register(username: string, password: string) {
-		const passwordHash = await hash(password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
-		});
+		const passwordHash = await hash(password, hashOptions);
 
 		const [res] = await db
 			.insert(table.user)
@@ -41,12 +43,7 @@ export const userService = {
 
 		if (!user) return null;
 
-		const validPassword = await verify(user.passwordHash, password, {
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
-		});
+		const validPassword = await verify(user.passwordHash, password, hashOptions);
 
 		if (!validPassword) return null;
 

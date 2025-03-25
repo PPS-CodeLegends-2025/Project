@@ -84,7 +84,7 @@
 
 		<div class="mb-8">
 			<h2 class="mb-3 text-xl font-semibold">Description</h2>
-			<div class="prose">
+			<div>
 				{challenge?.description}
 			</div>
 		</div>

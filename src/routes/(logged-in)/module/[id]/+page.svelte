@@ -1,79 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { moduleWithSections2 } from '../hardcoded';
 
 	const moduleId = page.params.id;
 
-	const modules = [
-		{
-			id: 1,
-			title: 'JavaScript Fundamentals',
-			description: 'Learn the core concepts of JavaScript programming',
-			level: 'Beginner',
-			xpReward: 500,
-			progress: 0,
-			lessons: 10,
-			category: 'JavaScript',
-			image: '/images/js-logo.png',
-			content: 'This is the detailed content for JavaScript Fundamentals module.',
-			sections: [
-				{ id: 'introduction', title: 'Introduction to JavaScript', isCompleted: false },
-				{ id: 'variables', title: 'Variables and Data Types', isCompleted: false },
-				{ id: 'functions', title: 'Working with Functions', isCompleted: false }
-			]
-		},
-		{
-			id: 2,
-			title: 'Advanced JavaScript',
-			description: 'Dive deeper into JavaScript with advanced topics',
-			level: 'Intermediate',
-			xpReward: 800,
-			progress: 25,
-			lessons: 12,
-			category: 'JavaScript',
-			image: '/images/js-logo.png',
-			content: 'This is the detailed content for Advanced JavaScript module.',
-			sections: [
-				{ id: 'closures', title: 'Closures and Scope', isCompleted: true },
-				{ id: 'promises', title: 'Promises and Async/Await', isCompleted: false },
-				{ id: 'modules', title: 'JavaScript Modules', isCompleted: false }
-			]
-		},
-		{
-			id: 3,
-			title: 'TypeScript Basics',
-			description: 'Start your journey with TypeScript',
-			level: 'Beginner',
-			xpReward: 600,
-			progress: 0,
-			lessons: 8,
-			category: 'TypeScript',
-			image: '/images/ts-logo.png',
-			content: 'This is the detailed content for TypeScript Basics module.',
-			sections: [
-				{ id: 'intro', title: 'Introduction to TypeScript', isCompleted: false },
-				{ id: 'types', title: 'Basic Types', isCompleted: false },
-				{ id: 'interfaces', title: 'Interfaces and Type Aliases', isCompleted: false }
-			]
-		},
-		{
-			id: 4,
-			title: 'Svelte for Beginners',
-			description: 'Learn the Svelte framework from scratch',
-			level: 'Beginner',
-			xpReward: 600,
-			progress: 75,
-			lessons: 8,
-			category: 'Frameworks',
-			image: '/images/svelte-logo.png',
-			content: 'This is the detailed content for Svelte for Beginners module.',
-			sections: [
-				{ id: 'getting-started', title: 'Getting Started with Svelte', isCompleted: true },
-				{ id: 'components', title: 'Svelte Components', isCompleted: true },
-				{ id: 'reactivity', title: 'Reactivity in Svelte', isCompleted: false }
-			]
-		}
-	];
+	const modules = moduleWithSections2;
 
 	const module = modules.find((m) => m.id === parseInt(moduleId));
 
@@ -180,7 +112,7 @@
 					<h1 class="mb-4 text-3xl font-bold">{module.title}</h1>
 					<p class="mb-6">{module.description}</p>
 
-					<div class="prose max-w-none">
+					<div class="max-w-none">
 						<p>{module.content}</p>
 						<h2 class="mt-6">What You'll Learn</h2>
 						<ul>

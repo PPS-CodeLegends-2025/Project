@@ -1,52 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { moduleList } from './hardcoded';
 
-	let modules = $state([
-		{
-			id: 1,
-			title: 'JavaScript Fundamentals',
-			description: 'Learn the core concepts of JavaScript programming',
-			level: 'Beginner',
-			xpReward: 500,
-			progress: 0,
-			lessons: 10,
-			category: 'JavaScript',
-			image: '/images/js-logo.png'
-		},
-		{
-			id: 2,
-			title: 'Advanced JavaScript',
-			description: 'Dive deeper into JavaScript with advanced topics',
-			level: 'Intermediate',
-			xpReward: 800,
-			progress: 25,
-			lessons: 12,
-			category: 'JavaScript',
-			image: '/images/js-logo.png'
-		},
-		{
-			id: 3,
-			title: 'TypeScript Basics',
-			description: 'Start your journey with TypeScript',
-			level: 'Beginner',
-			xpReward: 600,
-			progress: 0,
-			lessons: 8,
-			category: 'TypeScript',
-			image: '/images/ts-logo.png'
-		},
-		{
-			id: 4,
-			title: 'Svelte for Beginners',
-			description: 'Learn the Svelte framework from scratch',
-			level: 'Beginner',
-			xpReward: 600,
-			progress: 75,
-			lessons: 8,
-			category: 'Frameworks',
-			image: '/images/svelte-logo.png'
-		}
-	]);
+	let modules = $state(moduleList);
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('All');
@@ -66,11 +21,6 @@
 
 	let categories = $derived(['All', ...new Set(modules.map((m) => m.category))]);
 	const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
-
-	function goToModule(moduleId: number) {
-		console.log(`Navigating to module ${moduleId}`);
-		goto(`/module/${moduleId}`);
-	}
 </script>
 
 <div class="container mx-auto p-6">
@@ -86,13 +36,13 @@
 			/>
 		</div>
 		<div class="flex gap-4">
-			<select class="select" bind:value={selectedCategory}>
+			<select class="select w-32" bind:value={selectedCategory}>
 				{#each categories as category (category)}
 					<option value={category}>{category}</option>
 				{/each}
 			</select>
 
-			<select class="select" bind:value={selectedLevel}>
+			<select class="select w-32" bind:value={selectedLevel}>
 				{#each levels as level (level)}
 					<option value={level}>{level}</option>
 				{/each}
@@ -103,10 +53,9 @@
 	{#if filteredModules.length > 0}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 			{#each filteredModules as module (module.id)}
-				<button
-					type="button"
-					class="box w-full cursor-pointer text-left transition-shadow hover:shadow-lg"
-					onclick={() => goToModule(module.id)}
+				<a
+					class="box flex w-full cursor-pointer flex-col text-left transition-shadow hover:shadow-lg"
+					href="/module/{module.id}"
 				>
 					<div class="flex h-40 items-center justify-center rounded-t-lg bg-slate-100">
 						<img src={module.image} alt={module.title} class="h-20 object-contain" />
@@ -137,7 +86,7 @@
 							<div class="mt-4 text-xs">Not started</div>
 						{/if}
 					</div>
-				</button>
+				</a>
 			{/each}
 		</div>
 	{:else}

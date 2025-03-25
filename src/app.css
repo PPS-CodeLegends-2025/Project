@@ -17,7 +17,7 @@ body {
 
 @layer base {
 	.btn {
-		@apply cursor-pointer transition-colors duration-200;
+		@apply inline-block cursor-pointer transition-colors duration-200;
 		@apply font-medium disabled:cursor-not-allowed;
 	}
 
@@ -69,5 +69,9 @@ body {
 		background-repeat: no-repeat;
 		background-position: right 0.5rem center;
 		background-size: 1em 1em;
+	}
+
+	.badge {
+		@apply inline-block rounded-full px-2 py-1 text-xs font-semibold;
 	}
 }

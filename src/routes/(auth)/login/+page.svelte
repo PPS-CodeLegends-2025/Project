@@ -68,9 +68,9 @@
 			</div>
 
 			<div class="mb-4 flex justify-end">
-				<a href="/forgot-password" class="text-sm text-indigo-500 hover:text-indigo-600">
+				<!-- <a href="/forgot-password" class="text-sm text-indigo-500 hover:text-indigo-600">
 					Forgot password?
-				</a>
+				</a> -->
 			</div>
 
 			<button type="submit" class="btn primary w-full" disabled={loading}>

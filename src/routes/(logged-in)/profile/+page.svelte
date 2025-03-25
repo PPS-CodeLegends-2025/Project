@@ -21,6 +21,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{user.username} | CodeLegends</title>
+</svelte:head>
+
 <div class="mx-auto max-w-[900px] p-8">
 	<div class="mb-8 flex gap-8">
 		<div class="relative">
