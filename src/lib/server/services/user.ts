@@ -1,10 +1,9 @@
 import { hash, verify } from '@node-rs/argon2';
 import { db } from '../db';
 import * as table from '$lib/server/db/schema';
-import { eq, like } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 export const userService = {
-	
 	async register(username: string, password: string) {
 		const passwordHash = await hash(password, {
 			memoryCost: 19456,
@@ -23,12 +22,15 @@ export const userService = {
 			})
 			.$returningId();
 
-		const [newUser] = await db.select().from(table.user).where(eq(table.user.id, res.id));
+		const [newUser] = await db
+			.select({
+				id: table.user.id,
+				username: table.user.username
+			})
+			.from(table.user)
+			.where(eq(table.user.id, res.id));
 
-		return {
-			id: newUser.id,
-			username: newUser.username
-		};
+		return newUser;
 	},
 	async exists(username: string) {
 		const results = await db.select().from(table.user).where(eq(table.user.username, username));
@@ -50,7 +52,8 @@ export const userService = {
 
 		return {
 			id: user.id,
-			username: user.username
+			username: user.username,
+			registrationDate: user.registrationDate
 		};
 	}
 };

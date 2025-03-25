@@ -32,9 +32,9 @@ const Task = z.object({
 	exampleCode: z.string()
 });
 
-export type GeneratedTask = z.infer<typeof Task>;
+export type GeneratedTaskTemplate = z.infer<typeof Task>;
 
-export async function generateTask(prompt: string): Promise<GeneratedTask> {
+export async function generateTask(prompt: string): Promise<GeneratedTaskTemplate> {
 	const completion = await openaiClient.beta.chat.completions.parse({
 		model: 'gpt-4o-2024-08-06',
 		messages: [
