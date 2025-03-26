@@ -57,7 +57,7 @@
 
 <div class="grid h-full w-full grid-cols-2 gap-8">
 	<div class="flex flex-col gap-4">
-		<h1 class="text-2xl">{title}</h1>
+		<h1 class="text-2xl font-semibold">{title}</h1>
 		<div>{@render description()}</div>
 		<div class="flex-1"></div>
 		{#if successFragment && submissionResult?.success === true}

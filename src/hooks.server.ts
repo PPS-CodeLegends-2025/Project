@@ -1,6 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
 import auth from '$lib/server/services/auth';
 import { applyMigrations } from '$lib/server/db';
+import { groupedModules } from '$lib/server/routes';
+import { dev } from '$app/environment';
+
+await applyMigrations().then(() => {
+	console.log('Migrations applied');
+});
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
@@ -25,8 +31,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = handleAuth;
+if (dev) console.log('[DEV]: App modules:', groupedModules);
 
-applyMigrations().then(() => {
-	console.log('Migrations applied');
-});
+export const handle: Handle = handleAuth;

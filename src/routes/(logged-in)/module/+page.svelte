@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { moduleList } from './hardcoded';
+	import type { PageProps } from './$types';
 
-	let modules = $state(moduleList);
+	let { data }: PageProps = $props();
+
+	let modules = $state(data.modules);
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('All');
@@ -52,10 +54,10 @@
 
 	{#if filteredModules.length > 0}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{#each filteredModules as module (module.id)}
+			{#each filteredModules as module (module.url)}
 				<a
 					class="box flex w-full cursor-pointer flex-col text-left transition-shadow hover:shadow-lg"
-					href="/module/{module.id}"
+					href={module.url}
 				>
 					<div class="flex h-40 items-center justify-center rounded-t-lg bg-slate-100">
 						<img src={module.image} alt={module.title} class="h-20 object-contain" />
@@ -68,7 +70,7 @@
 						<p class="mb-4 text-sm text-gray-600">{module.description}</p>
 
 						<div class="flex justify-between text-sm text-gray-500">
-							<span>{module.lessons} lessons</span>
+							<!-- <span>{module.lessons} lessons</span> -->
 							<span>{module.xpReward} XP</span>
 						</div>
 

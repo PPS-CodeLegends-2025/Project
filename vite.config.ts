@@ -6,6 +6,12 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit(), tailwindcss()],
 
+	server: {
+		watch: {
+			ignored: ['**/module-map.json']
+		}
+	},
+
 	test: {
 		workspace: [
 			{

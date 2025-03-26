@@ -52,7 +52,7 @@
 		]
 	});
 
-	onMount(async () => {
+	onMount(() => {
 		createEditor(
 			'#editor-root',
 			{
@@ -76,6 +76,10 @@
 
 		window.onbeforeunload = function () {
 			if (leaveWarning) return true;
+		};
+
+		return () => {
+			window.onbeforeunload = null;
 		};
 	});
 </script>

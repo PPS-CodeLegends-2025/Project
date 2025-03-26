@@ -21,10 +21,20 @@ body {
 		@apply font-medium disabled:cursor-not-allowed;
 	}
 
+	.btn.disabled,
+	.btn:disabled {
+		@apply cursor-not-allowed;
+	}
+
 	.btn.primary {
 		@apply bg-indigo-600 text-white;
 		@apply rounded px-4 py-2;
 		@apply hover:bg-indigo-500 focus:outline-none;
+	}
+
+	.btn.primary.disabled,
+	.btn.primary:disabled {
+		@apply bg-gray-300 text-gray-500;
 	}
 
 	.btn.secondary {
