@@ -15,15 +15,15 @@ export function readModuleData(path: string) {
 	const script = extractScriptTagText(path);
 	if (!script) throw new Error(`No script tag found in ${path}`);
 
-	const moduleMatch = script.match(/const module = {([\s\S]+?)}/);
+	const moduleMatch = script.match(/const module\s*:?\s*(?:Module\s*)?\s*=\s*{([\s\S]+?)}/);
 	if (!moduleMatch) throw new Error(`No module found in ${path}`);
 
-	const imageMatch = moduleMatch[1].match(/image: '(.+?)'/);
-	const levelMatch = moduleMatch[1].match(/level: '(.+?)'/);
-	const xpRewardMatch = moduleMatch[1].match(/xpReward: (\d+)/);
-	const categoryMatch = moduleMatch[1].match(/category: '(.+?)'/);
-	const titleMatch = moduleMatch[1].match(/title: '(.+?)'/);
-	const descriptionMatch = moduleMatch[1].match(/description: '(.+?)'/);
+	const imageMatch = moduleMatch[1].match(/image:\s*'(.+?)'/);
+	const levelMatch = moduleMatch[1].match(/level:\s*'(.+?)'/);
+	const xpRewardMatch = moduleMatch[1].match(/xpReward:\s*(\d+)/);
+	const categoryMatch = moduleMatch[1].match(/category:\s*'(.+?)'/);
+	const titleMatch = moduleMatch[1].match(/title:\s*'(.+?)'/);
+	const descriptionMatch = moduleMatch[1].match(/description:\s*'(.+?)'/);
 
 	if (
 		!imageMatch ||
@@ -50,10 +50,12 @@ export function readModuleSectionData(path: string) {
 	const script = extractScriptTagText(path);
 	if (!script) throw new Error(`No script tag found in ${path}`);
 
-	const sectionDataMatch = script.match(/const sectionData: Section = {([\s\S]+?)}/);
+	const sectionDataMatch = script.match(
+		/const sectionData\s*:?\s*(?:Section\s*)?\s*=\s*{([\s\S]+?)}/
+	);
 	if (!sectionDataMatch) throw new Error(`No sectionData found in ${path}`);
 
-	const titleMatch = sectionDataMatch[1].match(/title: '(.+?)'/);
+	const titleMatch = sectionDataMatch[1].match(/title:\s*'(.+?)'/);
 
 	if (!titleMatch) throw new Error(`No id or title found in sectionData in ${path}`);
 

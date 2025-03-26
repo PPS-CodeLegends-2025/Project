@@ -1,20 +1,21 @@
 <script lang="ts">
+	import type { Module } from '$services/modules';
 	import ModuleTemplate from '$templates/ModuleTemplate.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
 	const progress = data.userProgress;
-	const sections = data.module.sections.map((section) => ({ ...section, isCompleted: false }));
+	const sections = data.module.sections.map((section) => ({ ...section, completed: false }));
 
-	const module = {
+	const module: Module = {
 		image: '/images/js-logo.png',
 		level: 'Beginner',
 		xpReward: 50,
 		category: 'JavaScript',
-		progress: progress.module,
 		title: 'JavaScript Functions',
 		description: 'Learn how to create and use functions in JavaScript.',
+		progress: progress.module,
 		lessons: sections.length,
 		sections,
 		content

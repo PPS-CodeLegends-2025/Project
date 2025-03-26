@@ -1,13 +1,14 @@
 <script lang="ts">
+	import type { Module } from '$services/modules';
 	import ModuleTemplate from '$templates/ModuleTemplate.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
 	const progress = data.userProgress;
-	const sections = data.module.sections.map((section) => ({ ...section, isCompleted: false }));
+	const sections = data.module.sections.map((section) => ({ ...section, completed: false }));
 
-	const module = {
+	const module: Module = {
 		image: '/images/courses/web.webp',
 		level: 'Beginner',
 		xpReward: 10,

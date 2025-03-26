@@ -1,20 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type { Module } from '$services/modules';
 
-	interface Props {
-		image: string;
-		level: string;
-		lessons: number;
-		xpReward: number;
-		category: string;
-		progress: number;
-		title: string;
-		description: string;
-		sections: { title: string; isCompleted: boolean; url: string }[];
-		content: Snippet;
-	}
-
-	const module: Props = $props();
+	const module: Module = $props();
 </script>
 
 <div class="container mx-auto p-6">
@@ -123,7 +110,7 @@
 											</span>
 											<h3 class="font-medium">{section.title}</h3>
 										</div>
-										{#if section.isCompleted}
+										{#if section.completed}
 											<span class="text-sm text-green-600">Completed</span>
 										{:else}
 											<span class="text-sm text-gray-500">Not completed</span>
@@ -131,13 +118,13 @@
 									</div>
 									<a
 										class={`btn primary w-24 px-3 text-center transition-colors ${
-											section.isCompleted
+											section.completed
 												? 'bg-green-100 text-green-800 hover:bg-green-200'
 												: 'bg-indigo-600 text-white hover:bg-indigo-700'
 										}`}
 										href={section.url}
 									>
-										{section.isCompleted ? 'Review' : 'Start'}
+										{section.completed ? 'Review' : 'Start'}
 									</a>
 								</div>
 							{/each}

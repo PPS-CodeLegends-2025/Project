@@ -1,4 +1,5 @@
 import m from '$modules';
+import type { Snippet } from 'svelte';
 
 export type ModuleMeta = {
 	image: string;
@@ -16,6 +17,13 @@ export type SectionMeta = {
 };
 
 export type Section = Omit<SectionMeta, 'url'>;
+
+export type Module = Omit<ModuleMeta, 'url'> & {
+	progress: number;
+	lessons: number;
+	sections: (SectionMeta & { completed: boolean })[];
+	content: Snippet;
+};
 
 const moduleMap = m as Record<string, { data: ModuleMeta; sections: SectionMeta[] }>;
 
