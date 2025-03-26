@@ -1,65 +1,65 @@
 {
-	"/module/introduction": {
-		"data": {
-			"image": "/images/courses/web.webp",
-			"level": "Beginner",
-			"xpReward": 10,
-			"category": "General",
-			"title": "Web Dev Introduction",
-			"description": "Introduction to web development.",
-			"url": "/module/introduction"
-		},
-		"sections": [
-			{
-				"title": "Introduction",
-				"url": "/module/introduction/01-intro"
-			},
-			{
-				"title": "Web History",
-				"url": "/module/introduction/02-history"
-			}
-		]
-	},
-	"/module/javascript-basics": {
-		"data": {
-			"image": "/images/js-logo.png",
-			"level": "Beginner",
-			"xpReward": 20,
-			"category": "JavaScript",
-			"title": "JavaScript Basics",
-			"description": "Learn the basics of JavaScript programming language.",
-			"url": "/module/javascript-basics"
-		},
-		"sections": [
-			{
-				"title": "Introduction",
-				"url": "/module/javascript-basics/01-intro"
-			},
-			{
-				"title": "History of JavaScript",
-				"url": "/module/javascript-basics/02-history"
-			},
-			{
-				"title": "Syntax",
-				"url": "/module/javascript-basics/03-syntax"
-			}
-		]
-	},
-	"/module/javascript-functions": {
-		"data": {
-			"image": "/images/js-logo.png",
-			"level": "Beginner",
-			"xpReward": 50,
-			"category": "JavaScript",
-			"title": "JavaScript Functions",
-			"description": "Learn how to create and use functions in JavaScript.",
-			"url": "/module/javascript-functions"
-		},
-		"sections": [
-			{
-				"title": "Introduction",
-				"url": "/module/javascript-functions/01-first-function"
-			}
-		]
-	}
+  "/module/introduction": {
+    "data": {
+      "image": "/images/courses/web.webp",
+      "level": "Beginner",
+      "xpReward": 10,
+      "category": "General",
+      "title": "Web Dev Introduction",
+      "description": "Introduction to web development.",
+      "url": "/module/introduction"
+    },
+    "sections": [
+      {
+        "title": "Introduction",
+        "url": "/module/introduction/01-intro"
+      },
+      {
+        "title": "Web History",
+        "url": "/module/introduction/02-history"
+      }
+    ]
+  },
+  "/module/javascript-basics": {
+    "data": {
+      "image": "/images/js-logo.png",
+      "level": "Beginner",
+      "xpReward": 20,
+      "category": "JavaScript",
+      "title": "JavaScript Basics",
+      "description": "Learn the basics of JavaScript programming language.",
+      "url": "/module/javascript-basics"
+    },
+    "sections": [
+      {
+        "title": "Introduction",
+        "url": "/module/javascript-basics/01-intro"
+      },
+      {
+        "title": "History of JavaScript",
+        "url": "/module/javascript-basics/02-history"
+      },
+      {
+        "title": "Syntax",
+        "url": "/module/javascript-basics/03-syntax"
+      }
+    ]
+  },
+  "/module/javascript-functions": {
+    "data": {
+      "image": "/images/js-logo.png",
+      "level": "Beginner",
+      "xpReward": 50,
+      "category": "JavaScript",
+      "title": "JavaScript Functions",
+      "description": "Learn how to create and use functions in JavaScript.",
+      "url": "/module/javascript-functions"
+    },
+    "sections": [
+      {
+        "title": "Introduction",
+        "url": "/module/javascript-functions/01-first-function"
+      }
+    ]
+  }
 }
