@@ -1,19 +1,28 @@
 <script lang="ts">
-	import type { PageProps } from './$types';
+	import type { PageData } from './$types';
+	import type { ModuleMeta } from '$lib/types/module';
 
-	let { data }: PageProps = $props();
+	interface ModuleWithProgress extends ModuleMeta {
+		progress: number;
+		lessonsCount: number;
+	}
 
-	let modules = $state(data.modules);
+	let { data } = $props<{ data: PageData }>();
+	console.log('mimimi', data);
+
+	const allModules = data.modules as ModuleWithProgress[];
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('All');
 	let selectedLevel = $state('All');
 
-	let filteredModules = $derived(
-		modules.filter((module) => {
+	const filteredModules = $derived(
+		allModules.filter((module) => {
 			const matchesSearch =
+				searchQuery === '' ||
 				module.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
 				module.description.toLowerCase().includes(searchQuery.toLowerCase());
+
 			const matchesCategory = selectedCategory === 'All' || module.category === selectedCategory;
 			const matchesLevel = selectedLevel === 'All' || module.level === selectedLevel;
 
@@ -21,8 +30,9 @@
 		})
 	);
 
-	let categories = $derived(['All', ...new Set(modules.map((m) => m.category))]);
-	const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+	const categories = $derived(['All', ...Array.from(new Set(allModules.map((m) => m.category)))]);
+
+	const levels = $derived(['All', 'Beginner', 'Intermediate', 'Advanced']);
 </script>
 
 <div class="container mx-auto p-6">
@@ -70,30 +80,39 @@
 						<p class="mb-4 text-sm text-gray-600">{module.description}</p>
 
 						<div class="flex justify-between text-sm text-gray-500">
-							<!-- <span>{module.lessons} lessons</span> -->
+							<span>{module.lessonsCount || 0} lessons</span>
 							<span>{module.xpReward} XP</span>
 						</div>
 
 						{#if module.progress > 0}
 							<div class="mt-4">
-								<div class="h-2.5 w-full rounded-full bg-gray-200">
+								<div class="flex justify-between text-sm">
+									<span>Progress</span>
+									<span>{Math.round(module.progress)}%</span>
+								</div>
+								<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200">
 									<div
-										class="h-2.5 rounded-full bg-indigo-500"
+										class="h-full rounded-full bg-indigo-600"
 										style="width: {module.progress}%"
 									></div>
 								</div>
-								<div class="mt-1 text-right text-xs">{module.progress}% complete</div>
 							</div>
-						{:else}
-							<div class="mt-4 text-xs">Not started</div>
 						{/if}
 					</div>
 				</a>
 			{/each}
 		</div>
 	{:else}
-		<div class="box py-12 text-center">
-			<p class="text-lg">No modules found for your search criteria.</p>
+		<div class="flex flex-col items-center justify-center py-12">
+			<p class="text-xl text-gray-500">No modules found matching your filters.</p>
+			<button
+				class="btn secondary mt-4"
+				onclick={() => {
+					searchQuery = '';
+					selectedCategory = 'All';
+					selectedLevel = 'All';
+				}}>Reset Filters</button
+			>
 		</div>
 	{/if}
 </div>

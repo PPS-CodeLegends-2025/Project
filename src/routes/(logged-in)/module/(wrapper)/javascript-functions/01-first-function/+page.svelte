@@ -1,41 +1,49 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Section } from '$services/modules';
+	import type { Section } from '$lib/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
-	import { codeRunner } from '$lib/client/codeRunner';
-	import JsTask from '$lib/components/code/JsTask.svelte';
+	import { page } from '$app/stores';
+	import { modules } from '$lib/services/modules';
 
-	const initialCode = 'function add(a, b) {\n\t// your code here\n}\n';
+	const sectionData: Section = {
+		title: 'Your First Function'
+	};
 
+	// Define test cases for the add function
 	const tests = [
-		{ input: [2, 3], output: 5 },
-		{ input: [-1, 5], output: 4 },
+		{ input: [1, 2], output: 3 },
+		{ input: [5, 7], output: 12 },
+		{ input: [-1, 1], output: 0 },
 		{ input: [0, 0], output: 0 },
-		{ input: [7, -7], output: 0 }
+		{ input: [10, -5], output: 5 }
 	];
 
 	const validateSolution = async (code: string) => {
 		try {
+			// Create a function from the user's code
+			const userFunction = new Function(`
+				${code}
+				return add;
+			`)();
+
 			for (const { input, output } of tests) {
-				const result = await codeRunner.runFunction(code, 'add', input);
+				const result = userFunction(...input);
+
 				if (result !== output) {
 					return {
 						success: false,
 						message: `Expected ${output}, but got ${result} when calling add(${input.join(', ')})`
 					};
 				}
+				taskCompleted = true;
+				return { success: true, message: 'All tests passed!' };
 			}
 		} catch (e) {
-			if (e instanceof Error) return { success: false, message: e.message };
-			else return { success: false, message: String(e) };
+			return {
+				success: false,
+				message: `Error executing your code: ${e.message}`
+			};
 		}
-
-		taskCompleted = true;
-		return { success: true, message: 'All tests passed!' };
-	};
-
-	const sectionData: Section = {
-		title: 'Introduction'
 	};
 
 	let taskCompleted = $state(false);
@@ -43,23 +51,29 @@
 	let { data }: { data: PageData } = $props();
 
 	const sectionIndex = data.section.index;
+	const userId = $page.data.user?.id || 'guest-user';
+	const moduleId = data.module.data.url;
 
 	const taskProps = $derived({
 		section: { ...sectionData, ...data.section.current },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: false, // TODO: data.userProgress.sections
-		completedNow: taskCompleted, // TODO: for enabling the complete button (just change to true to enable)
+		completed: data.section.current?.completed || false,
+		completedNow: taskCompleted,
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,
 		totalSections: data.module.sections.length,
-		onMarkAsCompleted: () => {
-			alert('Marked as completed');
+		onMarkAsCompleted: async () => {
+			try {
+				await modules.markSectionCompleted(userId, moduleId, sectionIndex);
+			} catch (error) {
+				console.error('Failed to mark as completed:', error);
+			}
 		}
 	});
 </script>
 
-{#snippet description()}
+<ModuleTask {...taskProps}>
 	<div class="space-y-3">
 		<p>
 			Write a function named <code class="code">add</code> that takes two numbers as parameters and returns
@@ -68,71 +82,26 @@
 
 		<h4 class="mt-4 font-semibold">Examples:</h4>
 		<pre class="code rounded p-2">
-add(2, 3)   // should return 5
-add(-1, 5)  // should return 4
-add(0, 0)   // should return 0
-add(7, -7)  // should return 0</pre>
+add(1, 2) => 3
+add(5, 7) => 12
+add(-1, 1) => 0
+		</pre>
 
-		<p class="mt-4">Your function should work with positive numbers, negative numbers, and zero.</p>
-	</div>
-{/snippet}
+		<div class="mt-4">
+			<label for="solution" class="mb-2 block font-medium">Your solution:</label>
+			<textarea
+				id="solution"
+				rows="10"
+				class="input w-full font-mono"
+				placeholder="// Write your function here"
+			></textarea>
 
-{#snippet success(message: string)}
-	<div class="box success">
-		{message}
-	</div>
-{/snippet}
-
-{#snippet error(message: string)}
-	<div class="box error">
-		Test failed: {message}
-	</div>
-{/snippet}
-
-<ModuleTask {...taskProps}>
-	<div class="space-y-6 px-4">
-		<div class="mb-6">
-			<h2 class="mb-4 text-2xl font-bold">JavaScript Functions: The Building Blocks</h2>
-
-			<p class="mb-3">
-				Functions are one of the fundamental building blocks in JavaScript. A function is a reusable
-				block of code designed to perform a specific task.
-			</p>
-
-			<p class="mb-3">
-				Think of functions as small machines: they take some input (parameters), process it, and
-				then produce an output (return value). This concept is central to programming and will be
-				used throughout your coding journey.
-			</p>
-
-			<p class="mb-5">
-				In this first exercise, we'll start with something simple - creating a function that adds
-				two numbers together. This will help you understand the basic structure of functions in
-				JavaScript.
-			</p>
-
-			<div class="bg-base-200 mb-5 rounded-lg p-4">
-				<h3 class="mb-2 font-semibold">Function Syntax:</h3>
-				<pre class="code p-2">{`function functionName(parameter1, parameter2) {
-	// code to execute
-	return result;
-}`}</pre>
-			</div>
-
-			<p>Let's apply this knowledge in the task below:</p>
-		</div>
-
-		<div class="my-12 border-t border-gray-200"></div>
-
-		<div class="h-full">
-			<JsTask
-				title="Addition Function"
-				descriptionFragment={description}
-				successFragment={success}
-				errorFragment={error}
-				onSubmit={validateSolution}
-				{initialCode}
-			/>
+			<button
+				class="btn primary mt-4"
+				onclick={() => validateSolution(document.getElementById('solution').value)}
+			>
+				Submit Solution
+			</button>
 		</div>
 	</div>
 </ModuleTask>

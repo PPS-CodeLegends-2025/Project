@@ -4,9 +4,13 @@ import { applyMigrations } from '$lib/server/db';
 import { groupedModules } from '$lib/server/routes';
 import { dev } from '$app/environment';
 
-await applyMigrations().then(() => {
-	console.log('Migrations applied');
-});
+try {
+	await applyMigrations().then(() => {
+		console.log('Database setup complete');
+	});
+} catch (error) {
+	console.error('Failed to apply migrations:', error);
+}
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);

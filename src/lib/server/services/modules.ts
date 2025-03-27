@@ -1,31 +1,10 @@
 import m from '$modules';
-import type { Snippet } from 'svelte';
+import type { ModuleMeta, SectionMeta, Module, ModuleMap } from '$lib/types/module';
+import { db } from '$lib/server/db';
+import { moduleProgress } from '$lib/server/db/schema/moduleProgress';
+import { and, eq } from 'drizzle-orm';
 
-export type ModuleMeta = {
-	image: string;
-	level: string;
-	xpReward: number;
-	category: string;
-	title: string;
-	description: string;
-	url: string;
-};
-
-export type SectionMeta = {
-	title: string;
-	url: string;
-};
-
-export type Section = Omit<SectionMeta, 'url'>;
-
-export type Module = Omit<ModuleMeta, 'url'> & {
-	progress: number;
-	lessons: number;
-	sections: (SectionMeta & { completed: boolean })[];
-	content: Snippet;
-};
-
-const moduleMap = m as Record<string, { data: ModuleMeta; sections: SectionMeta[] }>;
+const moduleMap = m as ModuleMap;
 
 export const modules = {
 	map() {
@@ -39,7 +18,99 @@ export const modules = {
 			title: moduleMap[x].data.title,
 			url: moduleMap[x].data.url
 		}));
+	},
+	getModule(path: string) {
+		return moduleMap[path];
+	},
+
+	async isSectionCompleted(
+		userId: string,
+		moduleId: string,
+		sectionIndex: number
+	): Promise<boolean> {
+		try {
+			const completed = await db
+				.select()
+				.from(moduleProgress)
+				.where(
+					and(
+						eq(moduleProgress.userId, userId),
+						eq(moduleProgress.moduleId, moduleId),
+						eq(moduleProgress.sectionIndex, sectionIndex)
+					)
+				);
+
+			return completed.length > 0;
+		} catch (error) {
+			console.error('Error checking section completion:', error);
+			return false;
+		}
+	},
+
+	async markSectionCompleted(
+		userId: string,
+		moduleId: string,
+		sectionIndex: number
+	): Promise<void> {
+		try {
+			const existing = await db
+				.select()
+				.from(moduleProgress)
+				.where(
+					and(
+						eq(moduleProgress.userId, userId),
+						eq(moduleProgress.moduleId, moduleId),
+						eq(moduleProgress.sectionIndex, sectionIndex)
+					)
+				);
+
+			if (existing.length === 0) {
+				await db.insert(moduleProgress).values({
+					userId,
+					moduleId,
+					sectionIndex,
+					completedAt: new Date()
+				});
+			}
+		} catch (error) {
+			console.error('Error marking section as completed:', error);
+			throw error;
+		}
+	},
+
+	async getModuleProgress(userId: string, moduleId: string): Promise<number> {
+		try {
+			const allCompletedSections = await db
+				.select()
+				.from(moduleProgress)
+				.where(and(eq(moduleProgress.userId, userId), eq(moduleProgress.moduleId, moduleId)));
+
+			const modulePath = moduleId.startsWith('/') ? moduleId : `/${moduleId}`;
+			const moduleData = this.getModule(modulePath);
+			const totalSections = moduleData?.sections?.length || 0;
+
+			return totalSections > 0
+				? Math.round((allCompletedSections.length / totalSections) * 100)
+				: 0;
+		} catch (error) {
+			console.error('Error getting module progress:', error);
+			return 0;
+		}
+	},
+
+	async getCompletedSections(userId: string, moduleId: string): Promise<number[]> {
+		try {
+			const completedSections = await db
+				.select({ sectionIndex: moduleProgress.sectionIndex })
+				.from(moduleProgress)
+				.where(and(eq(moduleProgress.userId, userId), eq(moduleProgress.moduleId, moduleId)));
+
+			return completedSections.map((section) => section.sectionIndex);
+		} catch (error) {
+			console.error('Error getting completed sections:', error);
+			return [];
+		}
 	}
 };
 
-export type ModuleMap = ReturnType<typeof modules.map>;
+export type { ModuleMeta, SectionMeta, Module, ModuleMap };

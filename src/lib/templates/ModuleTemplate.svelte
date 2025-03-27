@@ -1,7 +1,13 @@
 <script lang="ts">
-	import type { Module } from '$services/modules';
+	import type { Module } from '$lib/types/module';
 
 	const module: Module = $props();
+
+	const completedSections = module.sections.filter((section) => section.completed).length;
+	const totalSections = module.sections.length;
+	const calculatedProgress = totalSections > 0 ? (completedSections / totalSections) * 100 : 0;
+
+	const displayProgress = completedSections > 0 ? calculatedProgress : module.progress;
 </script>
 
 <div class="container mx-auto p-6">
@@ -66,16 +72,16 @@
 						<span>{module.category}</span>
 					</div>
 
-					{#if module.progress > 0}
+					{#if displayProgress > 0}
 						<div class="mt-2">
 							<div class="mb-1 flex justify-between">
 								<span>Progress:</span>
-								<span>{module.progress}%</span>
+								<span>{Math.round(displayProgress)}%</span>
 							</div>
 							<div class="h-2.5 w-full rounded-full bg-gray-200">
 								<div
 									class="h-2.5 rounded-full bg-indigo-600"
-									style="width: {module.progress}%"
+									style="width: {displayProgress}%"
 								></div>
 							</div>
 						</div>
@@ -84,7 +90,11 @@
 					{/if}
 				</div>
 
-				<a class="btn primary mt-6 w-full" href={module.sections[0].url}> Start Module </a>
+				{#if module.sections && module.sections.length > 0}
+					<a class="btn primary mt-6 w-full" href={module.sections[0].url}> Start Module </a>
+				{:else}
+					<button class="btn primary mt-6 w-full" disabled>No Sections Available</button>
+				{/if}
 			</div>
 
 			<div class="md:w-2/3">
@@ -94,7 +104,7 @@
 				<div class="max-w-none">
 					{@render module.content()}
 
-					<h2 class="mt-6">Module Sections</h2>
+					<h2 class="mt-6 text-2xl font-semibold">Module Sections</h2>
 					{#if module.sections && module.sections.length > 0}
 						<div class="mt-4 space-y-3">
 							{#each module.sections as section, index (section.url)}
@@ -112,19 +122,35 @@
 										</div>
 										{#if section.completed}
 											<span class="text-sm text-green-600">Completed</span>
+										{:else if index === 0 || module.sections[index - 1].completed}
+											<span class="text-sm text-blue-600">Available</span>
 										{:else}
-											<span class="text-sm text-gray-500">Not completed</span>
+											<span class="text-sm text-gray-500">Locked</span>
 										{/if}
 									</div>
 									<a
 										class={`btn primary w-24 px-3 text-center transition-colors ${
 											section.completed
 												? 'bg-green-100 text-green-800 hover:bg-green-200'
-												: 'bg-indigo-600 text-white hover:bg-indigo-700'
+												: index === 0 || module.sections[index - 1].completed
+													? 'bg-indigo-600 text-white hover:bg-indigo-700'
+													: 'cursor-not-allowed bg-gray-100 text-gray-400 opacity-60'
 										}`}
 										href={section.url}
+										role={index > 0 && !module.sections[index - 1].completed ? 'button' : undefined}
+										aria-disabled={index > 0 && !module.sections[index - 1].completed}
+										onclick={(e) => {
+											if (index > 0 && !module.sections[index - 1].completed) {
+												e.preventDefault();
+												e.stopPropagation();
+											}
+										}}
 									>
-										{section.completed ? 'Review' : 'Start'}
+										{section.completed
+											? 'Review'
+											: index === 0 || module.sections[index - 1].completed
+												? 'Start'
+												: '🔒 Locked'}
 									</a>
 								</div>
 							{/each}

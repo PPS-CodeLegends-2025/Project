@@ -1,6 +1,7 @@
 import { mysqlTable, int, varchar, datetime, json, timestamp } from 'drizzle-orm/mysql-core';
 import type { GeneratedTaskTemplate } from '../services/taskgen';
 import { createId } from '@paralleldrive/cuid2';
+import { moduleProgress as moduleProgressTable } from './schema/moduleProgress';
 
 export const user = mysqlTable('user', {
 	id: varchar('id', { length: 255 }).primaryKey().$defaultFn(createId),
@@ -69,6 +70,18 @@ export const generatedTask = mysqlTable('generated_task', {
 	exampleCode: varchar('example_code', { length: 1024 }).notNull()
 });
 
+export const userSectionProgress = mysqlTable('user_section_progress', {
+	id: varchar('id', { length: 32 }).primaryKey().$defaultFn(createId),
+	userId: varchar('user_id', { length: 255 })
+		.notNull()
+		.references(() => user.id),
+	moduleId: varchar('module_id', { length: 255 }).notNull(),
+	sectionId: varchar('section_id', { length: 255 }).notNull(),
+	completedAt: timestamp('completed_at').notNull().defaultNow()
+});
+
+export const moduleProgress = moduleProgressTable;
+
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
@@ -82,6 +95,10 @@ export type CourseModule = typeof courseModule.$inferSelect;
 export type UserCourseProgress = typeof userCourseProgress.$inferSelect;
 
 export type GeneratedTask = typeof generatedTask.$inferSelect;
+
+export type UserSectionProgress = typeof userSectionProgress.$inferSelect;
+
+export type ModuleProgress = typeof moduleProgress.$inferSelect;
 
 /*
 export const leaderboard = mysqlTable('leaderboard', {

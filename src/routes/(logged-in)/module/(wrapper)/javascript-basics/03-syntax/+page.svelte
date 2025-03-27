@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Section } from '$services/modules';
+	import type { Section } from '$lib/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
+	import { page } from '$app/stores';
+	import { modules } from '$lib/services/modules';
 
 	const sectionData: Section = {
 		title: 'Syntax'
@@ -10,18 +12,24 @@
 	let { data }: { data: PageData } = $props();
 
 	const sectionIndex = data.section.index;
+	const userId = $page.data.user?.id || 'guest-user';
+	const moduleId = data.module.data.url;
 
 	const taskProps = {
 		section: { ...sectionData, ...data.section.current },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: false, // TODO: data.userProgress.sections
+		completed: data.section?.current?.completed || false,
 		completedNow: false, // TODO: for enabling the complete button (just change to true to enable)
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,
 		totalSections: data.module.sections.length,
-		onMarkAsCompleted: () => {
-			alert('Marked as completed');
+		onMarkAsCompleted: async () => {
+			try {
+				await modules.markSectionCompleted(userId, moduleId, sectionIndex);
+			} catch (error) {
+				console.error('Failed to mark as completed:', error);
+			}
 		}
 	};
 </script>

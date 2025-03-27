@@ -40,7 +40,13 @@
 				<h3 class="mb-2 font-medium">JavaScript Basics</h3>
 				<p class="mb-4 text-sm text-gray-600">Learn the fundamentals of JavaScript programming</p>
 				<div class="flex-1"></div>
-				<a class="btn primary" href="/module/1"> Start Learning </a>
+				<a class="btn primary" href="/module/javascript-basics"> Start Learning </a>
+			</div>
+			<div class="module-box">
+				<h3 class="mb-2 font-medium">Web Dev Introduction</h3>
+				<p class="mb-4 text-sm text-gray-600">Learn about web development roles and concepts</p>
+				<div class="flex-1"></div>
+				<a class="btn primary" href="/module/introduction"> Start Learning </a>
 			</div>
 			<div class="module-box">
 				<h3 class="mb-2 font-medium">Svelte Essentials</h3>

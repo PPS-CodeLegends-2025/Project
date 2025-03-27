@@ -84,4 +84,20 @@ body {
 	.badge {
 		@apply inline-block rounded-full px-2 py-1 text-xs font-semibold;
 	}
+
+	.badge.beginner {
+		@apply bg-green-100 text-green-800;
+	}
+
+	.badge.intermediate {
+		@apply bg-amber-100 text-amber-800;
+	}
+
+	.badge.advanced {
+		@apply bg-red-100 text-red-800;
+	}
+
+	.badge.general {
+		@apply bg-indigo-100 text-indigo-800;
+	}
 }
