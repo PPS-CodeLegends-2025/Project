@@ -14,7 +14,7 @@ const introductionSections: SectionMeta[] = [
 	{ title: 'Git & GitHub', url: '/module/introduction/10-git-github' },
 	{ title: 'First Project Setup', url: '/module/introduction/11-first-project-setup' },
 	{ title: 'Final Quiz', url: '/module/introduction/12-final-quiz' },
-	{ title: 'First HTML Page', url: '/module/introduction/13-first-html-page' }
+	{ title: 'First HTML Page', url: '/module/introduction/13-first-html' }
 ];
 
 // Define the JavaScript basics module sections

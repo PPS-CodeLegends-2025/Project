@@ -9,7 +9,9 @@ interface MySQLError extends Error {
 }
 
 function isMySQLError(error: unknown): error is MySQLError {
-	return error instanceof Error && 'code' in error && typeof (error as MySQLError).code === 'string';
+	return (
+		error instanceof Error && 'code' in error && typeof (error as MySQLError).code === 'string'
+	);
 }
 
 if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
