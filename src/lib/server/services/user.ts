@@ -11,13 +11,13 @@ const hashOptions = {
 } as const;
 
 export const userService = {
-	async register(username: string, password: string) {
+	async register(username: string, password: string, fullName?: string) {
 		const passwordHash = await hash(password, hashOptions);
-
 		const [res] = await db
 			.insert(table.user)
 			.values({
 				username,
+				fullName,
 				passwordHash,
 				level: 0,
 				xp: 0
