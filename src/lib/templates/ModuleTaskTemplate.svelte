@@ -12,7 +12,7 @@
 		currentSectionIndex: number;
 		totalSections: number;
 		completedNow?: boolean;
-		onMarkAsCompleted: () => void;
+		onMarkAsCompleted: () => Promise<void> | void;
 		children: Snippet;
 	}
 
@@ -40,9 +40,7 @@
 			await onMarkAsCompleted();
 			justCompleted = true;
 
-			if (nextSection) {
-				goto(nextSection.url, { invalidateAll: true });
-			}
+			if (nextSection) goto(nextSection.url, { replaceState: true, invalidateAll: true });
 		} catch (error) {
 			console.error('Failed to mark section as completed:', error);
 			alert('Failed to mark section as completed. Please try again.');
@@ -139,25 +137,6 @@
 								<polyline points="12 5 19 12 12 19"></polyline>
 							</svg>
 						</a>
-					{:else if currentSectionIndex === 0 && !completedNow}
-						<a class="btn primary flex flex-row items-center" href={nextSection.url}>
-							Next: {nextSection.title}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="ml-2"
-							>
-								<line x1="5" y1="12" x2="19" y2="12"></line>
-								<polyline points="12 5 19 12 12 19"></polyline>
-							</svg>
-						</a>
 					{:else if completedNow}
 						<button class="btn primary" onclick={markAsCompleted}> Complete & Continue </button>
 					{:else}
@@ -184,8 +163,10 @@
 							<span class="ml-2">🔒</span>
 						</button>
 					{/if}
-				{:else if !isCompleted && completedNow}
-					<button class="btn primary" onclick={markAsCompleted}> Complete Module </button>
+				{:else if !isCompleted}
+					<button class="btn primary" onclick={markAsCompleted} disabled={!completedNow}>
+						Complete Module
+					</button>
 				{:else if isCompleted}
 					<button class="btn primary" onclick={goToModule}> Back to Module Overview </button>
 				{/if}

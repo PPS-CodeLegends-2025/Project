@@ -68,7 +68,40 @@ async function runFunction<T = unknown>(code: string, functionName: string, args
 	}
 }
 
+async function runFuntionWithTests(
+	code: string,
+	functionName: string,
+	tests: { input: unknown[]; output: unknown }[]
+) {
+	try {
+		for (const { input, output } of tests) {
+			const result = await codeRunner.runFunction(code, functionName, input);
+
+			if (result !== output) {
+				return {
+					success: false,
+					message: `Expected ${output}, but got ${result} when calling add(${input.join(', ')})`
+				};
+			}
+		}
+
+		return { success: true, message: 'All tests passed!' };
+	} catch (e) {
+		if (e instanceof Error)
+			return {
+				success: false,
+				message: `Error executing your code: ${e.message}`
+			};
+
+		return {
+			success: false,
+			message: 'An error occurred while running your code. Please try again.'
+		};
+	}
+}
+
 export const codeRunner = {
 	runCode: evalPlus,
-	runFunction
+	runFunction,
+	runFuntionWithTests
 };

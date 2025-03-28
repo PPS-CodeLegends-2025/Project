@@ -3,7 +3,7 @@
 	import type { Section } from '$lib/types/module';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
 	import { page } from '$app/stores';
-	import { modules } from '$lib/services/modules';
+	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
 		title: 'Essential Tools & Environment Setup'

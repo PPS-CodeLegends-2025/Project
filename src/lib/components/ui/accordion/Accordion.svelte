@@ -43,7 +43,9 @@
 	<slot />
 </div>
 
-<style>
+<style lang="postcss">
+	@reference 'tailwindcss';
+
 	.accordion-root {
 		@apply w-full;
 	}

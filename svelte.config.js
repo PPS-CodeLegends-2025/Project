@@ -10,7 +10,9 @@ const config = {
 			$modules: './module-map.json',
 			$templates: './src/lib/templates',
 			$components: './src/lib/components',
-			$services: './src/lib/server/services'
+			$services: './src/lib/server/services',
+			$client: './src/lib/client',
+			$server: './src/lib/server'
 		}
 	}
 };

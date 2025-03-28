@@ -6,10 +6,9 @@
 	<ul class="flex space-x-6">
 		<li><a href="/">Dashboard</a></li>
 		<li><a href="/playground">Playground</a></li>
-		<li><a href="/demo">Demo Task</a></li>
 		<li><a href="/module">Modules</a></li>
-		<li><a href="/profile">Profile</a></li>
 		<li><a href="/challenges">Challenges</a></li>
+		<li><a href="/profile">Profile</a></li>
 		<li><a href="/logout" data-sveltekit-preload-data="off">Logout</a></li>
 	</ul>
 </nav>

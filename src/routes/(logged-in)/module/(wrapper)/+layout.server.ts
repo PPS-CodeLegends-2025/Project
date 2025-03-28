@@ -1,6 +1,4 @@
-import { modules } from '$lib/services/modules';
 import { modules as serverModules } from '$lib/server/services/modules';
-import type { SectionMeta } from '$lib/types/module';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
@@ -9,75 +7,64 @@ function extractModulePath(url: string) {
 	return `/${parts.slice(1, 3).join('/')}`;
 }
 
-export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
-	const data = await parent();
-	const path = extractModulePath(url.pathname);
+function extractSectionPath(url: string) {
+	const parts = url.split('/');
+	return `/${parts.slice(1, 4).join('/')}`;
+}
 
-	const modulesMap = modules.map();
-	const moduleMeta = modulesMap[path as keyof typeof modulesMap];
+export const load: LayoutServerLoad = async ({ url, parent }) => {
+	const data = await parent();
+	const modulePath = extractModulePath(url.pathname);
+
+	const modulesMap = serverModules.map();
+	const moduleMeta = modulesMap[modulePath as keyof typeof modulesMap];
 
 	if (!moduleMeta) throw redirect(302, '/module');
 
-	const moduleId = url.pathname.split('/')[2];
-	// const currentSection = url.pathname.split('/')[3];
+	const sectionPath = extractSectionPath(url.pathname);
 
-	/*
-	if (!moduleId || !currentSection) {
-		return {
-			...data,
-			module: moduleMeta,
-			section: { index: -1, current: null },
-			userProgress: { module: 0, sections: [] }
-		};
-	}
-	*/
+	const currentSectionIndex = moduleMeta.sections.findIndex(
+		(section) => section.url === sectionPath
+	);
 
-	const currentSectionIndex = moduleMeta.sections.findIndex((x) => {
-		// Get the correct URL path from module sections
-		const sectionPath = new URL(x.url, 'http://localhost').pathname;
-		return sectionPath === url.pathname;
-	});
+	const currentSectionMeta = moduleMeta.sections[currentSectionIndex];
 
-	const currentSectionMeta: SectionMeta | undefined = moduleMeta.sections[currentSectionIndex];
+	if (sectionPath !== modulePath && currentSectionIndex === -1) throw redirect(302, modulePath);
 
-	const userId = locals.user?.id || 'guest-user';
+	const userId = data.user.id;
 
-	// Get user progress for this module
 	let moduleProgress = 0;
 	let completedSectionIndices: number[] = [];
 
 	try {
-		moduleProgress = await serverModules.getModuleProgress(userId, path);
-		completedSectionIndices = await serverModules.getCompletedSections(userId, path);
+		moduleProgress = await serverModules.getModuleProgress(userId, modulePath);
+		completedSectionIndices = await serverModules.getCompletedSections(userId, modulePath);
 	} catch (error) {
 		console.error('Error fetching module progress:', error);
 	}
 
-	// Create sections with completion status
 	const sectionsWithStatus = moduleMeta.sections.map((section, index) => ({
 		...section,
 		completed: completedSectionIndices.includes(index)
 	}));
 
-	if (currentSectionIndex > 0 && !completedSectionIndices.includes(currentSectionIndex - 1)) {
-		throw redirect(302, `/module/${moduleId}`);
-	}
+	if (currentSectionIndex > 0 && !completedSectionIndices.includes(currentSectionIndex - 1))
+		throw redirect(302, modulePath);
 
-	const ret = {
+	return {
 		...data,
 		module: {
 			...moduleMeta,
 			sections: sectionsWithStatus
 		},
 		section: {
-			current: currentSectionMeta || null,
-			index: currentSectionIndex !== -1 ? currentSectionIndex : 0
+			index: currentSectionIndex,
+			meta: currentSectionMeta,
+			completed: sectionsWithStatus[currentSectionIndex]?.completed ?? false
 		},
 		userProgress: {
 			module: moduleProgress,
-			sections: sectionsWithStatus.map((section) => (section.completed ? 100 : 0))
+			sections: sectionsWithStatus
 		}
 	};
-
-	return ret;
 };

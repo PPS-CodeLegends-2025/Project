@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Section } from '$lib/services/modules';
+	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
 	import { Accordion, AccordionItem } from '$lib/components/ui/accordion';
 	import JsCodeEditor from '$lib/components/code/JsCodeEditor.svelte';
 	import { page } from '$app/stores';
-	import { modules } from '$lib/services/modules';
+	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
 		title: 'Your First HTML Page'

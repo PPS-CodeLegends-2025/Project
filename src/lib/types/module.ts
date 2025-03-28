@@ -17,7 +17,7 @@ export type SectionMeta = {
 
 export type Section = Omit<SectionMeta, 'url'>;
 
-export type Module = ModuleMeta & {
+export type Module = Omit<ModuleMeta, 'url'> & {
 	progress: number;
 	lessons: number;
 	sections: (SectionMeta & { completed: boolean })[];

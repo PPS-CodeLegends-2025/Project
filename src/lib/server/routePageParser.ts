@@ -1,19 +1,8 @@
 import { readFileSync } from 'fs';
 
 export function extractScriptTagText(path: string) {
-	let filePath = path;
-	if (!filePath.includes('(wrapper)')) {
-		const parts = filePath.split('/');
-		if (parts.length >= 3) {
-			const modulePart = parts.findIndex((p) => p === 'module');
-			if (modulePart >= 0) {
-				parts.splice(modulePart + 1, 0, '(wrapper)');
-				filePath = parts.join('/');
-			}
-		}
-	}
+	const page = `src/routes/(logged-in)/${path.replace('/module', '/module/(wrapper)')}/+page.svelte`;
 
-	const page = `src/routes/(logged-in)${filePath}/+page.svelte`;
 	try {
 		const content = readFileSync(page, 'utf-8');
 		const script = content.match(/<script lang="ts">([\s\S]+?)<\/script>/);

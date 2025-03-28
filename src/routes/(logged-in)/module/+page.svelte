@@ -1,16 +1,9 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { ModuleMeta } from '$lib/types/module';
+	import type { PageProps } from './$types';
 
-	interface ModuleWithProgress extends ModuleMeta {
-		progress: number;
-		lessonsCount: number;
-	}
+	let { data }: PageProps = $props();
 
-	let { data } = $props<{ data: PageData }>();
-	console.log('mimimi', data);
-
-	const allModules = data.modules as ModuleWithProgress[];
+	const allModules = data.modules;
 
 	let searchQuery = $state('');
 	let selectedCategory = $state('All');

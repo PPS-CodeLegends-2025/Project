@@ -55,7 +55,7 @@
 	}
 </script>
 
-<div class="grid h-full w-full grid-cols-2 gap-8">
+<div class="grid h-full min-h-96 w-full grid-cols-2 gap-8">
 	<div class="flex flex-col gap-4">
 		<h1 class="text-2xl font-semibold">{title}</h1>
 		<div>{@render description()}</div>

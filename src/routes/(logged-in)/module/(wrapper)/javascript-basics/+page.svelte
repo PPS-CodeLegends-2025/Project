@@ -1,23 +1,13 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-
-	import type { Module } from '$lib/services/modules';
+	import type { PageProps } from './$types';
+	import type { Module } from '$lib/types/module';
 	import ModuleTemplate from '$templates/ModuleTemplate.svelte';
-	import { modules } from '$lib/services/modules';
 
-	let { data }: PageData = $props();
-	console.log('data2', data);
+	let { data }: PageProps = $props();
 
-	const progress = data?.userProgress || { module: 0 };
-	const moduleData = modules.map()['/module/javascript-basics'];
-	// mimimi
-	let sections = [];
-	for (let i = 0; i < moduleData?.sections.length; i++) {
-		sections.push({
-			...moduleData?.sections[i],
-			completed: data?.userProgress?.sections[i] == 100 || false
-		});
-	}
+	const progress = data.userProgress;
+	const sections = data.module.sections;
+
 	const module: Module = {
 		image: '/images/js-logo.png',
 		level: 'Beginner',

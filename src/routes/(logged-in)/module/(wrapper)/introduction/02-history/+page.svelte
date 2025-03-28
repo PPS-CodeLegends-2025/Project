@@ -1,9 +1,9 @@
 <script lang="ts">
 	//import type { PageData } from './$types';
-	import type { PageData } from '../../../+page';
-	import type { Section } from '$lib/services/modules';
+	import type { PageData } from '../../../-page';
+	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
-	import { modules } from '$lib/services/modules';
+	import { modules } from '$lib/client/services/modules';
 	import { page } from '$app/stores';
 
 	const sectionData: Section = {

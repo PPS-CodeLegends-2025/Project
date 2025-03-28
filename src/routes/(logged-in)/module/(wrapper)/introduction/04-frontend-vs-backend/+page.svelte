@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Section } from '$lib/services/modules';
+	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
 	import { page } from '$app/stores';
-	import { modules } from '$lib/services/modules';
+	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
 		title: 'Frontend vs Backend Development'

@@ -1,9 +1,8 @@
-import { modules } from '$lib/services/modules';
-import { modules as serverModules } from '$lib/server/services/modules';
+import { modules as serverModules } from '$services/modules';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
-	const moduleList = modules.list();
+	const moduleList = serverModules.list();
 	const userId = locals.user?.id || 'guest-user';
 
 	const modulesWithData = await Promise.all(

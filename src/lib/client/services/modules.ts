@@ -1,4 +1,5 @@
 import type { ModuleMeta, SectionMeta, Section, Module, ModuleMap } from '$lib/types/module';
+import { apiClient } from '$client/fetch';
 
 // introduction module sections
 const introductionSections: SectionMeta[] = [
@@ -97,21 +98,13 @@ export const modules = {
 		try {
 			const normalizedModuleId = moduleId.startsWith('/') ? moduleId : `/${moduleId}`;
 
-			const response = await fetch('/api/progress', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					userId,
-					moduleId: normalizedModuleId,
-					sectionIndex
-				})
+			const response = await apiClient.post('/v1/progress', {
+				userId,
+				moduleId: normalizedModuleId,
+				sectionIndex
 			});
 
-			if (!response.ok) {
-				throw new Error('Failed to mark section as completed');
-			}
+			if (!response.ok) throw new Error('Failed to mark section as completed');
 
 			return true;
 		} catch (error) {

@@ -129,7 +129,7 @@
 										{/if}
 									</div>
 									<a
-										class={`btn primary w-24 px-3 text-center transition-colors ${
+										class={`btn primary w-28 px-3 text-center transition-colors ${
 											section.completed
 												? 'bg-green-100 text-green-800 hover:bg-green-200'
 												: index === 0 || module.sections[index - 1].completed

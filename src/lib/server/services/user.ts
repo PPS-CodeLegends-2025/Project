@@ -54,35 +54,6 @@ export const userService = {
 		};
 	},
 
-	async markSectionCompleted(userId: string, moduleId: string, sectionId: string) {
-		try {
-			const existing = await db
-				.select()
-				.from(table.moduleProgress)
-				.where(
-					and(
-						eq(table.moduleProgress.userId, userId),
-						eq(table.moduleProgress.moduleId, moduleId),
-						eq(table.moduleProgress.sectionIndex, parseInt(sectionId, 10))
-					)
-				);
-
-			if (existing.length === 0) {
-				await db.insert(table.moduleProgress).values({
-					userId,
-					moduleId,
-					sectionIndex: parseInt(sectionId, 10),
-					completedAt: new Date()
-				});
-			}
-
-			return true;
-		} catch (error) {
-			console.error('Error marking section as completed:', error);
-			return false;
-		}
-	},
-
 	async getSectionProgress(userId: string, moduleId: string) {
 		try {
 			const completedSections = await db
