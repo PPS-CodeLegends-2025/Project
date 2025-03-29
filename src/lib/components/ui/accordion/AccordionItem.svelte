@@ -80,6 +80,9 @@
 
 	.accordion-content {
 		padding: 1rem;
+		width: 100%;
+		box-sizing: border-box;
+		overflow-x: hidden;
 	}
 
 	.chevron {
@@ -87,6 +90,7 @@
 		width: 1.25rem;
 		transition-property: transform;
 		transition-duration: 200ms;
+		flex-shrink: 0;
 	}
 
 	.rotate {

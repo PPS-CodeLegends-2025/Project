@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import type { ModuleMeta, SectionMeta } from '$lib/types/module';
 	import type { Snippet } from 'svelte';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		section: SectionMeta;
@@ -30,6 +31,10 @@
 	}: Props = $props();
 
 	let justCompleted = $state(false);
+
+	onMount(() => {
+		document.getElementById('section-content')?.scrollIntoView({ behavior: 'smooth' });
+	});
 
 	function goToModule() {
 		goto(module.url, { replaceState: true, invalidateAll: true });
@@ -88,7 +93,7 @@
 			{/if}
 		</div>
 
-		<div class="mb-8 flex flex-col gap-4">
+		<div id="section-content" class="mb-8 flex flex-col gap-4">
 			{@render children()}
 		</div>
 

@@ -1,17 +1,18 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
-	import { page } from '$app/stores';
 	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
 		title: 'Final Quiz'
 	};
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
 	const sectionIndex = data.section.index;
+	const userId = data.user.id;
+	const moduleId = data.module.data.url;
 	let quizCompleted = $state(false);
 	let selectedAnswers = $state<Record<number, number>>({});
 	let showResults = $state(false);
@@ -121,14 +122,11 @@
 		score = 0;
 	}
 
-	const userId = $page.data.user?.id || 'guest-user';
-	const moduleId = data.module.data.url;
-
 	const taskProps = $derived({
-		section: { ...sectionData, ...data.section.current },
+		section: { ...sectionData, ...data.section.meta },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: data.section.current?.completed || false,
+		completed: data.section.completed,
 		completedNow: quizCompleted,
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,

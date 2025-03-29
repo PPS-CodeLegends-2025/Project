@@ -8,6 +8,22 @@
 	const calculatedProgress = totalSections > 0 ? (completedSections / totalSections) * 100 : 0;
 
 	const displayProgress = completedSections > 0 ? calculatedProgress : module.progress;
+
+	const firstUncompletedSection = $derived(module.sections.find((section) => !section.completed));
+
+	const buttonText = $derived(
+		displayProgress >= 100
+			? 'Review Course'
+			: displayProgress > 0
+				? 'Continue Course'
+				: 'Start Course'
+	);
+
+	const buttonDestination = $derived(
+		displayProgress > 0 && displayProgress < 100 && firstUncompletedSection
+			? firstUncompletedSection.url
+			: module.sections[0]?.url
+	);
 </script>
 
 <div class="container mx-auto p-6">
@@ -91,7 +107,9 @@
 				</div>
 
 				{#if module.sections && module.sections.length > 0}
-					<a class="btn primary mt-6 w-full" href={module.sections[0].url}> Start Module </a>
+					<a class="btn primary mt-6 w-full" href={buttonDestination}>
+						{buttonText}
+					</a>
 				{:else}
 					<button class="btn primary mt-6 w-full" disabled>No Sections Available</button>
 				{/if}

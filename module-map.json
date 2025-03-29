@@ -1,4 +1,45 @@
 {
+  "/module/html-basics": {
+    "data": {
+      "image": "/images/html-basics.png",
+      "level": "Beginner",
+      "xpReward": 15,
+      "category": "HTML",
+      "title": "HTML Basics",
+      "description": "Learn the fundamentals of HTML for creating structured web content.",
+      "url": "/module/html-basics"
+    },
+    "sections": [
+      {
+        "title": "What is HTML?",
+        "url": "/module/html-basics/01-intro"
+      },
+      {
+        "title": "HTML Role in Web Development",
+        "url": "/module/html-basics/02-html-role"
+      },
+      {
+        "title": "Anatomy of an HTML Document",
+        "url": "/module/html-basics/03-document-structure"
+      },
+      {
+        "title": "Create Your Personal Introduction Page",
+        "url": "/module/html-basics/04-personal-webpage"
+      },
+      {
+        "title": "HTML Structure & Tags Quiz",
+        "url": "/module/html-basics/05-html-quiz"
+      },
+      {
+        "title": "Essential HTML Elements",
+        "url": "/module/html-basics/06-common-elements"
+      },
+      {
+        "title": "Recipe Webpage Project",
+        "url": "/module/html-basics/07-recipe-project"
+      }
+    ]
+  },
   "/module/introduction": {
     "data": {
       "image": "/images/courses/web.webp",

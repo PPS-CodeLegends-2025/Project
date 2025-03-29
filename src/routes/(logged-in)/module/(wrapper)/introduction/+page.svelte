@@ -18,8 +18,7 @@
 		description: 'Introduction to web development fundamentals, tools, and best practices.',
 		lessons: sections.length,
 		sections,
-		content,
-		url: '/module/introduction'
+		content
 	};
 </script>
 

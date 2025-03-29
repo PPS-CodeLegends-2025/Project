@@ -1,42 +1,26 @@
 <script lang="ts">
-	//import type { PageData } from './$types';
-	import type { PageData } from '../../../-page';
+	import type { PageProps } from './$types';
 	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
 	import { modules } from '$lib/client/services/modules';
-	import { page } from '$app/stores';
 
-	const sectionData: Section = {
-		title: 'Web History'
-	};
+	const sectionData: Section = { title: 'Web History' };
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
-	const sectionIndex = data.section?.index ?? 0;
-	const userId = $page.data.user?.id || 'guest-user';
-	const moduleId = data.module?.data?.url || '/module/introduction';
+	const sectionIndex = data.section.index;
+	const userId = data.user.id;
+	const moduleId = data.module.data.url;
 
 	const taskProps = {
-		section: {
-			...sectionData,
-			...(data.section?.current || {}),
-			url: '/module/introduction/02-history'
-		},
-		nextSection: data.module?.sections[sectionIndex + 1],
-		prevSection: data.module?.sections[sectionIndex - 1],
-		completed: data.section?.current?.completed || false,
+		section: { ...sectionData, ...data.section.meta },
+		nextSection: data.module.sections[sectionIndex + 1],
+		prevSection: data.module.sections[sectionIndex - 1],
+		completed: data.section.completed,
 		completedNow: true,
-		module: data.module?.data || {
-			title: 'Web Dev Introduction',
-			url: '/module/introduction',
-			level: 'Beginner',
-			xpReward: 10,
-			category: 'General',
-			image: '/images/courses/web.webp',
-			description: 'Introduction to web development fundamentals, tools, and best practices.'
-		},
+		module: data.module.data,
 		currentSectionIndex: sectionIndex,
-		totalSections: data.module?.sections?.length || 1,
+		totalSections: data.module.sections.length,
 		onMarkAsCompleted: async () => {
 			try {
 				await modules.markSectionCompleted(userId, moduleId, sectionIndex);

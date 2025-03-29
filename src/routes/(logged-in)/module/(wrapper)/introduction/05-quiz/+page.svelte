@@ -1,21 +1,17 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
-	import { page } from '$app/stores';
 	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
 		title: 'Mid-Module Quiz'
 	};
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
 	const sectionIndex = data.section.index;
-	let quizCompleted = $state(false);
-	let selectedAnswers = $state<Record<number, number>>({});
-	let showResults = $state(false);
-	const userId = $page.data.user?.id || 'guest-user';
+	const userId = data.user.id;
 	const moduleId = data.module.data.url;
 
 	const questions = [
@@ -56,37 +52,37 @@
 		}
 	];
 
+	let selectedAnswers = $state<Record<number, number>>({});
+	let showResults = $state(false);
+	let quizCompleted = $state(false);
+	let score = $state(0);
+
 	function selectAnswer(questionIndex: number, answerIndex: number) {
 		selectedAnswers[questionIndex] = answerIndex;
 	}
 
 	function checkAnswers() {
 		showResults = true;
-		const correctAnswers = questions.reduce((acc, q, i) => {
+		score = questions.reduce((acc, q, i) => {
 			return acc + (selectedAnswers[i] === q.correctAnswer ? 1 : 0);
 		}, 0);
 
-		const totalQuestions = questions.length;
-		const scorePercentage = (correctAnswers / totalQuestions) * 100;
-
-		// Require at least 75% correct answers to pass
-		if (scorePercentage >= 75) {
-			quizCompleted = true;
-		} else {
-			quizCompleted = false;
-		}
+		const scorePercentage = (score / questions.length) * 100;
+		quizCompleted = scorePercentage >= 75;
 	}
 
 	function resetQuiz() {
 		selectedAnswers = {};
 		showResults = false;
+		score = 0;
+		quizCompleted = false;
 	}
 
-	const taskProps = $derived({
-		section: { ...sectionData, ...data.section.current },
+	const taskProps = {
+		section: { ...sectionData, ...data.section.meta },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: data.section.current?.completed || false,
+		completed: data.section.completed,
 		completedNow: quizCompleted,
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,
@@ -98,7 +94,7 @@
 				console.error('Failed to mark as completed:', error);
 			}
 		}
-	});
+	};
 </script>
 
 <ModuleTask {...taskProps}>

@@ -10,7 +10,6 @@
 		Array.isArray(value) ? value : value ? [value] : []
 	);
 
-	// Update open items when value prop changes
 	$: if (value !== undefined) {
 		if (Array.isArray(value)) {
 			openItems.set(value);
@@ -21,17 +20,14 @@
 		}
 	}
 
-	// Set up context for accordion items
 	setContext('accordion', {
 		open: openItems,
 		toggle: (itemValue: string) => {
 			openItems.update((items) => {
 				const index = items.indexOf(itemValue);
 				if (index !== -1) {
-					// Item is open, close it
 					return multiple ? items.filter((i) => i !== itemValue) : [];
 				} else {
-					// Item is closed, open it
 					return multiple ? [...items, itemValue] : [itemValue];
 				}
 			});

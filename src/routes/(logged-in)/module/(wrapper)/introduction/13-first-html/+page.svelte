@@ -1,19 +1,22 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import type { Section } from '$lib/client/services/modules';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
 	import { Accordion, AccordionItem } from '$lib/components/ui/accordion';
 	import JsCodeEditor from '$lib/components/code/JsCodeEditor.svelte';
-	import { page } from '$app/stores';
 	import { modules } from '$lib/client/services/modules';
+	import { validateHtml, createCustomCheck } from '$lib/utils/htmlValidator';
+	import type { ValidationError } from '$lib/utils/htmlValidator';
+	import HtmlPreview from '$lib/components/code/HtmlPreview.svelte';
 
 	const sectionData: Section = {
 		title: 'Your First HTML Page'
 	};
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
+
 	const sectionIndex = data.section.index;
-	const userId = $page.data.user?.id || 'guest-user';
+	const userId = data.user.id;
 	const moduleId = data.module.data.url;
 
 	let htmlCode = $state(`<!DOCTYPE html>
@@ -25,96 +28,81 @@
 	let taskCompleted = $state(false);
 	let submissionResult = $state<{ success: boolean; message: string } | null>(null);
 
-	const validateHtml = (code: string) => {
+	let validationErrors = $state<ValidationError[]>([]);
+
+	const validateHtmlPage = (code: string) => {
 		console.log('Validating HTML:', code);
 
-		const hasHtmlTag = /<html[\s\S]*?>[\s\S]*?<\/html>/i.test(code);
-		const hasHeadTag = /<head[\s\S]*?>[\s\S]*?<\/head>/i.test(code);
-		const hasBodyTag = /<body[\s\S]*?>[\s\S]*?<\/body>/i.test(code);
-		const hasTitle = /<title[\s\S]*?>[\s\S]*?<\/title>/i.test(code);
-		const hasHeading = /<h[1-6][\s\S]*?>[\s\S]*?<\/h[1-6]>/i.test(code);
-		const hasParagraph = /<p[\s\S]*?>[\s\S]*?<\/p>/i.test(code);
+		const customChecks = [
+			createCustomCheck(
+				'htmlTag',
+				'Your page needs an <html> element to contain everything.',
+				/<html[\s\S]*?>[\s\S]*?<\/html>/i
+			),
+			createCustomCheck(
+				'headTag',
+				"Don't forget to add a <head> section for your page metadata.",
+				/<head[\s\S]*?>[\s\S]*?<\/head>/i
+			),
+			createCustomCheck(
+				'title',
+				'Every webpage needs a title! Add a <title> tag in the <head> section.',
+				/<title[\s\S]*?>[\s\S]*?<\/title>/i
+			),
+			createCustomCheck(
+				'bodyTag',
+				'Your page needs a <body> element for its visible content.',
+				/<body[\s\S]*?>[\s\S]*?<\/body>/i
+			),
+			createCustomCheck(
+				'heading',
+				'Add a heading (like <h1>) to give your page a main title.',
+				/<h[1-6][\s\S]*?>[\s\S]*?<\/h[1-6]>/i
+			),
+			createCustomCheck(
+				'paragraph',
+				'Add a paragraph (<p>) with some text to make your page more informative.',
+				/<p[\s\S]*?>[\s\S]*?<\/p>/i
+			)
+		];
 
-		// Log validation results to help with debugging
-		console.log({
-			hasHtmlTag,
-			hasHeadTag,
-			hasBodyTag,
-			hasTitle,
-			hasHeading,
-			hasParagraph
-		});
+		const result = validateHtml(code, customChecks);
 
-		if (!hasHtmlTag) {
-			return {
-				success: false,
-				message: 'Your page needs an <html> element to contain everything.'
-			};
+		if (result.success) {
+			taskCompleted = true;
 		}
 
-		if (!hasHeadTag) {
-			return {
-				success: false,
-				message: "Don't forget to add a <head> section for your page metadata."
-			};
-		}
-
-		if (!hasTitle) {
-			return {
-				success: false,
-				message: 'Every webpage needs a title! Add a <title> tag in the <head> section.'
-			};
-		}
-
-		if (!hasBodyTag) {
-			return {
-				success: false,
-				message: 'Your page needs a <body> element for its visible content.'
-			};
-		}
-
-		if (!hasHeading) {
-			return {
-				success: false,
-				message: 'Add a heading (like <h1>) to give your page a main title.'
-			};
-		}
-
-		if (!hasParagraph) {
-			return {
-				success: false,
-				message: 'Add a paragraph (<p>) with some text to make your page more informative.'
-			};
-		}
-
-		taskCompleted = true;
 		return {
-			success: true,
-			message: "Great job! You've created your first HTML page with all the essential elements."
+			success: result.success,
+			message: result.success
+				? "Great job! You've created your first HTML page with all the essential elements."
+				: result.message
 		};
 	};
 
 	const handleSubmit = () => {
-		submissionResult = validateHtml(htmlCode);
+		try {
+			submissionResult = validateHtmlPage(htmlCode);
+			validationErrors = submissionResult.success
+				? []
+				: [
+						{
+							type: 'custom',
+							message: submissionResult.message,
+							element: 'html'
+						}
+					];
+		} catch (error) {
+			console.error('Error in HTML validation:', error);
+			validationErrors = [];
+		}
 	};
 
-	function previewHtml() {
-		const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
-		if (iframe) {
-			const doc = iframe.contentDocument || iframe.contentWindow?.document;
-			if (doc) {
-				doc.open();
-				doc.write(htmlCode);
-				doc.close();
-			}
-		}
-	}
-
 	const taskProps = $derived({
-		section: { ...sectionData, ...data.section.current },
+		section: { ...sectionData, ...data.section.meta },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: data.section.current?.completed || false,
+		completed: data.section.completed,
 		completedNow: taskCompleted,
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,
@@ -164,13 +152,12 @@
 					<JsCodeEditor bind:value={htmlCode} />
 				</div>
 
-				<div class="mt-4 flex justify-between gap-4">
-					<button class="btn secondary" onclick={previewHtml}>Preview</button>
-					<button class="btn primary" onclick={handleSubmit}>Submit</button>
+				<div class="mt-4 flex justify-end">
+					<button class="btn primary" onclick={() => handleSubmit()}>Submit</button>
 				</div>
 
-				{#if submissionResult}
-					<div class={`box mt-4 ${submissionResult.success ? 'success' : 'error'}`}>
+				{#if submissionResult && submissionResult.success}
+					<div class="box success mt-4">
 						{submissionResult.message}
 					</div>
 				{/if}
@@ -179,7 +166,7 @@
 			<div class="flex flex-col">
 				<h4 class="mb-3 font-semibold">Preview</h4>
 				<div class="preview-container">
-					<iframe id="preview-iframe" title="HTML Preview" class="h-full w-full"></iframe>
+					<HtmlPreview {htmlCode} height="100%" {validationErrors} />
 				</div>
 
 				<Accordion className="mt-4">
@@ -282,5 +269,24 @@
 		background-color: white;
 		width: 100%;
 		height: 20rem;
+	}
+
+	.hint-card pre {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		overflow-x: auto;
+		max-width: 100%;
+		margin: 0.5rem 0;
+	}
+
+	.hint-card .code {
+		font-family: monospace;
+		background-color: #f3f4f6;
+		padding: 0.1rem 0.3rem;
+		border-radius: 0.25rem;
+	}
+
+	:global(.accordion-content) {
+		width: 100%;
 	}
 </style>
