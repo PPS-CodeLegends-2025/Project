@@ -78,7 +78,7 @@
 		quizCompleted = false;
 	}
 
-	const taskProps = {
+	const taskProps = $derived({
 		section: { ...sectionData, ...data.section.meta },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
@@ -94,7 +94,7 @@
 				console.error('Failed to mark as completed:', error);
 			}
 		}
-	};
+	});
 </script>
 
 <ModuleTask {...taskProps}>

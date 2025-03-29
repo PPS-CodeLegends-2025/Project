@@ -32,18 +32,6 @@
 			}
 		}
 	};
-
-    /*
-	function getHeadingPreview(code: string) {
-		return code;
-	}
-
-	function getListPreview(code: string) {
-		return code;
-	}
-
-	let activeTab = $state('headings');
-    */
 </script>
 
 <ModuleTask {...taskProps}>
