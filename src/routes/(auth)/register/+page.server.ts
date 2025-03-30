@@ -13,6 +13,7 @@ export const actions: Actions = {
 	register: async (event) => {
 		const formData = await event.request.formData();
 		const username = formData.get('username');
+		const fullname = formData.get('fullname');
 		const password = formData.get('password');
 		const confirmPassword = formData.get('confirm_password');
 
@@ -30,6 +31,11 @@ export const actions: Actions = {
 				message: 'Invalid username (min 3, max 31 characters, alphanumeric only)'
 			});
 
+		if (fullname !== null && !validateUsername(fullname))
+			return fail(400, {
+				message: 'Fullname must be a valid alphanumeric string'
+			});
+
 		if (!validatePassword(password))
 			return fail(400, {
 				message: 'Invalid password (min 6, max 255 characters)'
@@ -44,8 +50,7 @@ export const actions: Actions = {
 			if (await userService.exists(username))
 				return fail(400, { message: 'Username already taken' });
 
-			const newUser = await userService.register(username, password);
-
+			const newUser = await userService.register(username, password, fullname ?? undefined);
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, newUser.id);
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);

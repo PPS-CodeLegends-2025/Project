@@ -53,6 +53,18 @@
 				</div>
 
 				<div>
+					<label for="fullname" class="block text-sm font-medium text-gray-700"> Fullname </label>
+					<div class="mt-1">
+						<input
+							id="fullname"
+							name="fullname"
+							type="text"
+							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+						/>
+					</div>
+				</div>
+
+				<div>
 					<label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
 					<div class="mt-1">
 						<input
