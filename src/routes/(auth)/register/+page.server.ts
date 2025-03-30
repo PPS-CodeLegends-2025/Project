@@ -31,9 +31,9 @@ export const actions: Actions = {
 				message: 'Invalid username (min 3, max 31 characters, alphanumeric only)'
 			});
 
-		if (fullname !== null && !validateUsername(fullname))
+		if (fullname !== null && fullname && !validateUsername(fullname))
 			return fail(400, {
-				message: 'Fullname must be a valid alphanumeric string'
+				message: 'Invalid fullname (min 3, max 31 characters, alphanumeric only)'
 			});
 
 		if (!validatePassword(password))

@@ -46,6 +46,8 @@
 							id="username"
 							name="username"
 							type="text"
+							minlength="3"
+							maxlength="31"
 							required
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
@@ -53,7 +55,9 @@
 				</div>
 
 				<div>
-					<label for="fullname" class="block text-sm font-medium text-gray-700"> Fullname </label>
+					<label for="fullname" class="block text-sm font-medium text-gray-700">
+						Fullname (optional)
+					</label>
 					<div class="mt-1">
 						<input
 							id="fullname"
@@ -71,6 +75,7 @@
 							id="password"
 							name="password"
 							type="password"
+							minlength="6"
 							required
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
@@ -86,6 +91,7 @@
 							id="confirm_password"
 							name="confirm_password"
 							type="password"
+							minlength="6"
 							required
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>

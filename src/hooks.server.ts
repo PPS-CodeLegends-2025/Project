@@ -3,6 +3,7 @@ import auth from '$lib/server/services/auth';
 import { applyMigrations } from '$lib/server/db';
 import { groupedModules } from '$lib/server/routes';
 import { dev } from '$app/environment';
+import { sequence } from '@sveltejs/kit/hooks';
 
 try {
 	await applyMigrations().then(() => {
@@ -35,6 +36,18 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
+const apiProtection: Handle = async ({ event, resolve }) => {
+	if (!event.url.pathname.startsWith('/api')) return resolve(event);
+
+	const { user, session } = event.locals;
+	if (!session || !user)
+		return new Response('Unauthorized', {
+			status: 401
+		});
+
+	return resolve(event);
+};
+
 if (dev) console.log('[DEV]: App modules:', groupedModules);
 
-export const handle: Handle = handleAuth;
+export const handle: Handle = sequence(handleAuth, apiProtection);

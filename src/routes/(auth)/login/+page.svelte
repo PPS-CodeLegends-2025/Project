@@ -46,6 +46,8 @@
 					id="username"
 					name="username"
 					required
+					minlength="3"
+					maxlength="31"
 					autocomplete="username"
 					disabled={loading}
 					class="input w-full"
@@ -60,6 +62,7 @@
 					type="password"
 					id="password"
 					name="password"
+					minlength="6"
 					required
 					autocomplete="current-password"
 					disabled={loading}
