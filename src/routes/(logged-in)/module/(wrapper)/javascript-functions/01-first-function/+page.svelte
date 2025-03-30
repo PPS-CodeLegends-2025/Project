@@ -21,7 +21,7 @@
 	const initialCode = 'function add(a, b) {\n\t// your code here\n}\n';
 
 	const validateSolution = async (code: string) => {
-		const result = await codeRunner.runFuntionWithTests(code, 'add', tests);
+		const result = await codeRunner.runFunctionWithTests(code, 'add', tests);
 		if (result.success) taskCompleted = true;
 		return result;
 	};

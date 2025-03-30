@@ -21,7 +21,7 @@
 		"db:dev:push": "drizzle-kit push",
 		"db:push": "drizzle-kit push:mysql --config=drizzle.config.ts",
 		"db:migrate": "drizzle-kit migrate",
-		"pre-commit": "pnpm format && pnpm check && pnpm lint"
+		"pre-commit": "pnpm check && pnpm lint"
 	},
 	"devDependencies": {
 		"@eslint/compat": "1.2.7",

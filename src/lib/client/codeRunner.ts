@@ -68,7 +68,7 @@ async function runFunction<T = unknown>(code: string, functionName: string, args
 	}
 }
 
-async function runFuntionWithTests(
+async function runFunctionWithTests(
 	code: string,
 	functionName: string,
 	tests: { input: unknown[]; output: unknown }[]
@@ -103,5 +103,5 @@ async function runFuntionWithTests(
 export const codeRunner = {
 	runCode: evalPlus,
 	runFunction,
-	runFuntionWithTests
+	runFunctionWithTests
 };
