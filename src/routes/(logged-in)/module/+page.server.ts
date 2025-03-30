@@ -1,14 +1,37 @@
-import { modules } from '$services/modules';
+import { modules as serverModules } from '$services/modules';
 import type { PageServerLoad } from './$types';
 
-export const load = (async () => {
-	const moduleList = modules.list();
-	const modulesWithProgress = moduleList.map((mod) => ({
-		...mod,
-		progress: Math.round(Math.random() * 100)
-	}));
+export const load = (async ({ locals }) => {
+	const moduleList = serverModules.list();
+	const userId = locals.user?.id || 'guest-user';
+
+	const modulesWithData = await Promise.all(
+		moduleList.map(async (mod) => {
+			try {
+				const modulePath = mod.url;
+				const moduleData = serverModules.map()[modulePath];
+				const progress = await serverModules.getModuleProgress(userId, modulePath);
+				const completedSections = await serverModules.getCompletedSections(userId, modulePath);
+
+				return {
+					...mod,
+					progress,
+					lessonsCount: moduleData?.sections?.length || 0,
+					completedSections
+				};
+			} catch (error) {
+				console.error(`Error getting data for module ${mod.title}:`, error);
+				return {
+					...mod,
+					progress: 0,
+					lessonsCount: 0,
+					completedSections: []
+				};
+			}
+		})
+	);
 
 	return {
-		modules: modulesWithProgress
+		modules: modulesWithData
 	};
 }) satisfies PageServerLoad;

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Module } from '$services/modules';
+	import type { Module } from '$lib/types/module';
 	import ModuleTemplate from '$templates/ModuleTemplate.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
 	const progress = data.userProgress;
-	const sections = data.module.sections.map((section) => ({ ...section, completed: false }));
+	const sections = data.module.sections;
 
 	const module: Module = {
 		image: '/images/js-logo.png',

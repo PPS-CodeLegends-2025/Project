@@ -1,4 +1,45 @@
 {
+  "/module/html-basics": {
+    "data": {
+      "image": "/images/html-basics.png",
+      "level": "Beginner",
+      "xpReward": 15,
+      "category": "HTML",
+      "title": "HTML Basics",
+      "description": "Learn the fundamentals of HTML for creating structured web content.",
+      "url": "/module/html-basics"
+    },
+    "sections": [
+      {
+        "title": "What is HTML?",
+        "url": "/module/html-basics/01-intro"
+      },
+      {
+        "title": "HTML Role in Web Development",
+        "url": "/module/html-basics/02-html-role"
+      },
+      {
+        "title": "Anatomy of an HTML Document",
+        "url": "/module/html-basics/03-document-structure"
+      },
+      {
+        "title": "Create Your Personal Introduction Page",
+        "url": "/module/html-basics/04-personal-webpage"
+      },
+      {
+        "title": "HTML Structure & Tags Quiz",
+        "url": "/module/html-basics/05-html-quiz"
+      },
+      {
+        "title": "Essential HTML Elements",
+        "url": "/module/html-basics/06-common-elements"
+      },
+      {
+        "title": "Recipe Webpage Project",
+        "url": "/module/html-basics/07-recipe-project"
+      }
+    ]
+  },
   "/module/introduction": {
     "data": {
       "image": "/images/courses/web.webp",
@@ -6,7 +47,7 @@
       "xpReward": 10,
       "category": "General",
       "title": "Web Dev Introduction",
-      "description": "Introduction to web development.",
+      "description": "Introduction to web development fundamentals, tools, and best practices.",
       "url": "/module/introduction"
     },
     "sections": [
@@ -17,6 +58,50 @@
       {
         "title": "Web History",
         "url": "/module/introduction/02-history"
+      },
+      {
+        "title": "Understanding Websites and Web Applications",
+        "url": "/module/introduction/03-understanding-websites"
+      },
+      {
+        "title": "Frontend vs Backend Development",
+        "url": "/module/introduction/04-frontend-vs-backend"
+      },
+      {
+        "title": "Mid-Module Quiz",
+        "url": "/module/introduction/05-quiz"
+      },
+      {
+        "title": "Web Development Roles",
+        "url": "/module/introduction/06-roles"
+      },
+      {
+        "title": "Essential Tools & Environment Setup",
+        "url": "/module/introduction/07-essential-tools"
+      },
+      {
+        "title": "Browser Developer Tools",
+        "url": "/module/introduction/08-browser-devtools"
+      },
+      {
+        "title": "Code Editors",
+        "url": "/module/introduction/09-code-editors"
+      },
+      {
+        "title": "Introduction to Git & GitHub",
+        "url": "/module/introduction/10-git-github"
+      },
+      {
+        "title": "First Project Setup",
+        "url": "/module/introduction/11-first-project-setup"
+      },
+      {
+        "title": "Final Quiz",
+        "url": "/module/introduction/12-final-quiz"
+      },
+      {
+        "title": "Your First HTML Page",
+        "url": "/module/introduction/13-first-html"
       }
     ]
   },
@@ -57,7 +142,7 @@
     },
     "sections": [
       {
-        "title": "Introduction",
+        "title": "Your First Function",
         "url": "/module/javascript-functions/01-first-function"
       }
     ]

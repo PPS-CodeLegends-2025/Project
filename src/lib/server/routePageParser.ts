@@ -1,14 +1,17 @@
 import { readFileSync } from 'fs';
 
 export function extractScriptTagText(path: string) {
-	path = path.replace('/module', '/module/(wrapper)');
-	const page = `src/routes/(logged-in)/${path}/+page.svelte`;
-	const content = readFileSync(page, 'utf-8');
+	const page = `src/routes/(logged-in)/${path.replace('/module', '/module/(wrapper)')}/+page.svelte`;
 
-	const script = content.match(/<script lang="ts">([\s\S]+?)<\/script>/);
-	if (!script) return null;
-
-	return script[1];
+	try {
+		const content = readFileSync(page, 'utf-8');
+		const script = content.match(/<script lang="ts">([\s\S]+?)<\/script>/);
+		if (!script) return null;
+		return script[1];
+	} catch (error) {
+		console.error(`Failed to read file at path: ${page}`, error);
+		return null;
+	}
 }
 
 export function readModuleData(path: string) {

@@ -15,6 +15,13 @@
 			"when": 1742926494407,
 			"tag": "0001_acoustic_roland_deschain",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1743149252721,
+			"tag": "0002_add_module_progress_tables",
+			"breakpoints": true
 		}
 	]
 }

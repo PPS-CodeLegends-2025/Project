@@ -1,60 +1,54 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { Section } from '$services/modules';
+	import type { PageProps } from './$types';
 	import ModuleTask from '$templates/ModuleTaskTemplate.svelte';
+	import type { Section } from '$lib/types/module';
+	import { modules } from '$lib/client/services/modules';
 	import { codeRunner } from '$lib/client/codeRunner';
-	import JsTask from '$lib/components/code/JsTask.svelte';
+	import JsTask from '$components/code/JsTask.svelte';
+
+	const sectionData: Section = {
+		title: 'Your First Function'
+	};
+
+	const tests = [
+		{ input: [1, 2], output: 3 },
+		{ input: [5, 7], output: 12 },
+		{ input: [-1, 1], output: 0 },
+		{ input: [0, 0], output: 0 },
+		{ input: [10, -5], output: 5 }
+	];
 
 	const initialCode = 'function add(a, b) {\n\t// your code here\n}\n';
 
-	const tests = [
-		{ input: [2, 3], output: 5 },
-		{ input: [-1, 5], output: 4 },
-		{ input: [0, 0], output: 0 },
-		{ input: [7, -7], output: 0 }
-	];
-
 	const validateSolution = async (code: string) => {
-		try {
-			for (const { input, output } of tests) {
-				const result = await codeRunner.runFunction(code, 'add', input);
-				if (result !== output) {
-					return {
-						success: false,
-						message: `Expected ${output}, but got ${result} when calling add(${input.join(', ')})`
-					};
-				}
-			}
-		} catch (e) {
-			if (e instanceof Error) return { success: false, message: e.message };
-			else return { success: false, message: String(e) };
-		}
-
-		taskCompleted = true;
-		return { success: true, message: 'All tests passed!' };
-	};
-
-	const sectionData: Section = {
-		title: 'Introduction'
+		const result = await codeRunner.runFuntionWithTests(code, 'add', tests);
+		if (result.success) taskCompleted = true;
+		return result;
 	};
 
 	let taskCompleted = $state(false);
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
 
 	const sectionIndex = data.section.index;
+	const userId = data.user.id;
+	const moduleId = data.module.data.url;
 
 	const taskProps = $derived({
-		section: { ...sectionData, ...data.section.current },
+		section: { ...sectionData, ...data.section.meta },
 		nextSection: data.module.sections[sectionIndex + 1],
 		prevSection: data.module.sections[sectionIndex - 1],
-		completed: false, // TODO: data.userProgress.sections
-		completedNow: taskCompleted, // TODO: for enabling the complete button (just change to true to enable)
+		completed: data.section.completed,
+		completedNow: taskCompleted,
 		module: data.module.data,
 		currentSectionIndex: sectionIndex,
 		totalSections: data.module.sections.length,
-		onMarkAsCompleted: () => {
-			alert('Marked as completed');
+		onMarkAsCompleted: async () => {
+			try {
+				await modules.markSectionCompleted(userId, moduleId, sectionIndex);
+			} catch (error) {
+				console.error('Failed to mark as completed:', error);
+			}
 		}
 	});
 </script>

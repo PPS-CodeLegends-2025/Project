@@ -1,7 +1,7 @@
 import { hash, verify } from '@node-rs/argon2';
 import { db } from '../db';
 import * as table from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 const hashOptions = {
 	memoryCost: 4096,
@@ -52,5 +52,36 @@ export const userService = {
 			username: user.username,
 			registrationDate: user.registrationDate
 		};
+	},
+
+	async getSectionProgress(userId: string, moduleId: string) {
+		try {
+			const completedSections = await db
+				.select({ sectionIndex: table.moduleProgress.sectionIndex })
+				.from(table.moduleProgress)
+				.where(
+					and(eq(table.moduleProgress.userId, userId), eq(table.moduleProgress.moduleId, moduleId))
+				);
+
+			const lastCompleted = await db
+				.select()
+				.from(table.moduleProgress)
+				.where(
+					and(eq(table.moduleProgress.userId, userId), eq(table.moduleProgress.moduleId, moduleId))
+				)
+				.orderBy(table.moduleProgress.completedAt)
+				.limit(1);
+
+			return {
+				completedSections: completedSections.map((section) => section.sectionIndex),
+				lastCompletedSection: lastCompleted.length > 0 ? lastCompleted[0].sectionIndex : null
+			};
+		} catch (error) {
+			console.error('Error getting section progress:', error);
+			return {
+				completedSections: [],
+				lastCompletedSection: null
+			};
+		}
 	}
 };

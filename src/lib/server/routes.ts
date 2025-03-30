@@ -11,8 +11,9 @@ export const routes = Object.keys(pages)
 	.map((x) => (x.length > 0 ? x : '/'))
 	.sort();
 
-const modules = routes.filter((x) => x.includes('/module') && x.split('/').length === 3);
-const moduleSections = routes.filter((x) => x.includes('/module') && x.split('/').length > 3);
+const modules = routes.filter((x) => x.startsWith('/module/') && x.split('/').length === 3);
+
+const moduleSections = routes.filter((x) => x.startsWith('/module/') && x.split('/').length > 3);
 
 export const groupedModules = moduleSections
 	.filter((x) => x.split('/').length > 3)
