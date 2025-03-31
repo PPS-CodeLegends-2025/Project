@@ -60,8 +60,7 @@
 		"mysql2": "3.14.0",
 		"openai": "4.89.1",
 		"prism-code-editor": "3.4.0",
-		"zod": "3.24.2",
-		"dotenv": "^16.0.3"
+		"zod": "3.24.2"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

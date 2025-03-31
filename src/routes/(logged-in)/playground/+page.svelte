@@ -22,7 +22,6 @@
 </script>
 
 <div class="flex h-full min-h-[50rem] flex-col gap-8 p-8 md:min-h-auto">
-	<h1 class="text-2xl">Playground</h1>
 	<div class="grid h-full grid-cols-1 gap-8 overflow-hidden md:grid-cols-2">
 		<div class="flex min-h-64 flex-col gap-8 overflow-hidden">
 			<div class="flex flex-1 flex-col overflow-hidden">
