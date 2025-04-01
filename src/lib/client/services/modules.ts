@@ -32,6 +32,17 @@ export const modules = {
 			console.error('Failed to mark section as completed:', error);
 			throw error;
 		}
+	},
+
+	async getUserModuleProgress(userId: string) {
+		try {
+			const response = await apiClient.get(`/v1/modules/user-progress?userId=${userId}`);
+			if (!response.ok) throw new Error('Failed to fetch user module progress');
+			return response.json();
+		} catch (error) {
+			console.error('Failed to fetch user module progress:', error);
+			throw error;
+		}
 	}
 };
 
