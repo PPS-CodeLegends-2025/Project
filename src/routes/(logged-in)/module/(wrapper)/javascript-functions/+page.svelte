@@ -11,7 +11,7 @@
 	const module: Module = {
 		image: '/images/js-logo.png',
 		level: 'Beginner',
-		xpReward: 50,
+		xpReward: 100,
 		category: 'JavaScript',
 		title: 'JavaScript Functions',
 		description: 'Learn how to create and use functions in JavaScript.',

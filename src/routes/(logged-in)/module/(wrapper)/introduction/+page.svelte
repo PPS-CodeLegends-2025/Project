@@ -11,7 +11,7 @@
 	const module: Module = {
 		image: '/images/courses/web.webp',
 		level: 'Beginner',
-		xpReward: 10,
+		xpReward: 100,
 		category: 'General',
 		progress: progress.module,
 		title: 'Web Dev Introduction',

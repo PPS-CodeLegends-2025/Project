@@ -1,24 +1,28 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 
-	let activeTab = $state('overview');
-
 	let { data }: PageProps = $props();
 
-	let user = {
-		username: data.user.username,
-		fullName: data.user.fullName || 'Anonymous',
-		avatar: '/images/avatar.png',
-		level: data.user.level,
-		xp: data.user.xp,
-		nextLevelXp: 100,
-		joinDate: new Date(data.user.registrationDate).toDateString(),
-		stats: {
-			lessonsCompleted: 42,
-			challengesSolved: 18,
-			daysActive: 27
-		}
-	};
+	const user = data.user;
+	const levelInfo = data.levelInfo;
+	const progress = data.progress;
+
+	let activeTab = $state('overview');
+
+	function getDefaultAvatar(username: string): string {
+		const seed = username || 'User';
+		return `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(seed)}`;
+	}
+
+	function formatDate(date: Date): string {
+		if (!date) return 'Unknown date';
+
+		return date.toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		});
+	}
 </script>
 
 <svelte:head>
@@ -27,9 +31,9 @@
 
 <div class="mx-auto max-w-[900px] p-8">
 	<div class="mb-8 flex gap-8">
-		<div class="relative">
+		<div class="relative h-[120px] w-[120px]">
 			<img
-				src={user.avatar}
+				src={getDefaultAvatar(user.username)}
 				alt="User avatar"
 				class="h-[120px] w-[120px] rounded-full object-cover"
 			/>
@@ -42,19 +46,26 @@
 
 		<div class="flex-1">
 			<h1 class="m-0 text-2xl font-bold">{user.username}</h1>
-			<h2 class="my-1 mb-4 text-xl font-normal text-gray-600">{user.fullName}</h2>
+			<h2 class="my-1 mb-4 text-xl font-normal text-gray-600">{user.fullName || 'Anonymous'}</h2>
 
 			<div class="mb-4">
 				<div class="mb-1 h-2 overflow-hidden rounded-lg bg-gray-100">
 					<div
 						class="h-full bg-green-500"
-						style="width: {(user.xp / user.nextLevelXp) * 100}%"
+						style="width: {levelInfo ? levelInfo.progressToNextLevel * 100 : 0}%"
 					></div>
 				</div>
-				<div class="text-xs text-gray-600">{user.xp} / {user.nextLevelXp} XP</div>
+				<div class="text-xs text-gray-600">
+					{#if levelInfo}
+						{levelInfo.currentXp} / {levelInfo.nextLevelXp} XP ({levelInfo.xpToNextLevel} XP to next
+						level)
+					{:else}
+						{user.xp} XP
+					{/if}
+				</div>
 			</div>
 
-			<p class="text-xs text-gray-600">Member since {user.joinDate}</p>
+			<p class="text-xs text-gray-600">Member since {formatDate(user.registrationDate)}</p>
 		</div>
 	</div>
 
@@ -89,18 +100,96 @@
 		{#if activeTab === 'overview'}
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
-					<h3 class="mt-0 mb-2 text-base text-gray-600">Lessons</h3>
-					<div class="text-4xl font-bold text-gray-800">{user.stats.lessonsCompleted}</div>
+					<h3 class="mt-0 mb-2 text-base text-gray-600">Completed Modules</h3>
+					<div class="text-4xl font-bold text-gray-800">
+						{progress.completedModules?.length || 0}
+					</div>
 				</div>
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
-					<h3 class="mt-0 mb-2 text-base text-gray-600">Challenges</h3>
-					<div class="text-4xl font-bold text-gray-800">{user.stats.challengesSolved}</div>
+					<h3 class="mt-0 mb-2 text-base text-gray-600">In Progress Modules</h3>
+					<div class="text-4xl font-bold text-gray-800">
+						{progress.inProgressModules?.length || 0}
+					</div>
 				</div>
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
 					<h3 class="mt-0 mb-2 text-base text-gray-600">Active Days</h3>
-					<div class="text-4xl font-bold text-gray-800">{user.stats.daysActive}</div>
+					<div class="text-4xl font-bold text-gray-800">{user?.stats?.daysActive || 0}</div>
 				</div>
 			</div>
+
+			<!-- in-progress modules -->
+			{#if progress.inProgressModules?.length > 0}
+				<div class="mt-8">
+					<h3 class="mb-4 text-xl font-semibold">In Progress Modules</h3>
+					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+						{#each progress.inProgressModules as module (module.url)}
+							<a
+								href={module.url}
+								class="flex rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md"
+							>
+								<div class="h-16 w-16 flex-shrink-0">
+									<img src={module.image} alt={module.title} class="h-full w-full object-contain" />
+								</div>
+								<div class="ml-4 flex-1">
+									<h4 class="font-medium">{module.title}</h4>
+									<div class="mt-2">
+										<div class="flex items-center justify-between text-sm">
+											<span
+												>{module.completedSections.length} of {module.totalSections} sections</span
+											>
+											<span>{Math.round(module.progress)}%</span>
+										</div>
+										<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+											<div
+												class="h-full rounded-full bg-green-600"
+												style="width: {module.progress}%"
+											></div>
+										</div>
+									</div>
+								</div>
+							</a>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			<!-- completed modules -->
+			{#if progress.completedModules?.length > 0}
+				<div class="mt-8">
+					<h3 class="mb-4 text-xl font-semibold">Completed Modules</h3>
+					<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+						{#each progress.completedModules as module (module.url)}
+							<a
+								href={module.url}
+								class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md"
+							>
+								<div class="flex items-center">
+									<div class="h-10 w-10 flex-shrink-0">
+										<img
+											src={module.image}
+											alt={module.title}
+											class="h-full w-full object-contain"
+										/>
+									</div>
+									<div class="ml-3 flex-1">
+										<h4 class="font-medium">{module.title}</h4>
+										<p class="text-xs text-gray-500">{module.category} • {module.level}</p>
+									</div>
+									<div class="badge bg-green-100 text-green-800">Completed</div>
+								</div>
+							</a>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			{#if progress.completedModules?.length === 0 && progress.inProgressModules?.length === 0}
+				<div class="my-8 rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
+					<h3 class="mb-2 text-xl font-semibold">No Modules Started Yet</h3>
+					<p class="mb-4">Begin your learning journey by exploring our modules.</p>
+					<a href="/module" class="btn primary">Browse Modules</a>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>

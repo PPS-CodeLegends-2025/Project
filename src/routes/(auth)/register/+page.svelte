@@ -49,6 +49,7 @@
 							minlength="3"
 							maxlength="31"
 							required
+							autocomplete="username"
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>
@@ -77,6 +78,7 @@
 							type="password"
 							minlength="6"
 							required
+							autocomplete="new-password"
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>
@@ -93,6 +95,7 @@
 							type="password"
 							minlength="6"
 							required
+							autocomplete="new-password"
 							class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
 						/>
 					</div>

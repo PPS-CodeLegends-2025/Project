@@ -11,7 +11,7 @@
 	const module: Module = {
 		image: '/images/js-logo.png',
 		level: 'Beginner',
-		xpReward: 20,
+		xpReward: 50,
 		category: 'JavaScript',
 		progress: progress.module,
 		title: 'JavaScript Basics',

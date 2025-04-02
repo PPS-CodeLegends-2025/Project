@@ -3,7 +3,7 @@
     "data": {
       "image": "/images/html-basics.png",
       "level": "Beginner",
-      "xpReward": 15,
+      "xpReward": 50,
       "category": "HTML",
       "title": "HTML Basics",
       "description": "Learn the fundamentals of HTML for creating structured web content.",
@@ -44,7 +44,7 @@
     "data": {
       "image": "/images/courses/web.webp",
       "level": "Beginner",
-      "xpReward": 10,
+      "xpReward": 100,
       "category": "General",
       "title": "Web Dev Introduction",
       "description": "Introduction to web development fundamentals, tools, and best practices.",
@@ -109,7 +109,7 @@
     "data": {
       "image": "/images/js-logo.png",
       "level": "Beginner",
-      "xpReward": 20,
+      "xpReward": 50,
       "category": "JavaScript",
       "title": "JavaScript Basics",
       "description": "Learn the basics of JavaScript programming language.",
@@ -134,7 +134,7 @@
     "data": {
       "image": "/images/js-logo.png",
       "level": "Beginner",
-      "xpReward": 50,
+      "xpReward": 100,
       "category": "JavaScript",
       "title": "JavaScript Functions",
       "description": "Learn how to create and use functions in JavaScript.",

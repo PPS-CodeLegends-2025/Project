@@ -3,6 +3,8 @@ import type { ModuleMeta, SectionMeta, Module, ModuleMap } from '$lib/types/modu
 import { db } from '$lib/server/db';
 import { moduleProgress } from '$lib/server/db/schema/moduleProgress';
 import { and, eq } from 'drizzle-orm';
+import { xpService } from './xp';
+import { userService } from './user';
 
 const moduleMap = m as ModuleMap;
 
@@ -23,30 +25,6 @@ export const modules = {
 		return moduleMap[path];
 	},
 
-	async isSectionCompleted(
-		userId: string,
-		moduleId: string,
-		sectionIndex: number
-	): Promise<boolean> {
-		try {
-			const completed = await db
-				.select()
-				.from(moduleProgress)
-				.where(
-					and(
-						eq(moduleProgress.userId, userId),
-						eq(moduleProgress.moduleId, moduleId),
-						eq(moduleProgress.sectionIndex, sectionIndex)
-					)
-				);
-
-			return completed.length > 0;
-		} catch (error) {
-			console.error('Error checking section completion:', error);
-			return false;
-		}
-	},
-
 	async markSectionCompleted(
 		userId: string,
 		moduleId: string,
@@ -64,13 +42,25 @@ export const modules = {
 					)
 				);
 
-			if (existing.length === 0) {
+			const modulePath = moduleId.startsWith('/') ? moduleId : `/${moduleId}`;
+			const moduleData = this.getModule(modulePath);
+
+			if (existing.length === 0 && moduleData) {
 				await db.insert(moduleProgress).values({
 					userId,
 					moduleId,
 					sectionIndex,
 					completedAt: new Date()
 				});
+
+				const totalSections = moduleData.sections.length;
+				const completedSections = await this.getCompletedSections(userId, moduleId);
+
+				if (totalSections > 0 && completedSections.length >= totalSections) {
+					const moduleXp = moduleData.data.xpReward;
+					await xpService.awardXp(userId, moduleXp);
+					await userService.incrementLessonCompletion(userId);
+				}
 			}
 		} catch (error) {
 			console.error('Error marking section as completed:', error);
