@@ -11,7 +11,7 @@
 	const module: Module = {
 		image: '/images/html-basics.png',
 		level: 'Beginner',
-		xpReward: 15,
+		xpReward: 50,
 		category: 'HTML',
 		progress: progress.module,
 		title: 'HTML Basics',

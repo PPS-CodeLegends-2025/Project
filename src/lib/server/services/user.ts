@@ -2,6 +2,7 @@ import { hash, verify } from '@node-rs/argon2';
 import { db } from '../db';
 import * as table from '$lib/server/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
+import { modules } from './modules';
 
 const hashOptions = {
 	memoryCost: 4096,
@@ -19,7 +20,7 @@ export const userService = {
 				username,
 				fullName,
 				passwordHash,
-				level: 0,
+				level: 1,
 				xp: 0
 			})
 			.$returningId();
@@ -34,10 +35,12 @@ export const userService = {
 
 		return newUser;
 	},
+
 	async exists(username: string) {
 		const results = await db.select().from(table.user).where(eq(table.user.username, username));
 		return results.length > 0;
 	},
+
 	async login(username: string, password: string) {
 		const [user] = await db.select().from(table.user).where(eq(table.user.username, username));
 
@@ -102,37 +105,37 @@ export const userService = {
 			}
 
 			const completedLessons = await db
-				.select({ count: sql`COUNT(*)` })
+				.select({ count: sql<number>`COUNT(*)` })
 				.from(table.moduleProgress)
 				.where(eq(table.moduleProgress.userId, userId));
 
 			const activeDays = await db
-				.select({ count: sql`COUNT(DISTINCT DATE(completed_at))` })
+				.select({ count: sql<number>`COUNT(DISTINCT DATE(completed_at))` })
 				.from(table.moduleProgress)
 				.where(eq(table.moduleProgress.userId, userId));
 
 			const challengesCompleted = await db
-				.select({ count: sql`COUNT(*)` })
+				.select({ count: sql<number>`COUNT(*)` })
 				.from(table.challengeProgress)
-				.where(and(
-					eq(table.challengeProgress.userId, userId),
-					eq(table.challengeProgress.completed, true)
-				));
+				.where(
+					and(
+						eq(table.challengeProgress.userId, userId),
+						eq(table.challengeProgress.completed, true)
+					)
+				);
 
 			const lessonsCount = completedLessons[0]?.count || 0;
 			const daysCount = activeDays[0]?.count || 0;
 			const challengesCount = challengesCompleted[0]?.count || 0;
 			const currentDate = new Date();
 
-			await db
-				.insert(table.userStats)
-				.values({
-					userId,
-					lessonsCompleted: lessonsCount,
-					challengesSolved: challengesCount,
-					daysActive: daysCount,
-					lastActiveDate: currentDate
-				} as table.UserStatsInsert);
+			await db.insert(table.userStats).values({
+				userId,
+				lessonsCompleted: lessonsCount,
+				challengesSolved: challengesCount,
+				daysActive: daysCount,
+				lastActiveDate: currentDate
+			} as table.UserStatsInsert);
 
 			return {
 				lessonsCompleted: lessonsCount,
@@ -142,7 +145,7 @@ export const userService = {
 			};
 		} catch (error) {
 			console.error('Error getting user stats:', error);
-						return {
+			return {
 				lessonsCompleted: 0,
 				challengesSolved: 0,
 				daysActive: 0,
@@ -170,14 +173,12 @@ export const userService = {
 					})
 					.where(eq(table.userStats.userId, userId));
 			} else {
-				await db
-					.insert(table.userStats)
-					.values({
-						userId,
-						lessonsCompleted: 1,
-						daysActive: 1,
-						lastActiveDate: new Date()
-					});
+				await db.insert(table.userStats).values({
+					userId,
+					lessonsCompleted: 1,
+					daysActive: 1,
+					lastActiveDate: new Date()
+				});
 			}
 
 			await this.recordUserActivity(userId);
@@ -192,24 +193,21 @@ export const userService = {
 	async recordUserActivity(userId: string) {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
-		
+
 		try {
 			const [existingActivity] = await db
 				.select()
 				.from(table.userActiveDays)
-				.where(and(
-					eq(table.userActiveDays.userId, userId),
-					eq(table.userActiveDays.activeDate, today)
-				));
+				.where(
+					and(eq(table.userActiveDays.userId, userId), eq(table.userActiveDays.activeDate, today))
+				);
 
 			if (!existingActivity) {
-				await db
-					.insert(table.userActiveDays)
-					.values({
-						userId,
-						activeDate: today
-					});
-				
+				await db.insert(table.userActiveDays).values({
+					userId,
+					activeDate: today
+				});
+
 				await db
 					.update(table.userStats)
 					.set({
@@ -224,5 +222,32 @@ export const userService = {
 			console.error('Error recording user activity:', error);
 			return false;
 		}
+	},
+
+	async getUserModuleProgress(userId: string) {
+		const moduleList = modules.list();
+		const moduleProgress = await Promise.all(
+			moduleList.map(async (mod) => {
+				const modulePath = mod.url;
+				const moduleData = modules.map()[modulePath];
+				const progress = await modules.getModuleProgress(userId, modulePath);
+				const completedSections = await modules.getCompletedSections(userId, modulePath);
+
+				return {
+					...mod,
+					progress,
+					completedSections,
+					totalSections: moduleData?.sections?.length || 0,
+					completed: progress === 100,
+					inProgress: progress > 0 && progress < 100
+				};
+			})
+		);
+
+		return {
+			modules: moduleProgress,
+			completedModules: moduleProgress.filter((m) => m.completed),
+			inProgressModules: moduleProgress.filter((m) => m.inProgress)
+		};
 	}
 };

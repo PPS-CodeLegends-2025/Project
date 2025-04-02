@@ -2,18 +2,6 @@ import type { ModuleMeta, SectionMeta, Section, Module, ModuleMap } from '$lib/t
 import { apiClient } from '$client/fetch';
 
 export const modules = {
-	// fetch module metadata from server (built via the route parser)
-	async fetchModules(): Promise<{
-		map: ModuleMap;
-		list: ModuleMeta[];
-		navMap: { title: string; url: string }[];
-	}> {
-		const response = await apiClient.get('/v1/modules');
-		if (!response.ok) throw new Error('Failed to fetch modules');
-		return response.json();
-	},
-
-	// Mark a section as completed
 	async markSectionCompleted(
 		userId: string,
 		moduleId: string,
@@ -30,17 +18,6 @@ export const modules = {
 			return true;
 		} catch (error) {
 			console.error('Failed to mark section as completed:', error);
-			throw error;
-		}
-	},
-
-	async getUserModuleProgress(userId: string) {
-		try {
-			const response = await apiClient.get(`/v1/modules/user-progress?userId=${userId}`);
-			if (!response.ok) throw new Error('Failed to fetch user module progress');
-			return response.json();
-		} catch (error) {
-			console.error('Failed to fetch user module progress:', error);
 			throw error;
 		}
 	}
