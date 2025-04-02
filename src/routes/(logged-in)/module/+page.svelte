@@ -41,13 +41,13 @@
 			/>
 		</div>
 		<div class="flex gap-4">
-			<select class="select w-32" bind:value={selectedCategory}>
+			<select class="select w-32" bind:value={selectedCategory} aria-label="Category">
 				{#each categories as category (category)}
 					<option value={category}>{category}</option>
 				{/each}
 			</select>
 
-			<select class="select w-32" bind:value={selectedLevel}>
+			<select class="select w-32" bind:value={selectedLevel} aria-label="Level">
 				{#each levels as level (level)}
 					<option value={level}>{level}</option>
 				{/each}
