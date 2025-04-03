@@ -38,8 +38,6 @@
 	let validationErrors = $state<ValidationError[]>([]);
 
 	const validateHtmlForRecipe = (code: string) => {
-		console.log('Validating HTML:', code);
-
 		const customChecks = [
 			createCustomCheck(
 				'heading1',
@@ -103,10 +101,8 @@
 	};
 
 	const handleSubmit = () => {
-		console.log('Submit button clicked - Recipe Project');
 		try {
 			submissionResult = validateHtmlForRecipe(htmlCode);
-			console.log('Recipe submission result:', submissionResult);
 
 			validationErrors = submissionResult.errors || [];
 

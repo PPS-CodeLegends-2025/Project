@@ -1,7 +1,7 @@
 {
 	"name": "codelegends",
 	"private": true,
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -59,6 +59,7 @@
 		"drizzle-orm": "0.41.0",
 		"mysql2": "3.14.0",
 		"openai": "4.89.1",
+		"pino": "^9.6.0",
 		"prism-code-editor": "3.4.0",
 		"zod": "3.24.2"
 	},

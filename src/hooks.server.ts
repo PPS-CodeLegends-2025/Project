@@ -4,13 +4,15 @@ import { applyMigrations } from '$lib/server/db';
 import { groupedModules } from '$lib/server/routes';
 import { dev } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
+import { logger } from '$logger';
 
 try {
 	await applyMigrations().then(() => {
-		console.log('Database setup complete');
+		logger.info('Database setup complete');
 	});
 } catch (error) {
-	console.error('Failed to apply migrations:', error);
+	logger.error('Failed to apply migrations:', error);
+	process.exit(1);
 }
 
 const handleAuth: Handle = async ({ event, resolve }) => {
@@ -48,6 +50,6 @@ const apiProtection: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-if (dev) console.log('[DEV]: App modules:', groupedModules);
+if (dev) logger.debug('[DEV]: App modules:', groupedModules);
 
 export const handle: Handle = sequence(handleAuth, apiProtection);
