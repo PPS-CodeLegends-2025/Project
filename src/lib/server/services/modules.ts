@@ -5,6 +5,7 @@ import { moduleProgress } from '$lib/server/db/schema/moduleProgress';
 import { and, eq } from 'drizzle-orm';
 import { xpService } from './xp';
 import { userService } from './user';
+import { badgeAwards } from './badgeAwards';
 import { logger } from '$server/logger';
 
 const moduleMap = m as ModuleMap;
@@ -61,6 +62,8 @@ export const modules = {
 					const moduleXp = moduleData.data.xpReward;
 					await xpService.awardXp(userId, moduleXp);
 					await userService.incrementLessonCompletion(userId);
+
+					await badgeAwards.checkModuleCompletionBadges(userId);
 				}
 			}
 		} catch (error) {
