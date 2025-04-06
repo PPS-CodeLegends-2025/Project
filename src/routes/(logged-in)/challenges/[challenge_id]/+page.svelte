@@ -23,11 +23,11 @@
 		try {
 			// TODO: placeholder
 			challenge ??= {
-				id: data.id,
-				title: 'Example Challenge',
-				description: 'This is an example challenge description.',
-				difficulty: 'Medium',
-				points: 100,
+				id: data.challenge.id,
+				title: data.challenge.title,
+				description: data.challenge.description,
+				difficulty: data.challenge.difficulty,
+				points: data.challenge.xp,
 				completedBy: 42,
 				tags: ['algorithm', 'data structures']
 			};

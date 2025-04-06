@@ -29,6 +29,13 @@
 			"when": 1743512138829,
 			"tag": "0003_fresh_thing",
 			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "5",
+			"when": 1743955298010,
+			"tag": "0004_friendly_apocalypse",
+			"breakpoints": true
 		}
 	]
 }

@@ -51,3 +51,39 @@ const apiProtection: Handle = async ({ event, resolve }) => {
 if (dev) console.log('[DEV]: App modules:', groupedModules);
 
 export const handle: Handle = sequence(handleAuth, apiProtection);
+
+// challenges.createChallenge(
+// 	{
+// 		title: 'Challenge n19',
+// 		description: 'Going back to Vietnam!',
+// 		difficulty: 'very hard',
+// 		category: 'props',
+// 		xp: 100,
+// 		timeEstimate: '1 month'
+// 	},
+// 	{
+// 		name: 'PRC-6 radio',
+// 		description: 'Texture set 4k',
+// 		inputs: ['string'],
+// 		output: {type: 'string'},
+// 		exampleCode: ''
+// 	}
+// )
+
+// challenges.createChallenge(
+// 	{
+// 		title: 'E',
+// 		description: 'Going back to Vietnam!',
+// 		difficulty: 'very hard',
+// 		category: 'props',
+// 		xp: 100,
+// 		timeEstimate: '1 month'
+// 	},
+// 	{
+// 		name: 'PRC-6 radio',
+// 		description: 'Texture set 4k',
+// 		inputs: ['string'],
+// 		output: {type: 'string'},
+// 		exampleCode: ''
+// 	}
+// )
