@@ -31,8 +31,6 @@
 	let validationErrors = $state<ValidationError[]>([]);
 
 	const validateHtmlPage = (code: string) => {
-		console.log('Validating HTML:', code);
-
 		const customChecks = [
 			createCustomCheck(
 				'htmlTag',

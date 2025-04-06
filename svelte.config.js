@@ -12,7 +12,8 @@ const config = {
 			$components: './src/lib/components',
 			$services: './src/lib/server/services',
 			$client: './src/lib/client',
-			$server: './src/lib/server'
+			$server: './src/lib/server',
+			$logger: './src/lib/server/logger'
 		}
 	}
 };

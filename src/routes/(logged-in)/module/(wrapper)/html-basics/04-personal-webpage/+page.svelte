@@ -31,9 +31,6 @@
 	let validationErrors = $state<ValidationError[]>([]);
 
 	const validatePersonalHtml = (code: string) => {
-		console.log('Validating HTML:', code);
-
-		// Define custom checks for personal page requirements
 		const customChecks = [
 			createCustomCheck(
 				'htmlTag',
@@ -89,10 +86,8 @@
 	};
 
 	const handleSubmit = () => {
-		console.log('Submit button clicked - Personal Webpage');
 		try {
 			submissionResult = validatePersonalHtml(htmlCode);
-			console.log('Submission result:', submissionResult);
 			validationErrors = submissionResult.success
 				? []
 				: [

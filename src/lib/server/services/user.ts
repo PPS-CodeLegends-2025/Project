@@ -3,6 +3,7 @@ import { db } from '../db';
 import * as table from '$lib/server/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import { modules } from './modules';
+import { logger } from '$server/logger';
 
 const hashOptions = {
 	memoryCost: 4096,
@@ -80,7 +81,7 @@ export const userService = {
 				lastCompletedSection: lastCompleted.length > 0 ? lastCompleted[0].sectionIndex : null
 			};
 		} catch (error) {
-			console.error('Error getting section progress:', error);
+			logger.error('Error getting section progress:', error);
 			return {
 				completedSections: [],
 				lastCompletedSection: null
@@ -144,7 +145,7 @@ export const userService = {
 				lastActiveDate: currentDate.toISOString()
 			};
 		} catch (error) {
-			console.error('Error getting user stats:', error);
+			logger.error('Error getting user stats:', error);
 			return {
 				lessonsCompleted: 0,
 				challengesSolved: 0,
@@ -185,7 +186,7 @@ export const userService = {
 
 			return true;
 		} catch (error) {
-			console.error('Error incrementing lesson completion:', error);
+			logger.error('Error incrementing lesson completion:', error);
 			return false;
 		}
 	},
@@ -219,7 +220,7 @@ export const userService = {
 
 			return true;
 		} catch (error) {
-			console.error('Error recording user activity:', error);
+			logger.error('Error recording user activity:', error);
 			return false;
 		}
 	},
