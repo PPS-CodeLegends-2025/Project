@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 	const moduleList = serverModules.list();
-	const userId = locals.user?.id || 'guest-user';
+	const userId = locals.user!.id;
 
 	const modulesWithData = await Promise.all(
 		moduleList.map(async (mod) => {
