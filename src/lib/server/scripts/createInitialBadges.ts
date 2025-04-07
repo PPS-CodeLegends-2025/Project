@@ -1,5 +1,6 @@
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { logger } from '$server/logger';
 import { eq } from 'drizzle-orm';
 
 const initialBadges = [
@@ -110,7 +111,7 @@ const initialBadges = [
 ];
 
 export async function createInitialBadges() {
-	console.log('Creating initial badges...');
+	logger.debug('Creating initial badges...');
 
 	try {
 		for (const badgeData of initialBadges) {
@@ -123,22 +124,14 @@ export async function createInitialBadges() {
 			if (existingBadge.length === 0) {
 				// Insert badge if it doesn't exist
 				await db.insert(table.badge).values(badgeData);
-				console.log(`Created badge: ${badgeData.name}`);
+				logger.debug(`Created badge: ${badgeData.name}`);
 			} else {
-				console.log(`Badge already exists: ${badgeData.name}`);
+				logger.debug(`Badge already exists: ${badgeData.name}`);
 			}
 		}
 
-		console.log('Badge creation completed!');
+		logger.debug('Badge creation completed!');
 	} catch (error) {
-		console.error('Error creating badges:', error);
+		logger.error('Error creating badges:', error);
 	}
 }
-
-// if (require.main === module) {
-//   createInitialBadges()
-//     .then(() => process.exit(0))
-//     .catch((err) => {
-//       console.error('Error:', err);
-//       process.exit(1));
-//     });

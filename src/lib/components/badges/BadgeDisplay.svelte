@@ -88,7 +88,7 @@
 		transition: opacity 0.3s;
 		width: max-content;
 		max-width: 200px;
-		bottom: 100%;
+		top: -10%;
 		left: 50%;
 		margin-bottom: 0.5rem;
 	}

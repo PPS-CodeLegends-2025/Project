@@ -1,5 +1,6 @@
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { logger } from '$server/logger';
 import { and, eq } from 'drizzle-orm';
 
 export interface BadgeAwardResult {
@@ -90,7 +91,7 @@ export const badgeService = {
 			.set({ viewed: false })
 			.where(and(eq(table.userBadge.userId, userId), eq(table.userBadge.badgeId, badgeId)));
 
-		console.log(`Ensured badge ${badgeId} is unviewed for user ${userId}`);
+		logger.debug(`Ensured badge ${badgeId} is unviewed for user ${userId}`);
 	},
 
 	async getUnviewedBadges(userId: string): Promise<Array<table.Badge & { awardedAt: Date }>> {

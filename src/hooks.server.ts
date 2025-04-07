@@ -17,7 +17,7 @@ try {
 	});
 
 	await createInitialBadges().then(() => {
-		console.log('Badges setup complete');
+		logger.debug('Badges setup complete');
 	});
 } catch (error) {
 	logger.error('Failed to apply migrations:', error);

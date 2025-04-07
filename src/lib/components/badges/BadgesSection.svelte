@@ -132,7 +132,11 @@
 						<div class="mt-2 flex flex-wrap gap-2">
 							{#each badgeCheckResult.awardedBadges as badge (badge.id)}
 								<div class="flex items-center rounded bg-white/50 px-2 py-1">
-									<span class="mr-1 text-lg">{badge.icon}</span>
+									{#if badge.icon.startsWith('/')}
+										<img src={badge.icon} alt={badge.name} class="h-6 w-6" />
+									{:else}
+										<span class="mr-1 text-lg">{badge.icon}</span>
+									{/if}
 									<span>{badge.name}</span>
 								</div>
 							{/each}
