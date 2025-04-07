@@ -4,11 +4,20 @@ import { applyMigrations } from '$lib/server/db';
 import { groupedModules } from '$lib/server/routes';
 import { dev } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
+import { createInitialBadges } from '$lib/server/scripts/createInitialBadges';
 import { logger } from '$logger';
 
 try {
 	await applyMigrations().then(() => {
 		logger.info('Database setup complete');
+	});
+
+	await createInitialBadges().then(() => {
+		logger.info('Badges setup complete');
+	});
+
+	await createInitialBadges().then(() => {
+		console.log('Badges setup complete');
 	});
 } catch (error) {
 	logger.error('Failed to apply migrations:', error);

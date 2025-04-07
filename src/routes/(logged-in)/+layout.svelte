@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { LayoutProps } from './$types';
+	import BadgeNotificationManager from '$lib/components/badges/BadgeNotificationManager.svelte';
 
-	let { children }: LayoutProps = $props();
+	let { data, children }: LayoutProps = $props();
 </script>
 
 <div class="flex h-full flex-col">
@@ -10,4 +11,7 @@
 	<main class="flex-1 overflow-y-auto">
 		{@render children()}
 	</main>
+	{#if data?.user}
+		<BadgeNotificationManager userId={data.user.id} />
+	{/if}
 </div>

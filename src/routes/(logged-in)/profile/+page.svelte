@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
+	import BadgesSection from '$lib/components/badges/BadgesSection.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -80,24 +81,24 @@
 		</button>
 		<button
 			class={`cursor-pointer border-0 border-b-2 bg-transparent px-6 py-3 text-base ${
+				activeTab === 'badges' ? 'border-green-500 font-bold' : 'border-transparent'
+			}`}
+			onclick={() => (activeTab = 'badges')}
+		>
+			Badges
+		</button>
+		<button
+			class={`cursor-pointer border-0 border-b-2 bg-transparent px-6 py-3 text-base ${
 				activeTab === 'achievements' ? 'border-green-500 font-bold' : 'border-transparent'
 			}`}
 			onclick={() => (activeTab = 'achievements')}
 		>
 			Achievements
 		</button>
-		<button
-			class={`cursor-pointer border-0 border-b-2 bg-transparent px-6 py-3 text-base ${
-				activeTab === 'settings' ? 'border-green-500 font-bold' : 'border-transparent'
-			}`}
-			onclick={() => (activeTab = 'settings')}
-		>
-			Settings
-		</button>
 	</div>
 
-	<div>
-		{#if activeTab === 'overview'}
+	{#if activeTab === 'overview'}
+		<div class="overview-content">
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
 					<h3 class="mt-0 mb-2 text-base text-gray-600">Completed Modules</h3>
@@ -190,6 +191,14 @@
 					<a href="/module" class="btn primary">Browse Modules</a>
 				</div>
 			{/if}
-		{/if}
-	</div>
+		</div>
+	{:else if activeTab === 'badges'}
+		<div class="badges-content">
+			<BadgesSection userId={user.id} />
+		</div>
+	{:else if activeTab === 'achievements'}
+		<div class="achievements-content">
+			<!-- Achievements content -->
+		</div>
+	{/if}
 </div>
