@@ -1,7 +1,7 @@
 import { hash, verify } from '@node-rs/argon2';
 import { db } from '../db';
 import * as table from '$lib/server/db/schema';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, sql, desc, between } from 'drizzle-orm';
 import { modules } from './modules';
 import { logger } from '$server/logger';
 
@@ -250,5 +250,59 @@ export const userService = {
 			completedModules: moduleProgress.filter((m) => m.completed),
 			inProgressModules: moduleProgress.filter((m) => m.inProgress)
 		};
+	},
+
+	async getStatisticsPerDayForUser(userId: string, from: Date, to: Date) {
+		const stats = await db
+			.select({
+				activeDate: table.userActiveDays.activeDate,
+				lessonsCompleted: sql<number>`COUNT(DISTINCT ${table.moduleProgress.completedAt})`.as(
+					'lessonsCompleted'
+				),
+				challengesSolved: sql<number>`COUNT(DISTINCT ${table.challengeProgress.completedAt})`.as(
+					'challengesSolved'
+				)
+			})
+			.from(table.userActiveDays)
+			.leftJoin(table.moduleProgress, eq(table.userActiveDays.userId, table.moduleProgress.userId))
+			.leftJoin(
+				table.challengeProgress,
+				eq(table.userActiveDays.userId, table.challengeProgress.userId)
+			)
+			.where(
+				and(
+					eq(table.userActiveDays.userId, userId),
+					between(table.userActiveDays.activeDate, from, to)
+				)
+			)
+			.groupBy(table.userActiveDays.activeDate)
+			.orderBy(desc(table.userActiveDays.activeDate));
+
+		const filledStats = [];
+
+		const currentDate = new Date(from);
+
+		while (currentDate <= to) {
+			const dateString = currentDate.toISOString().split('T')[0];
+			const existingStat = stats.find(
+				(stat) => stat.activeDate.toISOString().split('T')[0] === dateString
+			);
+
+			if (existingStat) {
+				filledStats.push(existingStat);
+			} else {
+				filledStats.push({
+					activeDate: new Date(currentDate),
+					lessonsCompleted: 0,
+					challengesSolved: 0
+				});
+			}
+
+			currentDate.setDate(currentDate.getDate() + 1);
+		}
+
+		const sortedStats = filledStats.sort((a, b) => a.activeDate.getTime() - b.activeDate.getTime());
+
+		return sortedStats;
 	}
 };
