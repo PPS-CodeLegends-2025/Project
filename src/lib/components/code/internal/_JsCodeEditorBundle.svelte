@@ -9,6 +9,7 @@
 	import 'prism-code-editor/search.css';
 	import 'prism-code-editor/themes/github-light.css';
 	import 'prism-code-editor/prism/languages/javascript';
+	import 'prism-code-editor/prism/languages/css';
 	import { defaultCommands, editHistory } from 'prism-code-editor/commands';
 	import { highlightBracketPairs } from 'prism-code-editor/highlight-brackets';
 	import { matchTags } from 'prism-code-editor/match-tags';
@@ -38,26 +39,34 @@
 		class?: string;
 		value: string;
 		leaveWarning?: boolean;
+		language?: string;
 	}
 
-	let { class: className, value = $bindable(), leaveWarning = false }: Props = $props();
+	let {
+		class: className,
+		value = $bindable(),
+		leaveWarning = false,
+		language = 'javascript'
+	}: Props = $props();
 
-	registerCompletions(['javascript'], {
-		context: jsContext,
-		sources: [
-			completeIdentifiers(['console', 'console.log()']),
-			completeKeywords,
-			jsDocCompletion,
-			completeSnippets(jsSnipets)
-		]
-	});
+	if (language === 'javascript') {
+		registerCompletions(['javascript'], {
+			context: jsContext,
+			sources: [
+				completeIdentifiers(['console', 'console.log()']),
+				completeKeywords,
+				jsDocCompletion,
+				completeSnippets(jsSnipets)
+			]
+		});
+	}
 
 	onMount(() => {
 		createEditor(
 			'#editor-root',
 			{
 				value,
-				language: 'javascript',
+				language,
 				onUpdate: (v) => (value = v)
 			},
 			highlightSelectionMatches(),

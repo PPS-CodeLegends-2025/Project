@@ -14,26 +14,15 @@
 	let errors = $state<Array<{ element: string; message: string }>>([]);
 	let warnings = $state<Array<{ element: string; message: string }>>([]);
 	let showErrors = $state(false);
+	let lastRenderedCode = '';
 
 	function updatePreview() {
-		if (!iframe) return;
+		if (!iframe || lastRenderedCode === htmlCode) return;
 
-		errors = [];
-		warnings = [];
+		lastRenderedCode = htmlCode;
 
-		if (validationErrors && validationErrors.length > 0) {
-			errors = [
-				...errors,
-				...validationErrors.map((err) => ({
-					element: err.element || 'Unknown element',
-					message: err.message
-				}))
-			];
-
-			if (errors.length > 0) {
-				showErrors = true;
-			}
-		}
+		// Process validation errors separately from rendering
+		processValidationErrors();
 
 		const doc = iframe.contentDocument || iframe.contentWindow?.document;
 		if (!doc) return;
@@ -43,10 +32,12 @@
 			doc.write(htmlCode);
 			doc.close();
 
-			setTimeout(() => {
-				setupErrorHandlers(doc);
-				checkLoadedResources(doc);
-			}, 100);
+			requestAnimationFrame(() => {
+				if (doc.body) {
+					setupErrorHandlers(doc);
+					checkLoadedResources(doc);
+				}
+			});
 		} catch (error: unknown) {
 			console.error('Error rendering HTML:', error);
 			errors = [
@@ -56,6 +47,24 @@
 					message: `Error rendering HTML: ${error instanceof Error ? error.message : String(error)}`
 				}
 			];
+		}
+	}
+
+	function processValidationErrors() {
+		if (validationErrors && validationErrors.length > 0) {
+			const validationErrorMessages = validationErrors.map((err) => ({
+				element: err.element || 'Unknown element',
+				message: err.message
+			}));
+
+			errors = [
+				...errors.filter((err) => !err.message.includes('validation error')),
+				...validationErrorMessages
+			];
+
+			if (validationErrorMessages.length > 0) {
+				showErrors = true;
+			}
 		}
 	}
 
@@ -101,24 +110,14 @@
 	}
 
 	$effect(() => {
-		if (htmlCode) {
+		if (htmlCode !== lastRenderedCode) {
 			updatePreview();
 		}
 	});
 
 	$effect(() => {
 		if (validationErrors && validationErrors.length > 0) {
-			errors = [
-				...errors.filter((err) => !err.message.includes('validation error')), // Remove previous validation errors
-				...validationErrors.map((err) => ({
-					element: err.element || 'Unknown element',
-					message: err.message
-				}))
-			];
-
-			if (errors.length > 0) {
-				showErrors = true;
-			}
+			processValidationErrors();
 		}
 	});
 
@@ -126,6 +125,11 @@
 		if (htmlCode) {
 			updatePreview();
 		}
+
+		return () => {
+			errors = [];
+			warnings = [];
+		};
 	});
 </script>
 
