@@ -12,7 +12,9 @@
 	function initialCode() {
 		if (data.challengeTask.exampleCode) return data.challengeTask.exampleCode;
 
-		return `function solution(${data.challengeTask.inputs}) {\n\t// Your code here\n}\n\n\n\nsolution(${data.challengeTask.inputs.join(',')});\n\n`;
+		const inputsStr = data.challengeTask.inputs.map((v, i) => `${v}${i}`).join(',');
+
+		return `function solution(${inputsStr}) {\n\t// Your code here\n}\n\n\n\nsolution(${inputsStr});\n\n`;
 	}
 
 	const validateSolution = async (code: string) => {

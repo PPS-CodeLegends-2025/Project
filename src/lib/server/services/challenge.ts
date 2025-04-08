@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { challenge, challengeProgress, challengeTask } from '../db/schema/challenge';
-import { and, count, eq } from 'drizzle-orm';
+import { and, asc, count, eq } from 'drizzle-orm';
 import { xpService } from './xp';
 import type { GeneratedTaskTemplate } from './taskgen';
 
@@ -82,7 +82,7 @@ export const challenges = {
 	//returns challenges with completed info
 	async getChallengesForUser(userId: string) {
 		try {
-			const challenges = await db.select().from(challenge);
+			const challenges = await db.select().from(challenge).orderBy(asc(challenge.title));
 
 			const userProgress = await db
 				.select({

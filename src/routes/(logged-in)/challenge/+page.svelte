@@ -77,6 +77,7 @@
 			</div>
 		{:else}
 			{#each filteredChallenges as challenge (challenge.id)}
+				{@const diff = challenge.difficulty.toLowerCase()}
 				<div
 					class="relative rounded-lg border border-gray-100 bg-white p-6 shadow-md transition duration-200 hover:translate-y-[-5px] hover:shadow-lg {challenge.completed
 						? 'border-l-4 border-l-green-500'
@@ -88,9 +89,9 @@
 							<span class="rounded bg-gray-100 p-1 px-2 text-xs">{challenge.category}</span>
 							<span
 								class={`rounded p-1 px-2 text-xs 
-                                ${challenge.difficulty === 'beginner' ? 'bg-green-100 text-green-800' : ''} 
-                                ${challenge.difficulty === 'intermediate' ? 'bg-amber-100 text-amber-800' : ''} 
-                                ${challenge.difficulty === 'advanced' ? 'bg-red-100 text-red-800' : ''}`}
+                                ${diff === 'easy' ? 'bg-green-100 text-green-800' : ''} 
+                                ${diff === 'medium' ? 'bg-amber-100 text-amber-800' : ''} 
+                                ${diff === 'hard' ? 'bg-red-100 text-red-800' : ''}`}
 							>
 								{challenge.difficulty}
 							</span>

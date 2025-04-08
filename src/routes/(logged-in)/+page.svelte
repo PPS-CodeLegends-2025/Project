@@ -26,7 +26,7 @@
 	</h1>
 	<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
 		<div class="card rounded-lg border border-gray-100 bg-white p-6 shadow">
-			<h2 class="mb-4 text-xl font-semibold">Your Progress</h2>
+			<h2 class="mb-4 text-xl font-semibold">Your Level</h2>
 			<p>Current level: {data.user.level}</p>
 			<p class="text-sm text-gray-600">
 				XP: {data.levelInfo.currentXp} / {data.levelInfo.nextLevelXp}
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div class="card rounded-lg border border-gray-100 bg-white p-6 shadow">
-			<h2 class="mb-4 text-xl font-semibold">Module Completion</h2>
+			<h2 class="mb-4 text-xl font-semibold">Learning Progress</h2>
 			<p>
 				Completed: {data.modules.completed.length} of {data.modules.all.length} modules
 			</p>
