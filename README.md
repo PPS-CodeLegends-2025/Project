@@ -1,38 +1,45 @@
-# sv
+# CodeLegends
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Gamification of Code Learning
 
-## Creating a project
+CodeLegends is a gamified platform designed to enhance the learning experience of coding through interactive challenges and competitions. The platform allows users to engage in coding challenges, earn points, and compete with others, making the learning process more enjoyable and effective.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npx sv create
+- **Interactive Coding Challenges**: Users can solve coding problems and receive instant feedback.
+- **Achievements and Badges**: Users can earn achievements and badges for completing challenges, which can be shared on social media.
+- **Instant Feedback**: Users receive immediate feedback on their solutions, helping them learn from their mistakes.
+- **Challenges**: Test your skills with a variety of coding challenges.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Technologies Used
 
-## Developing
+- **Frontend**: SvelteKit, Tailwind CSS, TypeScript, Prisma Code Editor
+- **Backend**: Node.js, SvelteKit, DrizzleORM, MySQL (with Docker)
+- **Database**: MySQL
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Running the Project Locally
 
-```bash
-npm run dev
+### Prerequisites
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- Node.js (v20 or higher) [https://nodejs.org/](https://nodejs.org/)
+- pnpm [https://pnpm.io/installation](https://pnpm.io/installation)
+- Docker [https://www.docker.com/](https://www.docker.com/)
 
-## Building
+### Steps to Run the Project
 
-To create a production version of your app:
+1. Copy `.env.example` to `.env` and fill in the required environment variables.
+   - Make sure to set the `DATABASE_URL` to point to your local MySQL database.
+   - Example: `DATABASE_URL=mysql://user:password@localhost:3306/codelegends` (don't change it if you didn't change the docker-compose file)
+   - Set `OPEN_AI_API_KEY` to your OpenAI API key.
+2. Run `docker-compose up -d` to start the MySQL database.
+3. Run `pnpm install` to install the dependencies.
+4. Run `pnpm dev` to start the development server.
+5. Open your browser and navigate to `http://localhost:5173` to access the application.
 
-```bash
-npm run build
-```
+### Building for Production
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1. Run `pnpm build` to build the application for production.
+2. Run `pnpm preview` to preview the production build.
+3. Open your browser and navigate to `http://localhost:4173` to access the production build.
+4. To deploy, you can use any hosting service that supports Node.js applications.
+5. Make sure to set the environment variables in your hosting service as well.

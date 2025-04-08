@@ -22,11 +22,12 @@ const BADGES = {
 export const badgeAwards = {
 	async checkModuleCompletionBadges(userId: string): Promise<void> {
 		const completedModulesResult = await db
-			.select({ count: count() })
+			.select({ id: table.moduleProgress.moduleId })
 			.from(table.moduleProgress)
-			.where(eq(table.moduleProgress.userId, userId));
+			.where(eq(table.moduleProgress.userId, userId))
+			.groupBy(table.moduleProgress.moduleId);
 
-		const completedCount = completedModulesResult[0]?.count || 0;
+		const completedCount = completedModulesResult.length || 0;
 
 		if (completedCount >= 1) {
 			await badgeService.awardBadge(userId, BADGES.FIRST_MODULE);

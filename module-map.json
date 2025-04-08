@@ -1,4 +1,33 @@
 {
+  "/module/css-basics": {
+    "data": {
+      "image": "/images/CSSbasics.png",
+      "level": "Beginner",
+      "xpReward": 100,
+      "category": "CSS",
+      "title": "CSS Basics",
+      "description": "Learn the fundamentals of CSS to style web pages and create beautiful designs. Explore selectors, properties, layout techniques, and responsive design.",
+      "url": "/module/css-basics"
+    },
+    "sections": [
+      {
+        "title": "What is CSS?",
+        "url": "/module/css-basics/01-intro"
+      },
+      {
+        "title": "Adding CSS to HTML",
+        "url": "/module/css-basics/02-adding-css"
+      },
+      {
+        "title": "Challenge: CSS Makeover",
+        "url": "/module/css-basics/03-css-makeover-challenge"
+      },
+      {
+        "title": "Selector Detective Quiz",
+        "url": "/module/css-basics/04-selector-detective-quiz"
+      }
+    ]
+  },
   "/module/html-basics": {
     "data": {
       "image": "/images/html-basics.png",
@@ -37,6 +66,74 @@
       {
         "title": "Recipe Webpage Project",
         "url": "/module/html-basics/07-recipe-project"
+      },
+      {
+        "title": "Element or Attribute?",
+        "url": "/module/html-basics/08-attribute-quiz"
+      },
+      {
+        "title": "What is Semantic HTML?",
+        "url": "/module/html-basics/09-semantic-html"
+      },
+      {
+        "title": "Challenge: Accessible Blog Layout",
+        "url": "/module/html-basics/10-accessible-blog-layout"
+      },
+      {
+        "title": "Accessibility Check!",
+        "url": "/module/html-basics/11-accessibility-quiz"
+      },
+      {
+        "title": "HTML Form Basics",
+        "url": "/module/html-basics/12-form-basics"
+      },
+      {
+        "title": "Challenge: Contact Form",
+        "url": "/module/html-basics/13-contact-form-challenge"
+      },
+      {
+        "title": "Fix My Form!",
+        "url": "/module/html-basics/14-fix-my-form-quiz"
+      },
+      {
+        "title": "Embedding Media",
+        "url": "/module/html-basics/15-embedding-media"
+      },
+      {
+        "title": "Challenge: My Favorite Media",
+        "url": "/module/html-basics/16-favorite-media-challenge"
+      },
+      {
+        "title": "Multimedia Magic!",
+        "url": "/module/html-basics/17-multimedia-quiz"
+      },
+      {
+        "title": "HTML Tables: Structured Data",
+        "url": "/module/html-basics/18-tables"
+      },
+      {
+        "title": "Challenge: Schedule Creator",
+        "url": "/module/html-basics/19-schedule-creator"
+      },
+      {
+        "title": "Quiz: Table Detective",
+        "url": "/module/html-basics/20-table-detective"
+      },
+      {
+        "title": "Writing Clean HTML & Basic SEO",
+        "url": "/module/html-basics/21-clean-html-seo"
+      },
+      {
+        "title": "Challenge: SEO-Optimized Landing Page",
+        "url": "/module/html-basics/22-seo-landing-page-challenge"
+      },
+      {
+        "title": "SEO Pro!",
+        "url": "/module/html-basics/23-seo-quiz"
+      },
+      {
+        "title": "Final Project: Personal Portfolio Page",
+        "url": "/module/html-basics/24-portfolio-project"
       }
     ]
   },
@@ -144,6 +241,27 @@
       {
         "title": "Your First Function",
         "url": "/module/javascript-functions/01-first-function"
+      }
+    ]
+  },
+  "/module/modern-css": {
+    "data": {
+      "image": "/images/css.png",
+      "level": "Intermediate",
+      "xpReward": 150,
+      "category": "CSS",
+      "title": "Modern CSS Techniques",
+      "description": "Learn advanced CSS features, flexbox, grid, and modern layout techniques.",
+      "url": "/module/modern-css"
+    },
+    "sections": [
+      {
+        "title": "Introduction to Modern CSS",
+        "url": "/module/modern-css/01-intro"
+      },
+      {
+        "title": "Flexbox Layout System",
+        "url": "/module/modern-css/02-flexbox"
       }
     ]
   }

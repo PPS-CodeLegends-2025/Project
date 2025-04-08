@@ -289,6 +289,11 @@ export const userService = {
 
 		const sortedStats = filledStats.sort((a, b) => a.activeDate.getTime() - b.activeDate.getTime());
 
+		sortedStats.forEach((stat) => {
+			const dayPart = stat.activeDate.toISOString().split('T')[0];
+			stat.activeDate = new Date(dayPart + 'T00:00:00Z');
+		});
+
 		return sortedStats;
 	}
 };
