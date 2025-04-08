@@ -62,8 +62,8 @@
 			<span class="px-2">{data.challenge?.xp} points</span>
 		</div>
 		<div class="mt-2.5 flex flex-wrap gap-2">
-			<span class="rounded bg-gray-100 px-2 py-1 text-sm">{data.challenge?.category}</span>
-			<span class="rounded bg-gray-100 px-2 py-1 text-sm">{data.challenge?.timeEstimate}</span>
+			<span class="rounded bg-gray-100 px-2 py-1 text-sm">{data.challenge.category}</span>
+			<span class="rounded bg-gray-100 px-2 py-1 text-sm">{data.challenge.timeEstimate}</span>
 		</div>
 	</div>
 

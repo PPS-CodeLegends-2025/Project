@@ -76,7 +76,11 @@ export const handle: Handle = sequence(handleAuth, apiProtection);
 // 		name: 'PRC-6 radio',
 // 		description: 'Texture set 4k',
 // 		inputs: ['string'],
-// 		output: {type: 'string'},
+// 		output: { type: 'string' },
+// 		tests: [{
+// 			input: [1, 2, 3],
+// 			output: 1
+// 		}],
 // 		exampleCode: ''
 // 	}
 // )
