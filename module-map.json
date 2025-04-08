@@ -243,5 +243,26 @@
         "url": "/module/javascript-functions/01-first-function"
       }
     ]
+  },
+  "/module/modern-css": {
+    "data": {
+      "image": "/images/css.png",
+      "level": "Intermediate",
+      "xpReward": 150,
+      "category": "CSS",
+      "title": "Modern CSS Techniques",
+      "description": "Learn advanced CSS features, flexbox, grid, and modern layout techniques.",
+      "url": "/module/modern-css"
+    },
+    "sections": [
+      {
+        "title": "Introduction to Modern CSS",
+        "url": "/module/modern-css/01-intro"
+      },
+      {
+        "title": "Flexbox Layout System",
+        "url": "/module/modern-css/02-flexbox"
+      }
+    ]
   }
 }

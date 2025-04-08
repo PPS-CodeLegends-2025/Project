@@ -76,22 +76,24 @@
 							<span>{module.lessonsCount || 0} lessons</span>
 							<span>{module.xpReward} XP</span>
 						</div>
-
-						{#if module.progress > 0}
-							<div class="mt-4">
-								<div class="flex justify-between text-sm">
-									<span>Progress</span>
-									<span>{Math.round(module.progress)}%</span>
-								</div>
-								<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200">
-									<div
-										class="h-full rounded-full bg-indigo-600"
-										style="width: {module.progress}%"
-									></div>
-								</div>
-							</div>
-						{/if}
 					</div>
+
+					<div class="flex-1"></div>
+
+					{#if module.progress > 0}
+						<div class="mx-4 mb-4">
+							<div class="flex justify-between text-sm">
+								<span>Progress</span>
+								<span>{Math.round(module.progress)}%</span>
+							</div>
+							<div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+								<div
+									class="h-full rounded-full bg-indigo-600"
+									style="width: {module.progress}%"
+								></div>
+							</div>
+						</div>
+					{/if}
 				</a>
 			{/each}
 		</div>

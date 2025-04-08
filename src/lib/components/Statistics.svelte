@@ -14,20 +14,29 @@
 	onMount(async () => {
 		const Plotly = await import('plotly.js-dist-min');
 		const root = document.getElementById('chart')!;
+
+		const displayedData = weekData.map((s) => ({
+			...s,
+			activeDate: new Date(s.activeDate).toLocaleDateString('en-GB', {
+				month: 'short',
+				day: '2-digit'
+			})
+		}));
+
 		Plotly.newPlot(root, [
 			{
-				x: weekData.map((s) => new Date(s.activeDate)),
-				y: weekData.map((s) => s.lessonsCompleted),
-				labels: weekData.map((s) => s.activeDate),
+				x: displayedData.map((s) => s.activeDate),
+				y: displayedData.map((s) => s.lessonsCompleted),
+				labels: displayedData.map((s) => s.activeDate),
 				type: 'scatter',
 				legendgroup: 'Lessons Completed',
 				name: 'Lessons Completed',
 				mode: 'lines+markers'
 			},
 			{
-				x: weekData.map((s) => new Date(s.activeDate)),
-				y: weekData.map((s) => s.challengesSolved),
-				labels: weekData.map((s) => s.activeDate),
+				x: displayedData.map((s) => s.activeDate),
+				y: displayedData.map((s) => s.challengesSolved),
+				labels: displayedData.map((s) => s.activeDate),
 				type: 'scatter',
 				legendgroup: 'Challenges Solved',
 				name: 'Challenges Solved',
