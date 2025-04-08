@@ -9,12 +9,30 @@
 	const tests = data.challengeTask.tests;
 	let completed = $state(data.challenge.completed);
 
+	function typeToExampleArg(type: 'string' | 'number' | 'boolean' | 'object' | 'array') {
+		switch (type) {
+			case 'string':
+				return '"example"';
+			case 'number':
+				return 42;
+			case 'boolean':
+				return true;
+			case 'object':
+				return '{}';
+			case 'array':
+				return '[]';
+			default:
+				return '';
+		}
+	}
+
 	function initialCode() {
 		if (data.challengeTask.exampleCode) return data.challengeTask.exampleCode;
 
 		const inputsStr = data.challengeTask.inputs.map((v, i) => `${v}${i}`).join(',');
+		const exampleFunctionCallingArgs = data.challengeTask.inputs.map(typeToExampleArg).join(',');
 
-		return `function solution(${inputsStr}) {\n\t// Your code here\n}\n\n\n\nsolution(${inputsStr});\n\n`;
+		return `function solution(${inputsStr}) {\n\t// Your code here\n}\n\n\n\nsolution(${exampleFunctionCallingArgs});\n\n`;
 	}
 
 	const validateSolution = async (code: string) => {
