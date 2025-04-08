@@ -11,7 +11,7 @@ const Task = z.object({
 	output: z.object({
 		type: DataTypes
 	}),
-	exampleData: z.array(
+	tests: z.array(
 		z.object({
 			input: z.array(
 				z.union([

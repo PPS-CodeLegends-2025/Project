@@ -11,6 +11,15 @@ export const challenges = {
 		return challengeData || null;
 	},
 
+	async getChallengeTaskForChallenge(challengeId: string) {
+		const [challengeTaskData] = await db
+			.select()
+			.from(challengeTask)
+			.where(eq(challengeTask.challengeId, challengeId));
+
+		return challengeTaskData || null;
+	},
+
 	async getAllChallengesForUser(userId: string) {
 		try {
 			return await db.select().from(challenge).where(eq(challengeProgress.userId, userId));
@@ -129,6 +138,7 @@ export const challenges = {
 			description: string;
 			inputs: GeneratedTaskTemplate['inputs'];
 			output: GeneratedTaskTemplate['output'];
+			tests: GeneratedTaskTemplate['tests'];
 			exampleCode: string;
 		}
 	) {

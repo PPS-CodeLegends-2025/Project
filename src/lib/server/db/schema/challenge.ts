@@ -20,6 +20,7 @@ export const challengeTask = mysqlTable('challenge_task', {
 		.references(() => challenge.id),
 	name: varchar('name', { length: 255 }).notNull(),
 	description: varchar('description', { length: 1024 }).notNull(),
+	tests: json('tests').notNull().$type<GeneratedTaskTemplate['tests']>(),
 	inputs: json('inputs').notNull().$type<GeneratedTaskTemplate['inputs']>(),
 	output: json('output').notNull().$type<GeneratedTaskTemplate['output']>(),
 	exampleCode: varchar('example_code', { length: 1024 }).notNull()
