@@ -3,6 +3,7 @@ import { challenge, challengeProgress, challengeTask } from '../db/schema/challe
 import { and, asc, count, eq } from 'drizzle-orm';
 import { xpService } from './xp';
 import type { GeneratedTaskTemplate } from './taskgen';
+import { badgeAwards } from './badgeAwards';
 
 export const challenges = {
 	async getChallenge(challengeId: string) {
@@ -140,6 +141,7 @@ export const challenges = {
 
 				const xpReward = challengeData.xp;
 				await xpService.awardXp(userId, xpReward);
+				await badgeAwards.checkChallengeCompletionBadges(userId);
 			}
 		} catch (error) {
 			console.error('Error marking challenge as completed:', error);

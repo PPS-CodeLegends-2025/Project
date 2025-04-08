@@ -65,9 +65,6 @@
 
 			<div class="flex items-center">
 				<h3 class="text-lg font-semibold text-gray-900">New Badge!</h3>
-				<div class="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
-					+{badge.level * 10} XP
-				</div>
 			</div>
 
 			<p class="text-base font-medium text-indigo-600">{badge.name}</p>
