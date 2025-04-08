@@ -58,6 +58,25 @@
 			>solution</code
 		>!
 	</p>
+
+	<div class="mt-2">
+		{#if data.challengeTask.inputs.length > 0}
+			Function expects the following arguments:
+			<ul class="my-2 space-y-4">
+				{#each data.challengeTask.inputs as input, i (i)}
+					<li><code>{input}</code></li>
+				{/each}
+			</ul>
+			<p class="text-sm text-gray-500">
+				Arguments are passed in the same order as they are listed above.
+			</p>
+		{/if}
+
+		{#if data.challengeTask.output}
+			<br />
+			Function should return a <code>{data.challengeTask.output.type}</code> value.
+		{/if}
+	</div>
 {/snippet}
 
 {#snippet success(message: string)}
@@ -126,3 +145,11 @@
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	@reference 'tailwindcss';
+
+	code {
+		@apply rounded bg-gray-200/70 px-1.5 py-0.5 text-gray-800;
+	}
+</style>
