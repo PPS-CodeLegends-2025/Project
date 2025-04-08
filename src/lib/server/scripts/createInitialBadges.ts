@@ -115,14 +115,12 @@ export async function createInitialBadges() {
 
 	try {
 		for (const badgeData of initialBadges) {
-			// Check if badge exists
 			const existingBadge = await db
 				.select()
 				.from(table.badge)
 				.where(eq(table.badge.id, badgeData.id));
 
 			if (existingBadge.length === 0) {
-				// Insert badge if it doesn't exist
 				await db.insert(table.badge).values(badgeData);
 				logger.debug(`Created badge: ${badgeData.name}`);
 			} else {

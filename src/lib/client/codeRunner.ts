@@ -80,7 +80,7 @@ async function runFunctionWithTests(
 			if (result !== output) {
 				return {
 					success: false,
-					message: `Expected ${output}, but got ${result} when calling add(${input.join(', ')})`
+					message: `Expected ${output}, but got ${result} when calling ${functionName}(${input.join(', ')})`
 				};
 			}
 		}

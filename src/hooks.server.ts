@@ -6,6 +6,7 @@ import { dev } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createInitialBadges } from '$lib/server/scripts/createInitialBadges';
 import { logger } from '$logger';
+import { createInitialChallenges } from '$server/scripts/createIntialChallenges';
 
 try {
 	await applyMigrations().then(() => {
@@ -16,8 +17,8 @@ try {
 		logger.info('Badges setup complete');
 	});
 
-	await createInitialBadges().then(() => {
-		logger.debug('Badges setup complete');
+	await createInitialChallenges().then(() => {
+		logger.info('Challenges setup complete');
 	});
 } catch (error) {
 	logger.error('Failed to apply migrations:', error);

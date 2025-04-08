@@ -1,6 +1,6 @@
 import { db } from '../db';
 import { challenge, challengeProgress, challengeTask } from '../db/schema/challenge';
-import { and, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { xpService } from './xp';
 import type { GeneratedTaskTemplate } from './taskgen';
 
@@ -9,6 +9,28 @@ export const challenges = {
 		const [challengeData] = await db.select().from(challenge).where(eq(challenge.id, challengeId));
 
 		return challengeData || null;
+	},
+
+	async getChallengeCount() {
+		const [cnt] = await db.select({ count: count(challenge.id) }).from(challenge);
+
+		return cnt?.count || 0;
+	},
+
+	async getChallengeAndCompleted(challengeId: string, userId: string) {
+		const [challengeData] = await db.select().from(challenge).where(eq(challenge.id, challengeId));
+		if (!challengeData) return null;
+
+		const [challengeProgressData] = await db
+			.select()
+			.from(challengeProgress)
+			.where(
+				and(eq(challengeProgress.userId, userId), eq(challengeProgress.challengeId, challengeId))
+			);
+		return {
+			...challengeData,
+			completed: !!challengeProgressData?.completed
+		};
 	},
 
 	async getChallengeTaskForChallenge(challengeId: string) {
@@ -98,6 +120,8 @@ export const challenges = {
 						eq(challengeProgress.completed, true)
 					)
 				);
+
+			console.log('Existing challenge progress:', existing);
 
 			if (existing.length === 0) {
 				const challengeData = await this.getChallenge(challengeId);

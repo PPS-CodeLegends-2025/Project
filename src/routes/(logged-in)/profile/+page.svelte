@@ -100,7 +100,7 @@
 
 	{#if activeTab === 'overview'}
 		<div class="overview-content">
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
 					<h3 class="mt-0 mb-2 text-base text-gray-600">Completed Modules</h3>
 					<div class="text-4xl font-bold text-gray-800">
@@ -116,6 +116,10 @@
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
 					<h3 class="mt-0 mb-2 text-base text-gray-600">Active Days</h3>
 					<div class="text-4xl font-bold text-gray-800">{user?.stats?.daysActive || 0}</div>
+				</div>
+				<div class="rounded-lg bg-gray-50 p-6 text-center">
+					<h3 class="mt-0 mb-2 text-base text-gray-600">Challenges Solved</h3>
+					<div class="text-4xl font-bold text-gray-800">{user?.stats?.challengesSolved || 0}</div>
 				</div>
 			</div>
 

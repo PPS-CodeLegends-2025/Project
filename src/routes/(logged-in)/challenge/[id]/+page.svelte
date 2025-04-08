@@ -2,30 +2,41 @@
 	import type { PageProps } from './$types';
 	import JsTask from '$components/code/JsTask.svelte';
 	import { codeRunner } from '$client/codeRunner';
-
-	const tests = [
-		{ input: [1, 2], output: 3 },
-		{ input: [5, 7], output: 12 },
-		{ input: [-1, 1], output: 0 },
-		{ input: [0, 0], output: 0 },
-		{ input: [10, -5], output: 5 }
-	];
-
-	const validateSolution = async (code: string) => {
-		const result = await codeRunner.runFunctionWithTests(code, 'add', tests);
-		return result;
-	};
+	import { challenges } from '$client/services/challenges';
 
 	let { data }: PageProps = $props();
+
+	const tests = data.challengeTask.tests;
+	let completed = $state(data.challenge.completed);
+
+	function initialCode() {
+		if (data.challengeTask.exampleCode) return data.challengeTask.exampleCode;
+
+		return `function solution(${data.challengeTask.inputs}) {\n\t// Your code here\n}\n\n\n\nsolution(${data.challengeTask.inputs.join(',')});\n\n`;
+	}
+
+	const validateSolution = async (code: string) => {
+		const result = await codeRunner.runFunctionWithTests(code, 'solution', tests);
+		if (result.success) {
+			await challenges.markChallengeCompleted(data.challenge.id);
+			completed = true;
+		}
+		return result;
+	};
 </script>
 
 <svelte:head>
-	<title>{data.challenge.title} | Code Legends</title>
+	<title>{data.challenge.title} | CodeLegends</title>
 </svelte:head>
 
 {#snippet description()}
 	<p>
 		{data.challengeTask.description}
+	</p>
+	<p class="mt-12 text-xl">
+		Always name your main function as <code class="bg-gray-100 px-1 py-0.5 text-gray-800"
+			>solution</code
+		>!
 	</p>
 {/snippet}
 
@@ -67,6 +78,12 @@
 		</div>
 	</div>
 
+	{#if completed}
+		<div class="mb-8 rounded bg-green-100 p-4 text-green-800">
+			You have completed this challenge! 🎉
+		</div>
+	{/if}
+
 	<div class="mb-8">
 		<h2 class="mb-3 text-xl font-semibold">Description</h2>
 		<div>
@@ -77,7 +94,6 @@
 	<div class="my-12 border-t border-gray-200"></div>
 
 	<div class="flex flex-col gap-4">
-		<h2 class="text-xl font-semibold">Your Solution</h2>
 		<div class="h-full">
 			<JsTask
 				title={data.challengeTask.name}
@@ -85,7 +101,7 @@
 				successFragment={success}
 				errorFragment={error}
 				onSubmit={validateSolution}
-				initialCode={data.challengeTask.exampleCode}
+				initialCode={initialCode()}
 			/>
 		</div>
 	</div>

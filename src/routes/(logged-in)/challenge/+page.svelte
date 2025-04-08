@@ -27,7 +27,7 @@
 	let difficulties = $derived(['all', ...new Set(challenges.map((c) => c.difficulty))]);
 
 	function startChallenge(id: string) {
-		goto(`/challenges/${id}`);
+		goto(`/challenge/${id}`);
 	}
 </script>
 
