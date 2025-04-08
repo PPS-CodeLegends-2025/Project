@@ -1,67 +1,148 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "dc0a2990-2c80-4a03-9670-2c8dad868c9f",
+	"id": "abeb58fd-0178-4d28-9295-a3775526b479",
 	"prevId": "e76b16ff-4a13-499e-9c5d-228c9b59fa0a",
 	"tables": {
-		"challenge": {
-			"name": "challenge",
+		"badge": {
+			"name": "badge",
 			"columns": {
 				"id": {
 					"name": "id",
-					"type": "varchar(32)",
+					"type": "varchar(255)",
 					"primaryKey": false,
 					"notNull": true,
 					"autoincrement": false
 				},
-				"title": {
-					"name": "title",
-					"type": "varchar(32)",
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
 					"primaryKey": false,
 					"notNull": true,
 					"autoincrement": false
 				},
 				"description": {
 					"name": "description",
-					"type": "varchar(512)",
+					"type": "text",
 					"primaryKey": false,
 					"notNull": true,
 					"autoincrement": false
 				},
-				"difficulty": {
-					"name": "difficulty",
-					"type": "varchar(32)",
+				"icon": {
+					"name": "icon",
+					"type": "varchar(255)",
 					"primaryKey": false,
 					"notNull": true,
 					"autoincrement": false
 				},
 				"category": {
 					"name": "category",
-					"type": "varchar(32)",
+					"type": "varchar(100)",
 					"primaryKey": false,
 					"notNull": true,
 					"autoincrement": false
 				},
-				"xp": {
-					"name": "xp",
+				"level": {
+					"name": "level",
 					"type": "int",
 					"primaryKey": false,
 					"notNull": true,
-					"autoincrement": false
+					"autoincrement": false,
+					"default": 1
 				},
-				"time_estimate": {
-					"name": "time_estimate",
-					"type": "varchar(32)",
+				"hidden": {
+					"name": "hidden",
+					"type": "boolean",
 					"primaryKey": false,
 					"notNull": true,
-					"autoincrement": false
+					"autoincrement": false,
+					"default": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "(now())"
 				}
 			},
 			"indexes": {},
 			"foreignKeys": {},
 			"compositePrimaryKeys": {
-				"challenge_id": {
-					"name": "challenge_id",
+				"badge_id": {
+					"name": "badge_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"user_badge": {
+			"name": "user_badge",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"badge_id": {
+					"name": "badge_id",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"awarded_at": {
+					"name": "awarded_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "(now())"
+				},
+				"viewed": {
+					"name": "viewed",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"user_badge_user_id_user_id_fk": {
+					"name": "user_badge_user_id_user_id_fk",
+					"tableFrom": "user_badge",
+					"tableTo": "user",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"user_badge_badge_id_badge_id_fk": {
+					"name": "user_badge_badge_id_badge_id_fk",
+					"tableFrom": "user_badge",
+					"tableTo": "badge",
+					"columnsFrom": ["badge_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"user_badge_id": {
+					"name": "user_badge_id",
 					"columns": ["id"]
 				}
 			},
@@ -124,80 +205,6 @@
 			"compositePrimaryKeys": {
 				"challenge_progress_id": {
 					"name": "challenge_progress_id",
-					"columns": ["id"]
-				}
-			},
-			"uniqueConstraints": {},
-			"checkConstraint": {}
-		},
-		"challenge_task": {
-			"name": "challenge_task",
-			"columns": {
-				"id": {
-					"name": "id",
-					"type": "varchar(36)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"challenge_id": {
-					"name": "challenge_id",
-					"type": "varchar(255)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"name": {
-					"name": "name",
-					"type": "varchar(255)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"description": {
-					"name": "description",
-					"type": "varchar(1024)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"inputs": {
-					"name": "inputs",
-					"type": "json",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"output": {
-					"name": "output",
-					"type": "json",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"example_code": {
-					"name": "example_code",
-					"type": "varchar(1024)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {
-				"challenge_task_challenge_id_challenge_id_fk": {
-					"name": "challenge_task_challenge_id_challenge_id_fk",
-					"tableFrom": "challenge_task",
-					"tableTo": "challenge",
-					"columnsFrom": ["challenge_id"],
-					"columnsTo": ["id"],
-					"onDelete": "no action",
-					"onUpdate": "no action"
-				}
-			},
-			"compositePrimaryKeys": {
-				"challenge_task_id": {
-					"name": "challenge_task_id",
 					"columns": ["id"]
 				}
 			},

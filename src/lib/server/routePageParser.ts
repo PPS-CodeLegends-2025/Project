@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { logger } from './logger';
 
 export function extractScriptTagText(path: string) {
 	const page = `src/routes/(logged-in)/${path.replace('/module', '/module/(wrapper)')}/+page.svelte`;
@@ -9,7 +10,7 @@ export function extractScriptTagText(path: string) {
 		if (!script) return null;
 		return script[1];
 	} catch (error) {
-		console.error(`Failed to read file at path: ${page}`, error);
+		logger.error(`Failed to read file at path: ${page}`, error);
 		return null;
 	}
 }

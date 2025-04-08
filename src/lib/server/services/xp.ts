@@ -2,6 +2,7 @@ import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { userService } from './user';
+import { badgeAwards } from './badgeAwards';
 
 export const xpService = {
 	/**
@@ -73,6 +74,10 @@ export const xpService = {
 			.where(eq(table.user.id, userId));
 
 		await userService.recordUserActivity(userId);
+
+		if (leveledUp) {
+			await badgeAwards.checkLevelBadges(userId, newLevel);
+		}
 
 		const [updatedUser] = await db
 			.select({

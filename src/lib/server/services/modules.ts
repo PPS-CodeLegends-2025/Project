@@ -5,6 +5,8 @@ import { moduleProgress } from '$lib/server/db/schema/moduleProgress';
 import { and, eq } from 'drizzle-orm';
 import { xpService } from './xp';
 import { userService } from './user';
+import { badgeAwards } from './badgeAwards';
+import { logger } from '$server/logger';
 
 const moduleMap = m as ModuleMap;
 
@@ -60,10 +62,12 @@ export const modules = {
 					const moduleXp = moduleData.data.xpReward;
 					await xpService.awardXp(userId, moduleXp);
 					await userService.incrementLessonCompletion(userId);
+
+					await badgeAwards.checkModuleCompletionBadges(userId);
 				}
 			}
 		} catch (error) {
-			console.error('Error marking section as completed:', error);
+			logger.error('Error marking section as completed:', error);
 			throw error;
 		}
 	},
@@ -83,7 +87,7 @@ export const modules = {
 				? Math.round((allCompletedSections.length / totalSections) * 100)
 				: 0;
 		} catch (error) {
-			console.error('Error getting module progress:', error);
+			logger.error('Error getting module progress:', error);
 			return 0;
 		}
 	},
@@ -97,7 +101,7 @@ export const modules = {
 
 			return completedSections.map((section) => section.sectionIndex);
 		} catch (error) {
-			console.error('Error getting completed sections:', error);
+			logger.error('Error getting completed sections:', error);
 			return [];
 		}
 	}

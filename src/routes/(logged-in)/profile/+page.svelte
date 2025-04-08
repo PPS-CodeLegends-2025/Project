@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
+	import BadgesSection from '$lib/components/badges/BadgesSection.svelte';
+	import Statistics from '$components/Statistics.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -80,24 +82,24 @@
 		</button>
 		<button
 			class={`cursor-pointer border-0 border-b-2 bg-transparent px-6 py-3 text-base ${
-				activeTab === 'achievements' ? 'border-green-500 font-bold' : 'border-transparent'
+				activeTab === 'badges' ? 'border-green-500 font-bold' : 'border-transparent'
 			}`}
-			onclick={() => (activeTab = 'achievements')}
+			onclick={() => (activeTab = 'badges')}
 		>
-			Achievements
+			Badges
 		</button>
 		<button
 			class={`cursor-pointer border-0 border-b-2 bg-transparent px-6 py-3 text-base ${
-				activeTab === 'settings' ? 'border-green-500 font-bold' : 'border-transparent'
+				activeTab === 'statistics' ? 'border-green-500 font-bold' : 'border-transparent'
 			}`}
-			onclick={() => (activeTab = 'settings')}
+			onclick={() => (activeTab = 'statistics')}
 		>
-			Settings
+			Statistics
 		</button>
 	</div>
 
-	<div>
-		{#if activeTab === 'overview'}
+	{#if activeTab === 'overview'}
+		<div class="overview-content">
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="rounded-lg bg-gray-50 p-6 text-center">
 					<h3 class="mt-0 mb-2 text-base text-gray-600">Completed Modules</h3>
@@ -117,7 +119,6 @@
 				</div>
 			</div>
 
-			<!-- in-progress modules -->
 			{#if progress.inProgressModules?.length > 0}
 				<div class="mt-8">
 					<h3 class="mb-4 text-xl font-semibold">In Progress Modules</h3>
@@ -153,7 +154,6 @@
 				</div>
 			{/if}
 
-			<!-- completed modules -->
 			{#if progress.completedModules?.length > 0}
 				<div class="mt-8">
 					<h3 class="mb-4 text-xl font-semibold">Completed Modules</h3>
@@ -190,6 +190,10 @@
 					<a href="/module" class="btn primary">Browse Modules</a>
 				</div>
 			{/if}
-		{/if}
-	</div>
+		</div>
+	{:else if activeTab === 'badges'}
+		<BadgesSection userId={user.id} />
+	{:else if activeTab === 'statistics'}
+		<Statistics weekData={data.statistics} />
+	{/if}
 </div>

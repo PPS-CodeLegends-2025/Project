@@ -1,6 +1,7 @@
 import { writeFileSync } from 'fs';
 import { readModuleData, readModuleSectionData } from './routePageParser';
 import { dev } from '$app/environment';
+import { logger } from '$logger';
 
 const pages = import.meta.glob('/src/routes/**/+page.svelte');
 export const routes = Object.keys(pages)
@@ -39,7 +40,7 @@ if (dev) {
 	>;
 
 	for (const module of modules) {
-		console.log(`Reading ${module}`);
+		logger.info(`Reading ${module}`);
 		data[module] = {
 			data: readModuleData(module),
 			sections: moduleSections.filter((x) => x.startsWith(module)).map(readModuleSectionData)
