@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { challenges } from './hardcoded';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
+
+	const challenges = data.challenges;
 
 	let selectedCategory = $state('all');
 	let selectedDifficulty = $state('all');
@@ -22,8 +26,8 @@
 	let categories = $derived(['all', ...new Set(challenges.map((c) => c.category))]);
 	let difficulties = $derived(['all', ...new Set(challenges.map((c) => c.difficulty))]);
 
-	function startChallenge(id: number) {
-		goto(`/challenges/${id}`);
+	function startChallenge(id: string) {
+		goto(`/challenge/${id}`);
 	}
 </script>
 
@@ -97,7 +101,7 @@
 
 					<div class="flex items-center justify-between">
 						<div class="flex gap-4 text-sm">
-							<span class="font-bold text-purple-700">{challenge.xpReward} XP</span>
+							<span class="font-bold text-purple-700">{challenge.xp} XP</span>
 							<span class="text-gray-500">{challenge.timeEstimate}</span>
 						</div>
 

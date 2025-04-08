@@ -7,7 +7,7 @@
 		<li><a href="/">Dashboard</a></li>
 		<li><a href="/playground">JS Playground</a></li>
 		<li><a href="/module">Modules</a></li>
-		<li><a href="/challenges">Challenges</a></li>
+		<li><a href="/challenge">Challenges</a></li>
 		<li><a href="/profile" data-sveltekit-reload>Profile</a></li>
 		<li><a href="/logout" data-sveltekit-preload-data="off">Logout</a></li>
 	</ul>

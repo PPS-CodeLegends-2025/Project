@@ -36,6 +36,13 @@
 			"when": 1743967017218,
 			"tag": "0004_gray_jamie_braddock",
 			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "5",
+			"when": 1744105206914,
+			"tag": "0005_huge_firebrand",
+			"breakpoints": true
 		}
 	]
 }

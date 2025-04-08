@@ -6,6 +6,7 @@ import { dev } from '$app/environment';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createInitialBadges } from '$lib/server/scripts/createInitialBadges';
 import { logger } from '$logger';
+import { createInitialChallenges } from '$server/scripts/createIntialChallenges';
 
 try {
 	await applyMigrations().then(() => {
@@ -16,8 +17,8 @@ try {
 		logger.info('Badges setup complete');
 	});
 
-	await createInitialBadges().then(() => {
-		logger.debug('Badges setup complete');
+	await createInitialChallenges().then(() => {
+		logger.info('Challenges setup complete');
 	});
 } catch (error) {
 	logger.error('Failed to apply migrations:', error);
@@ -62,3 +63,43 @@ const apiProtection: Handle = async ({ event, resolve }) => {
 if (dev) logger.debug('[DEV]: App modules:', groupedModules);
 
 export const handle: Handle = sequence(handleAuth, apiProtection);
+
+// challenges.createChallenge(
+// 	{
+// 		title: 'Challenge n19',
+// 		description: 'Going back to Vietnam!',
+// 		difficulty: 'very hard',
+// 		category: 'props',
+// 		xp: 100,
+// 		timeEstimate: '1 month'
+// 	},
+// 	{
+// 		name: 'PRC-6 radio',
+// 		description: 'Texture set 4k',
+// 		inputs: ['string'],
+// 		output: { type: 'string' },
+// 		tests: [{
+// 			input: [1, 2, 3],
+// 			output: 1
+// 		}],
+// 		exampleCode: ''
+// 	}
+// )
+
+// challenges.createChallenge(
+// 	{
+// 		title: 'E',
+// 		description: 'Going back to Vietnam!',
+// 		difficulty: 'very hard',
+// 		category: 'props',
+// 		xp: 100,
+// 		timeEstimate: '1 month'
+// 	},
+// 	{
+// 		name: 'PRC-6 radio',
+// 		description: 'Texture set 4k',
+// 		inputs: ['string'],
+// 		output: {type: 'string'},
+// 		exampleCode: ''
+// 	}
+// )

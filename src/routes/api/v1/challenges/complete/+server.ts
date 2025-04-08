@@ -1,25 +1,25 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { xpService } from '$lib/server/services/xp';
+import { challenges } from '$services/challenge';
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	try {
-		const { userId, challengeId, xpReward } = await request.json();
+		const { challengeId } = await request.json();
+		const userId = locals.user!.id;
 
-		if (!userId || !challengeId) {
+		if (!userId || !challengeId)
 			return json({ success: false, message: 'Missing required fields' }, { status: 400 });
-		}
 
-		// TODO: update the challenge completion status in db
-		// For now just award the XP
-		const xpAmount = xpReward || 25; // Default XP amount
+		const challenge = await challenges.getChallenge(challengeId);
 
-		const result = await xpService.awardXp(userId, xpAmount);
+		if (!challenge)
+			return json({ success: false, message: 'Challenge not found' }, { status: 404 });
+
+		await challenges.markChallengeCompleted(userId, challengeId);
 
 		return json({
 			success: true,
-			challengeCompleted: true,
-			...result
+			challengeCompleted: true
 		});
 	} catch (error) {
 		console.error('Error completing challenge:', error);

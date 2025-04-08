@@ -91,20 +91,6 @@ export const userService = {
 
 	async getUserStats(userId: string) {
 		try {
-			const [userStats] = await db
-				.select()
-				.from(table.userStats)
-				.where(eq(table.userStats.userId, userId));
-
-			if (userStats) {
-				return {
-					lessonsCompleted: userStats.lessonsCompleted,
-					challengesSolved: userStats.challengesSolved,
-					daysActive: userStats.daysActive,
-					lastActiveDate: userStats.lastActiveDate ? userStats.lastActiveDate.toISOString() : null
-				};
-			}
-
 			const completedLessons = await db
 				.select({ count: sql<number>`COUNT(*)` })
 				.from(table.moduleProgress)
