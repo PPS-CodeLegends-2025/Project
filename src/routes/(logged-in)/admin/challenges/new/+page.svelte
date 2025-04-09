@@ -256,7 +256,7 @@
 			</form>
 		</div>
 	{:else if currentStep === 'preview' && form}
-		<div class="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md">
+		<div class="mb-4 rounded border border-gray-200 bg-white px-8 pt-6 pb-8 shadow-md">
 			<h2 class="mb-4 text-xl font-bold">Challenge Preview</h2>
 
 			<div class="mb-4 border-b pb-4">
@@ -399,7 +399,7 @@
 			</div>
 		</div>
 	{:else if currentStep === 'success'}
-		<div class="mb-4 rounded bg-white px-8 pt-6 pb-8 text-center shadow-md">
+		<div class="mb-4 rounded border border-gray-200 bg-white px-8 pt-6 pb-8 shadow-md">
 			<svg
 				class="mx-auto mb-4 h-12 w-12 text-green-500"
 				fill="none"
