@@ -27,8 +27,6 @@
 	}
 
 	function initialCode() {
-		if (data.challengeTask.exampleCode) return data.challengeTask.exampleCode;
-
 		const inputsStr = data.challengeTask.inputs.map((v, i) => `${v}${i}`).join(',');
 		const exampleFunctionCallingArgs = data.challengeTask.inputs.map(typeToExampleArg).join(',');
 

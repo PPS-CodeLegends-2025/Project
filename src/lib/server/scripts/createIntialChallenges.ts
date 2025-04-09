@@ -151,7 +151,7 @@ export async function createInitialChallenges() {
 				description: 'Learn to do basic math operations!',
 				difficulty: 'Medium',
 				category: 'Tutorial',
-				xp: 50,
+				xp: 100,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -178,7 +178,7 @@ export async function createInitialChallenges() {
 				description: 'Learn to do basic math operations!',
 				difficulty: 'Medium',
 				category: 'Tutorial',
-				xp: 50,
+				xp: 100,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -206,7 +206,7 @@ export async function createInitialChallenges() {
 					'Create a function that returns the square root of a number, returning "undefined" if the number is negative',
 				difficulty: 'Medium',
 				category: 'Tutorial',
-				xp: 50,
+				xp: 100,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -238,7 +238,7 @@ export async function createInitialChallenges() {
 				description: 'Create a function that checks if a string is a palindrome',
 				difficulty: 'Medium',
 				category: 'Strings',
-				xp: 50,
+				xp: 100,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -265,7 +265,7 @@ export async function createInitialChallenges() {
 				description: 'Create a function that returns "Fizz", "Buzz", or "FizzBuzz"',
 				difficulty: 'Medium',
 				category: 'Logic',
-				xp: 50,
+				xp: 100,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -305,7 +305,7 @@ export async function createInitialChallenges() {
 				description: 'Create a function that calculates the factorial of a number',
 				difficulty: 'Hard',
 				category: 'Math',
-				xp: 50,
+				xp: 150,
 				timeEstimate: '10 minutes'
 			},
 			task: {
@@ -340,7 +340,7 @@ export async function createInitialChallenges() {
 				description: 'Create a function that returns the nth Fibonacci number',
 				difficulty: 'Hard',
 				category: 'Math',
-				xp: 50,
+				xp: 150,
 				timeEstimate: '10 minutes'
 			},
 			task: {

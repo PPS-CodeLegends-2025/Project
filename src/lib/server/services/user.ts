@@ -141,6 +141,22 @@ export const userService = {
 		}
 	},
 
+	async deleteUser(userId: string) {
+		try {
+			await db.delete(table.session).where(eq(table.session.userId, userId));
+			await db.delete(table.moduleProgress).where(eq(table.moduleProgress.userId, userId));
+			await db.delete(table.challengeProgress).where(eq(table.challengeProgress.userId, userId));
+			await db.delete(table.userActiveDays).where(eq(table.userActiveDays.userId, userId));
+			await db.delete(table.userStats).where(eq(table.userStats.userId, userId));
+			await db.delete(table.userBadge).where(eq(table.userBadge.userId, userId));
+			await db.delete(table.user).where(eq(table.user.id, userId));
+		} catch (error) {
+			console.error('Error deleting user:', error);
+			return false;
+		}
+		return true;
+	},
+
 	async incrementLessonCompletion(userId: string) {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);

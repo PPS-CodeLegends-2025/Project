@@ -7,7 +7,7 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<Navbar />
+	<Navbar admin={data.user.admin} />
 	<main class="flex-1 overflow-y-auto">
 		{@render children()}
 	</main>

@@ -1,9 +1,20 @@
+<script lang="ts">
+	interface Props {
+		admin: boolean;
+	}
+
+	let { admin }: Props = $props();
+</script>
+
 <nav class="flex items-center justify-between border-b border-gray-300 px-12 py-4">
 	<div class="flex items-center">
 		<a href="/" class="text-xl font-bold">CodeLegends</a>
 	</div>
 
 	<ul class="flex">
+		{#if admin}
+			<li><a href="/admin" class="text-indigo-500">Admin</a></li>
+		{/if}
 		<li><a href="/">Dashboard</a></li>
 		<li><a href="/leaderboard">Leaderboard</a></li>
 		<li><a href="/playground">JS Playground</a></li>

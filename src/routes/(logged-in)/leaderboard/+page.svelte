@@ -21,15 +21,15 @@
 		<p>Top 10 learners ranked by level and XP</p>
 	</header>
 
-	<div class="overflow-hidden rounded-xl bg-white py-1.5 shadow-lg">
+	<div class="overflow-hidden rounded-xl bg-white shadow-lg">
 		<table class="w-full table-auto text-left text-sm text-gray-700">
-			<thead class=" bg-gray-50 text-xs tracking-wider text-gray-500 uppercase">
-				<tr class="px-6">
-					<th class="px-4 py-3">#</th>
-					<th class="px-4 py-3">User</th>
-					<th class="px-4 py-3">Level</th>
-					<th class="px-4 py-3">XP</th>
-					<th class="px-4 py-3">Score</th>
+			<thead class="bg-gray-50 text-xs tracking-wider text-gray-500 uppercase">
+				<tr>
+					<th>#</th>
+					<th class="!text-left">User</th>
+					<th>Level</th>
+					<th>XP</th>
+					<th>Score</th>
 				</tr>
 			</thead>
 			<tbody class="divide-y divide-gray-100">
@@ -46,10 +46,23 @@
 						</td>
 						<td class="px-4 py-3">{user.level}</td>
 						<td class="px-4 py-3">{user.xp}</td>
-						<td class="px-4 py-3 font-semibold">{user.level * 1000 + user.xp}</td>
+						<td class="px-4 py-3 font-semibold">{user.score}</td>
 					</tr>
 				{/each}
 			</tbody>
 		</table>
 	</div>
 </div>
+
+<style lang="postcss">
+	@reference 'tailwindcss';
+
+	th,
+	td {
+		@apply text-center;
+	}
+
+	th {
+		@apply bg-gray-100 px-4 py-4 text-gray-700;
+	}
+</style>
