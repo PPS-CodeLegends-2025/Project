@@ -5,7 +5,7 @@
 	import { modules } from '$lib/client/services/modules';
 
 	const sectionData: Section = {
-		title: 'DOM Navigation' // <--- Changed
+		title: 'DOM Navigation'
 	};
 
 	let { data }: PageProps = $props();
