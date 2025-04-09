@@ -227,6 +227,47 @@
       }
     ]
   },
+  "/module/javascript-dom": {
+    "data": {
+      "image": "/images/dom.png",
+      "level": "Intermediate",
+      "xpReward": 100,
+      "category": "JavaScript",
+      "title": "JavaScript DOM",
+      "description": "Learn the basics of JavaScript DOM.",
+      "url": "/module/javascript-dom"
+    },
+    "sections": [
+      {
+        "title": "What is the DOM?",
+        "url": "/module/javascript-dom/01-what-is-dom"
+      },
+      {
+        "title": "Selecting Elements",
+        "url": "/module/javascript-dom/02-dom-navigation"
+      },
+      {
+        "title": "DOM Navigation",
+        "url": "/module/javascript-dom/03-elements-manipulation"
+      },
+      {
+        "title": "Manipulating Content and Attributes",
+        "url": "/module/javascript-dom/04-manipulating-content-attributes"
+      },
+      {
+        "title": "Manipulating Styles and Classes",
+        "url": "/module/javascript-dom/05-manipulating-styles-classes"
+      },
+      {
+        "title": "Creating and Removing Elements",
+        "url": "/module/javascript-dom/06-creating-removing-elements"
+      },
+      {
+        "title": "Event Handling",
+        "url": "/module/javascript-dom/07-event-handling"
+      }
+    ]
+  },
   "/module/javascript-functions": {
     "data": {
       "image": "/images/js-logo.png",
