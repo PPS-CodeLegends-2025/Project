@@ -122,8 +122,6 @@ export const challenges = {
 					)
 				);
 
-			console.log('Existing challenge progress:', existing);
-
 			if (existing.length === 0) {
 				const challengeData = await this.getChallenge(challengeId);
 

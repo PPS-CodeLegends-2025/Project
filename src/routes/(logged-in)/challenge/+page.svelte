@@ -79,7 +79,7 @@
 			{#each filteredChallenges as challenge (challenge.id)}
 				{@const diff = challenge.difficulty.toLowerCase()}
 				<div
-					class="relative rounded-lg border border-gray-100 bg-white p-6 shadow-md transition duration-200 hover:translate-y-[-5px] hover:shadow-lg {challenge.completed
+					class="relative flex flex-col rounded-lg border border-gray-100 bg-white p-6 shadow-md transition duration-200 hover:translate-y-[-5px] hover:shadow-lg {challenge.completed
 						? 'border-l-4 border-l-green-500'
 						: ''}"
 				>
@@ -99,6 +99,8 @@
 					</div>
 
 					<p class="mb-6 text-sm leading-relaxed text-gray-600">{challenge.description}</p>
+
+					<div class="flex-1"></div>
 
 					<div class="flex items-center justify-between">
 						<div class="flex gap-4 text-sm">

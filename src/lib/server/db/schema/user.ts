@@ -1,4 +1,4 @@
-import { mysqlTable, int, varchar, datetime, timestamp } from 'drizzle-orm/mysql-core';
+import { mysqlTable, int, varchar, datetime, timestamp, boolean } from 'drizzle-orm/mysql-core';
 import { createId } from '@paralleldrive/cuid2';
 
 export const user = mysqlTable('user', {
@@ -9,7 +9,8 @@ export const user = mysqlTable('user', {
 	level: int('level').notNull().default(0),
 	xp: int('xp_points').notNull().default(0),
 	registrationDate: timestamp('registration_date').notNull().defaultNow(),
-	bio: varchar('bio', { length: 256 }).notNull().default('')
+	bio: varchar('bio', { length: 256 }).notNull().default(''),
+	admin: boolean('admin').notNull().default(false)
 });
 
 export const session = mysqlTable('session', {

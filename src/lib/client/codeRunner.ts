@@ -68,6 +68,36 @@ async function runFunction<T = unknown>(code: string, functionName: string, args
 	}
 }
 
+function deepEquals(a: unknown, b: unknown): boolean {
+	if (typeof a !== typeof b) return false;
+	if (a === b) return true;
+	if (a === null || b === null) return false;
+	if (typeof a === 'string' && typeof b === 'string') return a === b;
+	if (typeof a === 'number' && typeof b === 'number') return a === b;
+	if (typeof a === 'boolean' && typeof b === 'boolean') return a === b;
+
+	if (Array.isArray(a) && Array.isArray(b)) {
+		if (a.length !== b.length) return false;
+		for (let i = 0; i < a.length; i++) {
+			if (!deepEquals(a[i], b[i])) return false;
+		}
+		return true;
+	}
+
+	if (typeof a === 'object' && typeof b === 'object') {
+		const aKeys = Object.keys(a);
+		const bKeys = Object.keys(b);
+		const aRef = a as Record<string, unknown>;
+		const bRef = b as Record<string, unknown>;
+		if (aKeys.length !== bKeys.length) return false;
+		for (const key of aKeys)
+			if (!bKeys.includes(key) || !deepEquals(aRef[key], bRef[key])) return false;
+		return true;
+	}
+
+	return false;
+}
+
 async function runFunctionWithTests(
 	code: string,
 	functionName: string,
@@ -77,7 +107,7 @@ async function runFunctionWithTests(
 		for (const { input, output } of tests) {
 			const result = await codeRunner.runFunction(code, functionName, input);
 
-			if (result !== output) {
+			if (!deepEquals(result, output)) {
 				return {
 					success: false,
 					message: `Expected ${output}, but got ${result} when calling ${functionName}(${input.join(', ')})`

@@ -43,6 +43,13 @@
 			"when": 1744105206914,
 			"tag": "0005_huge_firebrand",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "5",
+			"when": 1744216977287,
+			"tag": "0006_rich_terror",
+			"breakpoints": true
 		}
 	]
 }

@@ -38,7 +38,8 @@ export const authService = {
 					fullName: table.user.fullName,
 					level: table.user.level,
 					xp: table.user.xp,
-					registrationDate: table.user.registrationDate
+					registrationDate: table.user.registrationDate,
+					admin: table.user.admin
 				},
 				session: table.session
 			})
