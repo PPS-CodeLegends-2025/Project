@@ -5,6 +5,7 @@
 
 	<ul class="flex">
 		<li><a href="/">Dashboard</a></li>
+		<li><a href="/leaderboard">Leaderboard</a></li>
 		<li><a href="/playground">JS Playground</a></li>
 		<li><a href="/module">Modules</a></li>
 		<li><a href="/challenge">Challenges</a></li>

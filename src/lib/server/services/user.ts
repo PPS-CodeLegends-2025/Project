@@ -295,5 +295,17 @@ export const userService = {
 		});
 
 		return sortedStats;
+	},
+
+	async getAllUsersRank() {
+		const users = await db
+			.select({
+				username: table.user.username,
+				xp: table.user.xp,
+				level: table.user.level
+			})
+			.from(table.user);
+
+		return users;
 	}
 };
