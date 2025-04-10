@@ -202,6 +202,55 @@
       }
     ]
   },
+  "/module/javascript-async-api": {
+    "data": {
+      "image": "/images/js-logo.png",
+      "level": "Intermediate",
+      "xpReward": 100,
+      "category": "JavaScript",
+      "title": "JavaScript Async",
+      "description": "Learn the JavaScript async.",
+      "url": "/module/javascript-async-api"
+    },
+    "sections": [
+      {
+        "title": "Synchronous vs. Asynchronous",
+        "url": "/module/javascript-async-api/01-sync-vs-async"
+      },
+      {
+        "title": "Callbacks and Callback Hell",
+        "url": "/module/javascript-async-api/02-callbacks and-hell"
+      },
+      {
+        "title": "Introduction to Promises",
+        "url": "/module/javascript-async-api/03-intro-to-promises"
+      },
+      {
+        "title": "Promise Chaining and More",
+        "url": "/module/javascript-async-api/04-promises-chaining-more"
+      },
+      {
+        "title": "Fetch API: GET Requests",
+        "url": "/module/javascript-async-api/05-fetch-api-get-requests"
+      },
+      {
+        "title": "Fetch API: POST Requests & Options",
+        "url": "/module/javascript-async-api/06-fetch-api-post-options"
+      },
+      {
+        "title": "Async/Await Syntax",
+        "url": "/module/javascript-async-api/07-async-await"
+      },
+      {
+        "title": "What is an API?",
+        "url": "/module/javascript-async-api/08-what-is-an-api"
+      },
+      {
+        "title": "Working with a Real API",
+        "url": "/module/javascript-async-api/09-working-with-apis"
+      }
+    ]
+  },
   "/module/javascript-basics": {
     "data": {
       "image": "/images/js-logo.png",
