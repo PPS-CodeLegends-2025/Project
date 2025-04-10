@@ -61,9 +61,11 @@
 		});
 	}
 
+	let container: HTMLElement;
+
 	onMount(() => {
 		createEditor(
-			'#editor-root',
+			container,
 			{
 				value,
 				language,
@@ -94,6 +96,6 @@
 </script>
 
 <div
-	id="editor-root"
+	bind:this={container}
 	class="{className ?? ''} h-full w-full rounded border border-indigo-500 py-1 pl-1"
 ></div>
