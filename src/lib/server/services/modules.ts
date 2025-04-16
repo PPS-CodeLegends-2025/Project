@@ -15,7 +15,10 @@ export const modules = {
 		return moduleMap;
 	},
 	list() {
-		return Object.keys(moduleMap).map((x) => moduleMap[x].data);
+		return Object.keys(moduleMap).map((x) => ({
+			...moduleMap[x].data,
+			id: moduleMap[x].data.url
+		}));
 	},
 	navMap() {
 		return Object.keys(moduleMap).map((x) => ({
@@ -24,7 +27,15 @@ export const modules = {
 		}));
 	},
 	getModule(path: string) {
-		return moduleMap[path];
+		if (!moduleMap[path]) return null;
+
+		return {
+			data: {
+				...moduleMap[path].data,
+				id: moduleMap[path].data.url
+			},
+			sections: moduleMap[path].sections
+		};
 	},
 
 	async markSectionCompleted(

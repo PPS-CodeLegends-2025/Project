@@ -76,16 +76,27 @@ export const modules = {
 		return moduleMap;
 	},
 	list() {
-		return Object.keys(moduleMap).map((x) => moduleMap[x as keyof typeof moduleMap].data);
+		return Object.keys(moduleMap).map((x: string) => ({
+			...moduleMap[x as keyof typeof moduleMap].data,
+			id: moduleMap[x as keyof typeof moduleMap].data.url // Add id field based on url
+		}));
 	},
 	navMap() {
-		return Object.keys(moduleMap).map((x) => ({
+		return Object.keys(moduleMap).map((x: string) => ({
 			title: moduleMap[x as keyof typeof moduleMap].data.title,
 			url: moduleMap[x as keyof typeof moduleMap].data.url
 		}));
 	},
-	getModule(path: string): { data: ModuleMeta; sections: SectionMeta[] } | null {
-		return moduleMap[path] || null;
+	getModule(path: string): { data: ModuleMeta & { id: string }; sections: SectionMeta[] } | null {
+		if (!moduleMap[path]) return null;
+
+		return {
+			data: {
+				...moduleMap[path].data,
+				id: moduleMap[path].data.url
+			},
+			sections: moduleMap[path].sections
+		};
 	}
 };
 
