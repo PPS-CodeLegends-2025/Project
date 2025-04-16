@@ -3,9 +3,26 @@
 	import BadgesSection from '$lib/components/badges/BadgesSection.svelte';
 	import Statistics from '$components/Statistics.svelte';
 
+	interface UserStats {
+		lessonsCompleted: number;
+		challengesSolved: number;
+		daysActive: number;
+		lastActiveDate: string | null;
+	}
+
+	interface User {
+		id: string;
+		username: string;
+		fullName: string | null;
+		level: number;
+		xp: number;
+		registrationDate: Date;
+		stats?: UserStats;
+	}
+
 	let { data }: PageProps = $props();
 
-	const user = data.user;
+	const user: User = data.user;
 	const levelInfo = data.levelInfo;
 	const progress = data.progress;
 
@@ -198,6 +215,6 @@
 	{:else if activeTab === 'badges'}
 		<BadgesSection userId={user.id} />
 	{:else if activeTab === 'statistics'}
-		<Statistics weekData={data.statistics} />
+		<Statistics weekData={data.activityStats} />
 	{/if}
 </div>

@@ -1,32 +1,70 @@
-import { xpService } from '$lib/server/services/xp';
+import { executeGraphQLQuery } from '$lib/server/graphql';
 import { userService } from '$lib/server/services/user';
+import { xpService } from '$lib/server/services/xp';
+import { badgeService } from '$lib/server/services/badge';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ parent }) => {
-	const { user } = await parent();
+export const load: PageServerLoad = async ({ locals }) => {
+	const userId = locals.user!.id;
 
-	const levelInfo = await xpService.getUserLevelInfo(user.id);
+	// APPROACH 1: GraphQL - Used for complex, nested, and related data
+	// -----------------------------------------------------------------
+	const gqlResult = await executeGraphQLQuery(
+		`
+    query GetUserProfile($userId: ID!) {
+      user(id: $userId) {
+        username
+        level
+        xp
+        stats {
+          lessonsCompleted
+          challengesSolved
+          daysActive
+        }
+        badges {
+          id
+          name
+          icon
+          category
+        }
+      }
+    }
+  `,
+		{ userId }
+	);
 
-	const stats = await userService.getUserStats(user.id);
+	if (!gqlResult.data?.user) {
+		console.error('GraphQL user data fetch failed:', gqlResult.errors);
+	}
 
-	const progress = await userService.getUserModuleProgress(user.id);
+	// APPROACH 2: REST API - Used for simpler, specific data needs
+	// -----------------------------------------------------------
 
-	const weekAgo = new Date();
-	weekAgo.setDate(weekAgo.getDate() - 5);
-	weekAgo.setHours(0, 0, 0, 0);
-	const currentDate = new Date();
-	currentDate.setDate(currentDate.getDate() + 1);
-	currentDate.setHours(23, 59, 59, 999);
+	const recentBadges = await badgeService.getUnviewedBadges(userId);
 
-	const statistics = await userService.getStatisticsPerDayForUser(user.id, weekAgo, currentDate);
+	const levelInfo = await xpService.getUserLevelInfo(userId);
+
+	const activityStats = await userService.getStatisticsPerDayForUser(
+		userId,
+		new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+		new Date()
+	);
+
+	const moduleProgress = await userService.getUserModuleProgress(userId);
 
 	return {
+		// GraphQL data
+		profile: gqlResult.data?.user,
+
+		// REST API data
+		recentBadges,
 		levelInfo,
-		user: {
-			...user,
-			stats
-		},
-		progress,
-		statistics
+		activityStats,
+
+		progress: {
+			...moduleProgress,
+			completedModules: moduleProgress.completedModules || [],
+			inProgressModules: moduleProgress.inProgressModules || []
+		}
 	};
 };

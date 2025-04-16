@@ -8,7 +8,9 @@
 
 <nav class="flex items-center justify-between border-b border-gray-300 px-12 py-4">
 	<div class="flex items-center">
-		<a href="/" class="text-xl font-bold">CodeLegends</a>
+		<a href="/" class="flex items-center">
+			<img src="/images/logo.png" alt="CodeLegends Logo" class="mr-2 h-14" />
+		</a>
 	</div>
 
 	<ul class="flex">
