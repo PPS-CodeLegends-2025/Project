@@ -1,9 +1,3 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
-
-	onMount(() => {});
-</script>
-
 <svelte:head>
 	<title>API Documentation</title>
 </svelte:head>
